@@ -43,3 +43,16 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# macOS related
+**/macos/Runner.xcodeproj/project.pbxproj
+**/macos/Runner.xcworkspace/contents.xcworkspacedata
+**/macos/Podfile.lock
+**/macos/.symlinks/
+**/macos/Flutter/ephemeral/
+
+# iOS related
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Podfile.lock
+**/ios/.symlinks/
