@@ -34,7 +34,7 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
   @override
   void initState() {
     super.initState();
-    _currentTask = widget.task;
+    _loadCurrentTask();
     _calculateParticipants();
 
     _diceController = AnimationController(
@@ -61,6 +61,12 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
     _diceController.dispose();
     _resultController.dispose();
     super.dispose();
+  }
+
+  void _loadCurrentTask() {
+    // Always load the latest version from storage
+    final latestTask = StorageService.getTask(widget.task.id);
+    _currentTask = latestTask ?? widget.task;
   }
 
   void _calculateParticipants() {
