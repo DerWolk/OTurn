@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'models/group.dart';
 import 'screens/create_group_screen.dart';
+import 'services/storage_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await StorageService.init();
   runApp(const OTurnApp());
 }
 
@@ -33,10 +36,26 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   List<Group> _groups = [];
 
-  void _addGroup(Group group) {
+  @override
+  void initState() {
+    super.initState();
+    _loadGroups();
+  }
+
+  void _loadGroups() {
     setState(() {
-      _groups.add(group);
+      _groups = StorageService.getAllGroups();
     });
+  }
+
+  void _addGroup(Group group) async {
+    await StorageService.saveGroup(group);
+    _loadGroups();
+  }
+
+  void _deleteGroup(String groupId) async {
+    await StorageService.deleteGroup(groupId);
+    _loadGroups();
   }
 
   @override
@@ -46,6 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
       GroupsScreen(
         groups: _groups,
         onGroupCreated: _addGroup,
+        onGroupDeleted: _deleteGroup,
       ),
     ];
 
@@ -107,11 +127,13 @@ class TasksScreen extends StatelessWidget {
 class GroupsScreen extends StatelessWidget {
   final List<Group> groups;
   final Function(Group) onGroupCreated;
+  final Function(String) onGroupDeleted;
 
   const GroupsScreen({
     super.key,
     required this.groups,
     required this.onGroupCreated,
+    required this.onGroupDeleted,
   });
 
   Future<void> _navigateToCreateGroup(BuildContext context) async {
@@ -124,6 +146,41 @@ class GroupsScreen extends StatelessWidget {
     if (result != null) {
       onGroupCreated(result);
     }
+  }
+
+  Future<void> _navigateToEditGroup(BuildContext context, Group group) async {
+    final result = await Navigator.of(context).push<Group>(
+      MaterialPageRoute(
+        builder: (context) => CreateGroupScreen(group: group),
+      ),
+    );
+
+    if (result != null) {
+      onGroupCreated(result);
+    }
+  }
+
+  void _showDeleteDialog(BuildContext context, Group group) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Gruppe "${group.name}" löschen?'),
+        content: const Text('Diese Aktion kann nicht rückgängig gemacht werden.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Abbrechen'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              onGroupDeleted(group.id);
+            },
+            child: const Text('Löschen'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -165,7 +222,31 @@ class GroupsScreen extends StatelessWidget {
               ),
               title: Text(group.name),
               subtitle: Text('${group.members.length} Mitglieder'),
-              trailing: const Icon(Icons.arrow_forward_ios),
+              trailing: PopupMenuButton<String>(
+                onSelected: (value) {
+                  if (value == 'edit') {
+                    _navigateToEditGroup(context, group);
+                  } else if (value == 'delete') {
+                    _showDeleteDialog(context, group);
+                  }
+                },
+                itemBuilder: (context) => [
+                  const PopupMenuItem(
+                    value: 'edit',
+                    child: ListTile(
+                      leading: Icon(Icons.edit),
+                      title: Text('Bearbeiten'),
+                    ),
+                  ),
+                  const PopupMenuItem(
+                    value: 'delete',
+                    child: ListTile(
+                      leading: Icon(Icons.delete),
+                      title: Text('Löschen'),
+                    ),
+                  ),
+                ],
+              ),
               onTap: () {
                 // TODO: Navigate to group details
               },
