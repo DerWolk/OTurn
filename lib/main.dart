@@ -20,8 +20,36 @@ class OTurnApp extends StatelessWidget {
     return MaterialApp(
       title: 'OTurn',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF6366F1), // Indigo
+          brightness: Brightness.light,
+        ),
         useMaterial3: true,
+        appBarTheme: const AppBarTheme(
+          centerTitle: true,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+        ),
+        cardTheme: CardThemeData(
+          elevation: 2,
+          shadowColor: Colors.black.withOpacity(0.1),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          ),
+        ),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          elevation: 4,
+          shape: CircleBorder(),
+        ),
       ),
       home: const HomeScreen(),
     );
@@ -102,6 +130,12 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(height: 12),
               Text('💾 Lokale Speicherung', style: TextStyle(fontWeight: FontWeight.bold)),
               Text('• Alle Daten werden nur auf diesem Gerät gespeichert\n• Keine Server, keine Internetverbindung nötig'),
+              SizedBox(height: 24),
+              Divider(),
+              SizedBox(height: 16),
+              Text('📱 Über diese App', style: TextStyle(fontWeight: FontWeight.bold)),
+              Text('Entwickelt von Waldemar Stockmann'),
+              Text('© 2025 Alle Rechte vorbehalten', style: TextStyle(fontSize: 12, color: Colors.grey)),
             ],
           ),
         ),
@@ -241,24 +275,50 @@ class TasksScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     if (tasks.isEmpty) {
       return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.task, size: 80, color: Colors.grey),
-            const SizedBox(height: 16),
-            Text(
-              'Keine Aufgaben vorhanden',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            const SizedBox(height: 8),
-            const Text('Erstelle deine erste Aufgabe'),
-            const SizedBox(height: 24),
-            FloatingActionButton.extended(
-              onPressed: () => _navigateToCreateTask(context),
-              icon: const Icon(Icons.add),
-              label: const Text('Aufgabe erstellen'),
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Icon(
+                  Icons.task_alt,
+                  size: 64,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+              const SizedBox(height: 24),
+              Text(
+                'Keine Aufgaben vorhanden',
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Erstelle deine erste Aufgabe für ein Team\nund lass das faire Würfeln beginnen!',
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: Colors.grey[600],
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 32),
+              ElevatedButton.icon(
+                onPressed: () => _navigateToCreateTask(context),
+                icon: const Icon(Icons.add),
+                label: const Text('Erste Aufgabe erstellen'),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }
@@ -275,74 +335,113 @@ class TasksScreen extends StatelessWidget {
             final groupName = _getGroupName(task.groupId);
 
             return Card(
-              child: ListTile(
-              leading: CircleAvatar(
-                backgroundColor: task.fairMode ? Colors.green : Colors.blue,
-                child: Icon(
-                  task.fairMode ? Icons.balance : Icons.shuffle,
-                  color: Colors.white,
+              margin: const EdgeInsets.only(bottom: 12),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(16),
+                onTap: () {
+                  final group = groups.firstWhere(
+                    (g) => g.id == task.groupId,
+                    orElse: () => Group(
+                      id: '',
+                      name: 'Unbekannte Gruppe',
+                      members: [],
+                      createdAt: DateTime.now(),
+                    ),
+                  );
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => TaskExecutionScreen(
+                        task: task,
+                        group: group,
+                      ),
+                    ),
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: task.fairMode
+                              ? Colors.green.withOpacity(0.1)
+                              : Colors.blue.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Icon(
+                          task.fairMode ? Icons.balance : Icons.shuffle,
+                          color: task.fairMode ? Colors.green : Colors.blue,
+                          size: 24,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              task.name,
+                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              groupName,
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: task.fairMode ? Colors.green : Colors.blue,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Text(
+                                task.fairMode ? 'Fair-Modus' : 'Zufalls-Modus',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      PopupMenuButton<String>(
+                        onSelected: (value) {
+                          if (value == 'edit') {
+                            _navigateToEditTask(context, task);
+                          } else if (value == 'delete') {
+                            _showDeleteDialog(context, task);
+                          }
+                        },
+                        itemBuilder: (context) => [
+                          const PopupMenuItem(
+                            value: 'edit',
+                            child: ListTile(
+                              leading: Icon(Icons.edit),
+                              title: Text('Bearbeiten'),
+                            ),
+                          ),
+                          const PopupMenuItem(
+                            value: 'delete',
+                            child: ListTile(
+                              leading: Icon(Icons.delete),
+                              title: Text('Löschen'),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              title: Text(task.name),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(groupName),
-                  Text(
-                    task.fairMode ? 'Fair-Modus' : 'Zufalls-Modus',
-                    style: TextStyle(
-                      color: task.fairMode ? Colors.green : Colors.blue,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
-              ),
-              trailing: PopupMenuButton<String>(
-                onSelected: (value) {
-                  if (value == 'edit') {
-                    _navigateToEditTask(context, task);
-                  } else if (value == 'delete') {
-                    _showDeleteDialog(context, task);
-                  }
-                },
-                itemBuilder: (context) => [
-                  const PopupMenuItem(
-                    value: 'edit',
-                    child: ListTile(
-                      leading: Icon(Icons.edit),
-                      title: Text('Bearbeiten'),
-                    ),
-                  ),
-                  const PopupMenuItem(
-                    value: 'delete',
-                    child: ListTile(
-                      leading: Icon(Icons.delete),
-                      title: Text('Löschen'),
-                    ),
-                  ),
-                ],
-              ),
-              onTap: () {
-                final group = groups.firstWhere(
-                  (g) => g.id == task.groupId,
-                  orElse: () => Group(
-                    id: '',
-                    name: 'Unbekannte Gruppe',
-                    members: [],
-                    createdAt: DateTime.now(),
-                  ),
-                );
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => TaskExecutionScreen(
-                      task: task,
-                      group: group,
-                    ),
-                  ),
-                );
-              },
-            ),
-          );
+            );
         },
         ),
       ),
@@ -417,24 +516,50 @@ class GroupsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     if (groups.isEmpty) {
       return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.group, size: 80, color: Colors.grey),
-            const SizedBox(height: 16),
-            Text(
-              'Keine Gruppen vorhanden',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            const SizedBox(height: 8),
-            const Text('Erstelle deine erste Gruppe'),
-            const SizedBox(height: 24),
-            FloatingActionButton.extended(
-              onPressed: () => _navigateToCreateGroup(context),
-              icon: const Icon(Icons.add),
-              label: const Text('Gruppe erstellen'),
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Icon(
+                  Icons.groups,
+                  size: 64,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
+              const SizedBox(height: 24),
+              Text(
+                'Keine Gruppen vorhanden',
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Erstelle deine erste Gruppe mit Teammitgliedern\num Aufgaben fair zu verteilen',
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: Colors.grey[600],
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 32),
+              ElevatedButton.icon(
+                onPressed: () => _navigateToCreateGroup(context),
+                icon: const Icon(Icons.add),
+                label: const Text('Erste Gruppe erstellen'),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }
@@ -446,40 +571,97 @@ class GroupsScreen extends StatelessWidget {
         itemBuilder: (context, index) {
           final group = groups[index];
           return Card(
-            child: ListTile(
-              leading: CircleAvatar(
-                child: Text(group.name[0].toUpperCase()),
-              ),
-              title: Text(group.name),
-              subtitle: Text('${group.members.length} Mitglieder'),
-              trailing: PopupMenuButton<String>(
-                onSelected: (value) {
-                  if (value == 'edit') {
-                    _navigateToEditGroup(context, group);
-                  } else if (value == 'delete') {
-                    _showDeleteDialog(context, group);
-                  }
-                },
-                itemBuilder: (context) => [
-                  const PopupMenuItem(
-                    value: 'edit',
-                    child: ListTile(
-                      leading: Icon(Icons.edit),
-                      title: Text('Bearbeiten'),
-                    ),
-                  ),
-                  const PopupMenuItem(
-                    value: 'delete',
-                    child: ListTile(
-                      leading: Icon(Icons.delete),
-                      title: Text('Löschen'),
-                    ),
-                  ),
-                ],
-              ),
+            margin: const EdgeInsets.only(bottom: 12),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(16),
               onTap: () {
                 // TODO: Navigate to group details
               },
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                            Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        group.name[0].toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            group.name,
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.people,
+                                size: 16,
+                                color: Colors.grey[600],
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                '${group.members.length} Mitglieder',
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  color: Colors.grey[600],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    PopupMenuButton<String>(
+                      onSelected: (value) {
+                        if (value == 'edit') {
+                          _navigateToEditGroup(context, group);
+                        } else if (value == 'delete') {
+                          _showDeleteDialog(context, group);
+                        }
+                      },
+                      itemBuilder: (context) => [
+                        const PopupMenuItem(
+                          value: 'edit',
+                          child: ListTile(
+                            leading: Icon(Icons.edit),
+                            title: Text('Bearbeiten'),
+                          ),
+                        ),
+                        const PopupMenuItem(
+                          value: 'delete',
+                          child: ListTile(
+                            leading: Icon(Icons.delete),
+                            title: Text('Löschen'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ),
           );
         },
