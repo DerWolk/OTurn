@@ -1,57 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'models/group.dart';
 import 'models/task.dart';
 import 'screens/create_group_screen.dart';
 import 'screens/create_task_screen.dart';
 import 'screens/task_execution_screen.dart';
 import 'services/storage_service.dart';
+import 'services/theme_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await StorageService.init();
-  runApp(const OTurnApp());
+  final themeService = ThemeService();
+  await themeService.init();
+  runApp(OTurnApp(themeService: themeService));
 }
 
 class OTurnApp extends StatelessWidget {
-  const OTurnApp({super.key});
+  final ThemeService themeService;
+
+  const OTurnApp({super.key, required this.themeService});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'OTurn',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF6366F1), // Indigo
-          brightness: Brightness.light,
-        ),
-        useMaterial3: true,
-        appBarTheme: const AppBarTheme(
-          centerTitle: true,
-          elevation: 0,
-          scrolledUnderElevation: 0,
-        ),
-        cardTheme: CardThemeData(
-          elevation: 2,
-          shadowColor: Colors.black.withOpacity(0.1),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          ),
-        ),
-        floatingActionButtonTheme: const FloatingActionButtonThemeData(
-          elevation: 4,
-          shape: CircleBorder(),
-        ),
+    return ChangeNotifierProvider.value(
+      value: themeService,
+      child: Consumer<ThemeService>(
+        builder: (context, themeService, child) {
+          return MaterialApp(
+            title: 'OTurn',
+            theme: ThemeService.lightTheme,
+            darkTheme: ThemeService.darkTheme,
+            themeMode: themeService.themeMode,
+            home: const HomeScreen(),
+          );
+        },
       ),
-      home: const HomeScreen(),
     );
   }
 }
@@ -170,6 +154,17 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('OTurn'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
+          Consumer<ThemeService>(
+            builder: (context, themeService, child) {
+              return IconButton(
+                icon: Icon(
+                  themeService.isDarkMode ? Icons.light_mode : Icons.dark_mode,
+                ),
+                onPressed: () => themeService.toggleTheme(),
+                tooltip: themeService.isDarkMode ? 'Light Mode' : 'Dark Mode',
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.help_outline),
             onPressed: _showHelpDialog,

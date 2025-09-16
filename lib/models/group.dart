@@ -3,12 +3,14 @@ class Group {
   final String name;
   final List<String> members;
   final DateTime createdAt;
+  final String? imagePath;
 
   Group({
     required this.id,
     required this.name,
     required this.members,
     required this.createdAt,
+    this.imagePath,
   });
 
   factory Group.fromJson(Map<String, dynamic> json) {
@@ -17,6 +19,7 @@ class Group {
       name: json['name'],
       members: List<String>.from(json['members']),
       createdAt: DateTime.parse(json['created_at']),
+      imagePath: json['image_path'],
     );
   }
 
@@ -26,6 +29,7 @@ class Group {
       'name': name,
       'members': members,
       'created_at': createdAt.toIso8601String(),
+      'image_path': imagePath,
     };
   }
 
@@ -34,12 +38,14 @@ class Group {
     String? name,
     List<String>? members,
     DateTime? createdAt,
+    String? imagePath,
   }) {
     return Group(
       id: id ?? this.id,
       name: name ?? this.name,
       members: members ?? this.members,
       createdAt: createdAt ?? this.createdAt,
+      imagePath: imagePath ?? this.imagePath,
     );
   }
 }

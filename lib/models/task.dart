@@ -9,6 +9,7 @@ class Task {
   final List<String> fairQueue;
   final DateTime createdAt;
   final DateTime lastUpdated;
+  final String? imagePath;
 
   Task({
     required this.id,
@@ -21,6 +22,7 @@ class Task {
     required this.fairQueue,
     required this.createdAt,
     required this.lastUpdated,
+    this.imagePath,
   });
 
   factory Task.fromJson(Map<String, dynamic> json) {
@@ -37,6 +39,7 @@ class Task {
       fairQueue: List<String>.from(json['fair_queue'] ?? []),
       createdAt: DateTime.parse(json['created_at']),
       lastUpdated: DateTime.parse(json['last_updated']),
+      imagePath: json['image_path'],
     );
   }
 
@@ -52,6 +55,7 @@ class Task {
       'fair_queue': fairQueue,
       'created_at': createdAt.toIso8601String(),
       'last_updated': lastUpdated.toIso8601String(),
+      'image_path': imagePath,
     };
   }
 
@@ -66,6 +70,7 @@ class Task {
     List<String>? fairQueue,
     DateTime? createdAt,
     DateTime? lastUpdated,
+    String? imagePath,
   }) {
     return Task(
       id: id ?? this.id,
@@ -78,6 +83,7 @@ class Task {
       fairQueue: fairQueue ?? this.fairQueue,
       createdAt: createdAt ?? this.createdAt,
       lastUpdated: lastUpdated ?? this.lastUpdated,
+      imagePath: imagePath ?? this.imagePath,
     );
   }
 }
