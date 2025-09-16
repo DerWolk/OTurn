@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'models/group.dart';
@@ -7,10 +9,14 @@ import 'screens/create_task_screen.dart';
 import 'screens/task_execution_screen.dart';
 import 'services/storage_service.dart';
 import 'services/theme_service.dart';
+import 'services/image_service.dart';
+import 'widgets/universal_image.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await StorageService.init();
+  await ImageService.migrateImages();
+  await StorageService.cleanupInvalidImages();
   final themeService = ThemeService();
   await themeService.init();
   runApp(OTurnApp(themeService: themeService));
@@ -59,10 +65,19 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _loadData() {
+    if (kDebugMode) {
+      print('HomeScreen: _loadData called - refreshing groups and tasks');
+    }
     setState(() {
       _groups = StorageService.getAllGroups();
       _tasks = StorageService.getAllTasks();
     });
+    if (kDebugMode) {
+      print('HomeScreen: Loaded ${_groups.length} groups and ${_tasks.length} tasks');
+      for (var group in _groups) {
+        print('Group: ${group.name}, imagePath: ${group.imagePath}');
+      }
+    }
   }
 
   void _addGroup(Group group) async {
@@ -141,11 +156,13 @@ class _HomeScreenState extends State<HomeScreen> {
         groups: _groups,
         onTaskCreated: _addTask,
         onTaskDeleted: _deleteTask,
+        onDataChanged: _loadData,
       ),
       GroupsScreen(
         groups: _groups,
         onGroupCreated: _addGroup,
         onGroupDeleted: _deleteGroup,
+        onDataChanged: _loadData,
       ),
     ];
 
@@ -196,6 +213,7 @@ class TasksScreen extends StatelessWidget {
   final List<Group> groups;
   final Function(Task) onTaskCreated;
   final Function(String) onTaskDeleted;
+  final VoidCallback? onDataChanged;
 
   const TasksScreen({
     super.key,
@@ -203,6 +221,7 @@ class TasksScreen extends StatelessWidget {
     required this.groups,
     required this.onTaskCreated,
     required this.onTaskDeleted,
+    this.onDataChanged,
   });
 
   Future<void> _navigateToCreateTask(BuildContext context) async {
@@ -220,7 +239,10 @@ class TasksScreen extends StatelessWidget {
   Future<void> _navigateToEditTask(BuildContext context, Task task) async {
     final result = await Navigator.of(context).push<Task>(
       MaterialPageRoute(
-        builder: (context) => CreateTaskScreen(task: task),
+        builder: (context) => CreateTaskScreen(
+          task: task,
+          onDataChanged: onDataChanged,
+        ),
       ),
     );
 
@@ -350,25 +372,44 @@ class TasksScreen extends StatelessWidget {
                         group: group,
                       ),
                     ),
-                  );
+                  ).then((_) {
+                    // Reload data when returning from task execution
+                    onDataChanged?.call();
+                  });
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(16),
                   child: Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.all(12),
+                        width: 48,
+                        height: 48,
                         decoration: BoxDecoration(
                           color: task.fairMode
                               ? Colors.green.withOpacity(0.1)
                               : Colors.blue.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: Icon(
-                          task.fairMode ? Icons.balance : Icons.shuffle,
-                          color: task.fairMode ? Colors.green : Colors.blue,
-                          size: 24,
-                        ),
+                        child: task.imagePath != null
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: UniversalImage(
+                                  imagePath: task.imagePath,
+                                  width: 48,
+                                  height: 48,
+                                  fit: BoxFit.cover,
+                                  errorWidget: Icon(
+                                    task.fairMode ? Icons.balance : Icons.shuffle,
+                                    color: task.fairMode ? Colors.green : Colors.blue,
+                                    size: 24,
+                                  ),
+                                ),
+                              )
+                            : Icon(
+                                task.fairMode ? Icons.balance : Icons.shuffle,
+                                color: task.fairMode ? Colors.green : Colors.blue,
+                                size: 24,
+                              ),
                       ),
                       const SizedBox(width: 16),
                       Expanded(
@@ -452,12 +493,14 @@ class GroupsScreen extends StatelessWidget {
   final List<Group> groups;
   final Function(Group) onGroupCreated;
   final Function(String) onGroupDeleted;
+  final VoidCallback? onDataChanged;
 
   const GroupsScreen({
     super.key,
     required this.groups,
     required this.onGroupCreated,
     required this.onGroupDeleted,
+    this.onDataChanged,
   });
 
   Future<void> _navigateToCreateGroup(BuildContext context) async {
@@ -475,7 +518,10 @@ class GroupsScreen extends StatelessWidget {
   Future<void> _navigateToEditGroup(BuildContext context, Group group) async {
     final result = await Navigator.of(context).push<Group>(
       MaterialPageRoute(
-        builder: (context) => CreateGroupScreen(group: group),
+        builder: (context) => CreateGroupScreen(
+          group: group,
+          onDataChanged: onDataChanged,
+        ),
       ),
     );
 
@@ -577,7 +623,9 @@ class GroupsScreen extends StatelessWidget {
                 child: Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(16),
+                      key: ValueKey('group_container_${group.id}_${group.imagePath ?? 'no_image'}'),
+                      width: 64,
+                      height: 64,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
@@ -589,14 +637,39 @@ class GroupsScreen extends StatelessWidget {
                         ),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Text(
-                        group.name[0].toUpperCase(),
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
+                      child: group.imagePath != null
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: UniversalImage(
+                                key: ValueKey('group_${group.id}_${group.imagePath}'),
+                                imagePath: group.imagePath,
+                                width: 64,
+                                height: 64,
+                                fit: BoxFit.cover,
+                                errorWidget: Container(
+                                  padding: const EdgeInsets.all(16),
+                                  child: Text(
+                                    group.name[0].toUpperCase(),
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context).colorScheme.primary,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          : Container(
+                              padding: const EdgeInsets.all(16),
+                              child: Text(
+                                group.name[0].toUpperCase(),
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                              ),
+                            ),
                     ),
                     const SizedBox(width: 16),
                     Expanded(
