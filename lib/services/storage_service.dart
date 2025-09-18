@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path/path.dart' as path;
 import '../models/group.dart';
 import '../models/task.dart';
 import 'image_service.dart';
@@ -141,31 +142,87 @@ class StorageService {
   /// Clean up invalid image paths in groups and tasks
   static Future<void> cleanupInvalidImages() async {
     try {
+      print('StorageService: Starting cleanup of invalid images');
+
       // Clean up groups
       final groups = getAllGroups();
+      bool groupsUpdated = false;
       for (final group in groups) {
         if (group.imagePath != null) {
           final exists = await ImageService.imageExists(group.imagePath!);
           if (!exists) {
-            final cleanedGroup = group.copyWith(imagePath: null);
-            await saveGroup(cleanedGroup);
+            print('StorageService: Image not found for group ${group.name}: ${group.imagePath}');
+
+            // Try to find the image with a new path
+            final newPath = await _findMigratedImagePath(group.imagePath!);
+            if (newPath != null) {
+              print('StorageService: Found migrated image for ${group.name}: $newPath');
+              final updatedGroup = group.copyWith(imagePath: newPath);
+              await saveGroup(updatedGroup);
+              groupsUpdated = true;
+            } else {
+              print('StorageService: Removing invalid image path for group ${group.name}');
+              final cleanedGroup = group.copyWith(clearImagePath: true);
+              await saveGroup(cleanedGroup);
+              groupsUpdated = true;
+            }
           }
         }
       }
 
       // Clean up tasks
       final tasks = getAllTasks();
+      bool tasksUpdated = false;
       for (final task in tasks) {
         if (task.imagePath != null) {
           final exists = await ImageService.imageExists(task.imagePath!);
           if (!exists) {
-            final cleanedTask = task.copyWith(imagePath: null);
-            await saveTask(cleanedTask);
+            print('StorageService: Image not found for task ${task.name}: ${task.imagePath}');
+
+            // Try to find the image with a new path
+            final newPath = await _findMigratedImagePath(task.imagePath!);
+            if (newPath != null) {
+              print('StorageService: Found migrated image for ${task.name}: $newPath');
+              final updatedTask = task.copyWith(imagePath: newPath);
+              await saveTask(updatedTask);
+              tasksUpdated = true;
+            } else {
+              print('StorageService: Removing invalid image path for task ${task.name}');
+              final cleanedTask = task.copyWith(clearImagePath: true);
+              await saveTask(cleanedTask);
+              tasksUpdated = true;
+            }
           }
         }
       }
+
+      if (groupsUpdated || tasksUpdated) {
+        print('StorageService: Image cleanup completed with updates');
+      } else {
+        print('StorageService: Image cleanup completed - no updates needed');
+      }
     } catch (e) {
       print('Error cleaning up invalid images: $e');
+    }
+  }
+
+  /// Try to find an image with the current container path
+  static Future<String?> _findMigratedImagePath(String oldPath) async {
+    try {
+      // Extract the filename from the old path
+      final fileName = oldPath.split('/').last;
+      if (!fileName.startsWith('img_')) return null;
+
+      // Get current images directory
+      final newImagesDir = await ImageService.getCurrentImagesDirectory();
+      final newPath = path.join(newImagesDir, fileName);
+
+      // Check if the image exists in the new location
+      final exists = await ImageService.imageExists(newPath);
+      return exists ? newPath : null;
+    } catch (e) {
+      print('Error finding migrated image path: $e');
+      return null;
     }
   }
 }
