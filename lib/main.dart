@@ -57,6 +57,8 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   List<Group> _groups = [];
   List<Task> _tasks = [];
+  int _logoTapCount = 0;
+  DateTime? _lastLogoTap;
 
   @override
   void initState() {
@@ -88,6 +90,34 @@ class _HomeScreenState extends State<HomeScreen> {
   void _deleteGroup(String groupId) async {
     await StorageService.deleteGroup(groupId);
     _loadData();
+  }
+
+  void _onLogoTap() {
+    final now = DateTime.now();
+    if (_lastLogoTap != null && now.difference(_lastLogoTap!).inSeconds > 3) {
+      _logoTapCount = 0;
+    }
+
+    _logoTapCount++;
+    _lastLogoTap = now;
+
+    if (_logoTapCount >= 5) {
+      _logoTapCount = 0;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.favorite, color: Colors.red),
+              SizedBox(width: 8),
+              Text('Kartoffel for President! 🥔'),
+            ],
+          ),
+          backgroundColor: Colors.deepPurple,
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    }
   }
 
   void _addTask(Task task) async {
@@ -171,13 +201,16 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.asset(
-                'assets/images/logo.png',
-                width: 40,
-                height: 40,
-                fit: BoxFit.cover,
+            GestureDetector(
+              onTap: _onLogoTap,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  width: 40,
+                  height: 40,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             const SizedBox(width: 12),

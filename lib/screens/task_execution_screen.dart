@@ -641,10 +641,11 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
                                         ]
                                       : null,
                                 ),
-                                child: Icon(
-                                  Icons.casino,
-                                  size: 80,
-                                  color: Colors.white,
+                                child: Text(
+                                  '🥔',
+                                  style: TextStyle(
+                                    fontSize: 80,
+                                  ),
                                 ),
                               ),
                             );
@@ -782,11 +783,11 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
                 child: ElevatedButton.icon(
                   onPressed: _currentParticipants.isEmpty || _isRolling ? null : _rollDice,
                   icon: Icon(
-                    _isRolling ? Icons.hourglass_empty : Icons.casino,
+                    _isRolling ? Icons.hourglass_empty : null,
                     color: Colors.white,
                   ),
                   label: Text(
-                    _isRolling ? 'Würfeln...' : '🎲 Würfeln',
+                    _isRolling ? 'Würfeln...' : '🥔 Würfeln',
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
