@@ -1,11 +1,11 @@
 {
-    "name": "oturn",
-    "short_name": "oturn",
+    "name": "Faire Aufgabenverteilung",
+    "short_name": "Aufgaben",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "OTurn - Faire Aufgabenverteilung für Teams. Würfele fair wer als nächstes dran ist!",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
