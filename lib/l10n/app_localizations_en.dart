@@ -468,4 +468,88 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get helpContent =>
       'OTurn helps distribute tasks fairly among team members.\n\n• Create groups with team members\n• Create tasks and assign them to groups\n• Use fair mode for equal distribution or random mode for chance-based selection\n• Track history to see who was selected when\n• Add or exclude members for specific tasks\n\nFor support, please contact the developer.';
+
+  @override
+  String get createTaskTitle => 'Create task';
+
+  @override
+  String get editTaskTitle => 'Edit task';
+
+  @override
+  String get taskNameLabel => 'Task name';
+
+  @override
+  String get taskImageLabel => 'Task image';
+
+  @override
+  String get selectGroupLabel => 'Select group';
+
+  @override
+  String get fairModeLabel => 'Fair mode';
+
+  @override
+  String get fairModeHelp =>
+      'Everyone gets selected once before anyone gets selected twice';
+
+  @override
+  String get additionalMembersLabel => 'Additional members';
+
+  @override
+  String get excludedMembersLabel => 'Excluded members';
+
+  @override
+  String get taskSaved => 'Task saved';
+
+  @override
+  String get addAtLeastOneMemberError => 'Add at least one member';
+
+  @override
+  String memberAlreadyInGroup(Object name) {
+    return '$name is already in the group';
+  }
+
+  @override
+  String get noMembersAddedYet => 'No members added yet';
+
+  @override
+  String get allEveryoneHadTurn =>
+      'Everyone has had a turn - next roll starts new round';
+
+  @override
+  String executionDetailsTitle(Object count) {
+    return 'Execution details ($count)';
+  }
+
+  @override
+  String get queueIsEmpty => 'Queue is empty';
+
+  @override
+  String get stillToCome => 'Still to come:';
+
+  @override
+  String get rollPotatoDice => '🥔 Roll';
+
+  @override
+  String get rollDiceAction => '🎲 Roll';
+
+  @override
+  String get switchToRandomModeAction => 'Switch to random mode';
+
+  @override
+  String get switchToFairModeAction => 'Switch to fair mode';
+
+  @override
+  String get showHistoryAction => 'Show history';
+
+  @override
+  String get deleteHistoryAction => 'Delete history';
+
+  @override
+  String get deleteHistoryActionSubtitle => 'Delete all previous executions';
+
+  @override
+  String get resetFairQueueAction => 'Reset fair queue';
+
+  @override
+  String get resetFairQueueActionSubtitle => 'Reshuffle queue';
 }

@@ -472,4 +472,89 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get helpContent =>
       'OTurn hilft dabei, Aufgaben fair unter Teammitgliedern zu verteilen.\n\n• Erstelle Gruppen mit Teammitgliedern\n• Erstelle Aufgaben und weise sie Gruppen zu\n• Verwende den Fair-Modus für gleichmäßige Verteilung oder den Zufalls-Modus für zufallsbasierte Auswahl\n• Verfolge die Historie um zu sehen, wer wann ausgewählt wurde\n• Füge Mitglieder hinzu oder schließe sie für bestimmte Aufgaben aus\n\nFür Support kontaktiere bitte den Entwickler.';
+
+  @override
+  String get createTaskTitle => 'Aufgabe erstellen';
+
+  @override
+  String get editTaskTitle => 'Aufgabe bearbeiten';
+
+  @override
+  String get taskNameLabel => 'Aufgabenname';
+
+  @override
+  String get taskImageLabel => 'Aufgabenbild';
+
+  @override
+  String get selectGroupLabel => 'Gruppe auswählen';
+
+  @override
+  String get fairModeLabel => 'Fair-Modus';
+
+  @override
+  String get fairModeHelp =>
+      'Jeder wird einmal ausgewählt, bevor jemand zweimal dran kommt';
+
+  @override
+  String get additionalMembersLabel => 'Zusätzliche Mitglieder';
+
+  @override
+  String get excludedMembersLabel => 'Ausgeschlossene Mitglieder';
+
+  @override
+  String get taskSaved => 'Aufgabe gespeichert';
+
+  @override
+  String get addAtLeastOneMemberError => 'Füge mindestens ein Mitglied hinzu';
+
+  @override
+  String memberAlreadyInGroup(Object name) {
+    return '$name ist bereits in der Gruppe';
+  }
+
+  @override
+  String get noMembersAddedYet => 'Noch keine Mitglieder hinzugefügt';
+
+  @override
+  String get allEveryoneHadTurn =>
+      'Alle waren schon dran - nächstes Würfeln startet neue Runde';
+
+  @override
+  String executionDetailsTitle(Object count) {
+    return 'Ausführungs-Details ($count)';
+  }
+
+  @override
+  String get queueIsEmpty => 'Warteschlange ist leer';
+
+  @override
+  String get stillToCome => 'Noch nicht dran:';
+
+  @override
+  String get rollPotatoDice => '🥔 Würfeln';
+
+  @override
+  String get rollDiceAction => '🎲 Würfeln';
+
+  @override
+  String get switchToRandomModeAction => 'Zu Zufalls-Modus wechseln';
+
+  @override
+  String get switchToFairModeAction => 'Zu Fair-Modus wechseln';
+
+  @override
+  String get showHistoryAction => 'History anzeigen';
+
+  @override
+  String get deleteHistoryAction => 'History löschen';
+
+  @override
+  String get deleteHistoryActionSubtitle =>
+      'Alle bisherigen Ausführungen löschen';
+
+  @override
+  String get resetFairQueueAction => 'Fair-Queue zurücksetzen';
+
+  @override
+  String get resetFairQueueActionSubtitle => 'Warteschlange neu mischen';
 }
