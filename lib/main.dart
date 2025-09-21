@@ -141,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Über OTurn'),
-        content: const SingleChildScrollView(
+        content: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -170,7 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(height: 16),
               Text('📱 Über diese App', style: TextStyle(fontWeight: FontWeight.bold)),
               Text('Entwickelt von Waldemar Stockmann'),
-              Text('© 2025 Alle Rechte vorbehalten', style: TextStyle(fontSize: 12, color: Colors.grey)),
+              Text('© 2025 Alle Rechte vorbehalten', style: TextStyle(fontSize: 12, color: Theme.of(context).textTheme.bodySmall?.color)),
             ],
           ),
         ),
@@ -386,7 +386,7 @@ class TasksScreen extends StatelessWidget {
               Text(
                 'Erstelle deine erste Aufgabe für ein Team\nund lass das faire Würfeln beginnen!',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Colors.grey[600],
+                  color: Theme.of(context).textTheme.bodyMedium?.color,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -509,7 +509,7 @@ class TasksScreen extends StatelessWidget {
                             Text(
                               groupName,
                               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: Colors.grey[600],
+                                color: Theme.of(context).textTheme.bodyMedium?.color,
                               ),
                             ),
                             const SizedBox(height: 4),
@@ -669,7 +669,7 @@ class GroupsScreen extends StatelessWidget {
               Text(
                 'Erstelle deine erste Gruppe mit Teammitgliedern\num Aufgaben fair zu verteilen',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Colors.grey[600],
+                  color: Theme.of(context).textTheme.bodyMedium?.color,
                 ),
                 textAlign: TextAlign.center,
               ),

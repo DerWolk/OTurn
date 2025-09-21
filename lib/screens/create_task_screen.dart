@@ -165,18 +165,18 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
         ],
       ),
       body: _availableGroups.isEmpty
-          ? const Center(
+          ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.group_off, size: 80, color: Colors.grey),
-                  SizedBox(height: 16),
+                  Icon(Icons.group_off, size: 80, color: Theme.of(context).iconTheme.color),
+                  const SizedBox(height: 16),
                   Text(
                     'Keine Gruppen vorhanden',
-                    style: TextStyle(fontSize: 18, color: Colors.grey),
+                    style: TextStyle(fontSize: 18, color: Theme.of(context).textTheme.bodyMedium?.color),
                   ),
-                  SizedBox(height: 8),
-                  Text('Erstelle zuerst eine Gruppe im Gruppen-Tab'),
+                  const SizedBox(height: 8),
+                  const Text('Erstelle zuerst eine Gruppe im Gruppen-Tab'),
                 ],
               ),
             )
@@ -288,9 +288,9 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: _currentParticipants.isEmpty
-                            ? const Text(
+                            ? Text(
                                 'Keine Teilnehmer - alle sind ausgeschlossen',
-                                style: TextStyle(color: Colors.orange),
+                                style: TextStyle(color: Theme.of(context).colorScheme.error),
                               )
                             : Wrap(
                                 spacing: 8,

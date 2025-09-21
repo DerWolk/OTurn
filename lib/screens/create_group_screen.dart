@@ -210,10 +210,10 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
               const SizedBox(height: 8),
               Expanded(
                 child: _members.isEmpty
-                    ? const Center(
+                    ? Center(
                         child: Text(
                           'Noch keine Mitglieder hinzugefügt',
-                          style: TextStyle(color: Colors.grey),
+                          style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),
                         ),
                       )
                     : ListView.builder(

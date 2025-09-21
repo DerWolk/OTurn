@@ -21,18 +21,18 @@ class TaskHistoryScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: task.history.isEmpty
-          ? const Center(
+          ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.history, size: 80, color: Colors.grey),
-                  SizedBox(height: 16),
+                  Icon(Icons.history, size: 80, color: Theme.of(context).iconTheme.color),
+                  const SizedBox(height: 16),
                   Text(
                     'Noch keine Ausführungen',
-                    style: TextStyle(fontSize: 18, color: Colors.grey),
+                    style: TextStyle(fontSize: 18, color: Theme.of(context).textTheme.bodyMedium?.color),
                   ),
-                  SizedBox(height: 8),
-                  Text('Die History wird hier angezeigt'),
+                  const SizedBox(height: 8),
+                  const Text('Die History wird hier angezeigt'),
                 ],
               ),
             )
@@ -146,7 +146,7 @@ class TaskHistoryScreen extends StatelessWidget {
                           trailing: Text(
                             '#${task.history.length - index}',
                             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Colors.grey[600],
+                              color: Theme.of(context).textTheme.bodyMedium?.color,
                             ),
                           ),
                         ),
@@ -195,7 +195,7 @@ class TaskHistoryScreen extends StatelessWidget {
                   Text(
                     '($percentage%)',
                     style: TextStyle(
-                      color: Colors.grey[600],
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
                       fontSize: 12,
                     ),
                   ),

@@ -376,9 +376,9 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
                       const SizedBox(height: 16),
                       const Text('Warteschlange ist leer'),
                       const SizedBox(height: 8),
-                      const Text(
+                      Text(
                         'Alle waren schon dran - nächstes Würfeln startet neue Runde',
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                        style: TextStyle(fontSize: 12, color: Theme.of(context).textTheme.bodySmall?.color),
                         textAlign: TextAlign.center,
                       ),
                     ],
@@ -519,7 +519,7 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
                   const SizedBox(height: 16),
                   Row(
                     children: [
-                      Icon(Icons.group, size: 18, color: Colors.grey[600]),
+                      Icon(Icons.group, size: 18, color: Theme.of(context).iconTheme.color),
                       const SizedBox(width: 8),
                       Text(
                         widget.group.name,
@@ -547,11 +547,11 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
                   ),
                   if (_currentTask.history.isNotEmpty) ...[
                     const SizedBox(height: 16),
-                    Divider(color: Colors.grey[300]),
+                    Divider(color: Theme.of(context).dividerColor),
                     const SizedBox(height: 12),
                     Row(
                       children: [
-                        Icon(Icons.history, size: 18, color: Colors.grey[600]),
+                        Icon(Icons.history, size: 18, color: Theme.of(context).iconTheme.color),
                         const SizedBox(width: 8),
                         Text(
                           'Ausführungen: ${_currentTask.history.length}',
