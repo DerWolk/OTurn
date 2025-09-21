@@ -552,4 +552,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get resetFairQueueActionSubtitle => 'Reshuffle queue';
+
+  @override
+  String get pleaseSelectGroup => 'Please select a group';
+
+  @override
+  String get selectGroupAction => 'Select group';
+
+  @override
+  String get chooseGroup => 'Choose group';
+
+  @override
+  String get randomSelectionEachRoll => 'Random selection on each roll';
+
+  @override
+  String get excludeMembers => 'Exclude members';
+
+  @override
+  String get excludeMembersTitle => 'Exclude members';
 }

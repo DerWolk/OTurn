@@ -196,5 +196,12 @@
   "deleteHistoryAction": "History löschen",
   "deleteHistoryActionSubtitle": "Alle bisherigen Ausführungen löschen",
   "resetFairQueueAction": "Fair-Queue zurücksetzen",
-  "resetFairQueueActionSubtitle": "Warteschlange neu mischen"
+  "resetFairQueueActionSubtitle": "Warteschlange neu mischen",
+
+  "pleaseSelectGroup": "Bitte wähle eine Gruppe aus",
+  "selectGroupAction": "Gruppe auswählen",
+  "chooseGroup": "Gruppe wählen",
+  "randomSelectionEachRoll": "Zufällige Auswahl bei jedem Würfeln",
+  "excludeMembers": "Mitglieder ausschließen",
+  "excludeMembersTitle": "Mitglieder ausschließen"
 }

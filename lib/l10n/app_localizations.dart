@@ -1105,6 +1105,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reshuffle queue'**
   String get resetFairQueueActionSubtitle;
+
+  /// No description provided for @pleaseSelectGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a group'**
+  String get pleaseSelectGroup;
+
+  /// No description provided for @selectGroupAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Select group'**
+  String get selectGroupAction;
+
+  /// No description provided for @chooseGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose group'**
+  String get chooseGroup;
+
+  /// No description provided for @randomSelectionEachRoll.
+  ///
+  /// In en, this message translates to:
+  /// **'Random selection on each roll'**
+  String get randomSelectionEachRoll;
+
+  /// No description provided for @excludeMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Exclude members'**
+  String get excludeMembers;
+
+  /// No description provided for @excludeMembersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Exclude members'**
+  String get excludeMembersTitle;
 }
 
 class _AppLocalizationsDelegate
