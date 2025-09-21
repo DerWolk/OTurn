@@ -157,6 +157,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(_isEditing ? AppLocalizations.of(context)!.editTaskTitle : AppLocalizations.of(context)!.createTaskTitle),
         actions: [
           TextButton(
