@@ -1,0 +1,390 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+import 'app_localizations.dart';
+
+// ignore_for_file: type=lint
+
+/// The translations for German (`de`).
+class AppLocalizationsDe extends AppLocalizations {
+  AppLocalizationsDe([String locale = 'de']) : super(locale);
+
+  @override
+  String get appTitle => 'OTurn';
+
+  @override
+  String get appDescription =>
+      'OTurn - Faire Aufgabenverteilung für Teams. Würfele fair wer als nächstes dran ist!';
+
+  @override
+  String get about => 'Über OTurn';
+
+  @override
+  String get aboutDescription =>
+      'OTurn hilft bei der fairen Verteilung von Aufgaben in Teams.';
+
+  @override
+  String get developedBy => 'Entwickelt von Waldemar Stockmann';
+
+  @override
+  String get understood => 'Verstanden';
+
+  @override
+  String get help => 'Hilfe';
+
+  @override
+  String get close => 'Schließen';
+
+  @override
+  String get cancel => 'Abbrechen';
+
+  @override
+  String get save => 'Speichern';
+
+  @override
+  String get delete => 'Löschen';
+
+  @override
+  String get edit => 'Bearbeiten';
+
+  @override
+  String get add => 'Hinzufügen';
+
+  @override
+  String get lightMode => 'Light Mode';
+
+  @override
+  String get darkMode => 'Dark Mode';
+
+  @override
+  String get potatoModeEnabled => 'Kartoffel for President! 🥔';
+
+  @override
+  String get potatoModeDisabled => 'Kartoffel Modus deaktiviert';
+
+  @override
+  String get tasks => 'Aufgaben';
+
+  @override
+  String get groups => 'Gruppen';
+
+  @override
+  String get noTasksAvailable => 'Keine Aufgaben vorhanden';
+
+  @override
+  String get noTasksSubtitle =>
+      'Erstelle deine erste Aufgabe für ein Team\nund lass das faire Würfeln beginnen!';
+
+  @override
+  String get createFirstTask => 'Erste Aufgabe erstellen';
+
+  @override
+  String get noGroupsAvailable => 'Keine Gruppen vorhanden';
+
+  @override
+  String get noGroupsSubtitle =>
+      'Erstelle deine erste Gruppe mit Teammitgliedern\num Aufgaben fair zu verteilen';
+
+  @override
+  String get createFirstGroup => 'Erste Gruppe erstellen';
+
+  @override
+  String deleteTaskTitle(Object taskName) {
+    return 'Aufgabe \"$taskName\" löschen?';
+  }
+
+  @override
+  String get deleteTaskContent =>
+      'Diese Aktion kann nicht rückgängig gemacht werden.';
+
+  @override
+  String deleteGroupTitle(Object groupName) {
+    return 'Gruppe \"$groupName\" löschen?';
+  }
+
+  @override
+  String get deleteGroupContent =>
+      'Diese Aktion kann nicht rückgängig gemacht werden.';
+
+  @override
+  String get unknownGroup => 'Unbekannte Gruppe';
+
+  @override
+  String get fairMode => 'Fair-Modus';
+
+  @override
+  String get randomMode => 'Zufalls-Modus';
+
+  @override
+  String get createGroup => 'Gruppe erstellen';
+
+  @override
+  String get editGroup => 'Gruppe bearbeiten';
+
+  @override
+  String get groupName => 'Gruppenname';
+
+  @override
+  String get groupNameHint => 'z.B. Marketing Team';
+
+  @override
+  String get groupNameRequired => 'Bitte gib einen Gruppennamen ein';
+
+  @override
+  String get groupImage => 'Gruppenbild';
+
+  @override
+  String get addMember => 'Mitglied hinzufügen';
+
+  @override
+  String get memberNameHint => 'Name eingeben';
+
+  @override
+  String membersCount(Object count) {
+    return 'Mitglieder ($count)';
+  }
+
+  @override
+  String get noMembersYet => 'Noch keine Mitglieder hinzugefügt';
+
+  @override
+  String memberAlreadyExists(Object name) {
+    return '$name ist bereits in der Gruppe';
+  }
+
+  @override
+  String get addAtLeastOneMember => 'Füge mindestens ein Mitglied hinzu';
+
+  @override
+  String get createTask => 'Aufgabe erstellen';
+
+  @override
+  String get editTask => 'Aufgabe bearbeiten';
+
+  @override
+  String get taskName => 'Aufgabenname';
+
+  @override
+  String get taskNameHint => 'z.B. E-Mail an Management schreiben';
+
+  @override
+  String get taskNameRequired => 'Bitte gib einen Aufgabennamen ein';
+
+  @override
+  String get taskImage => 'Aufgabenbild';
+
+  @override
+  String get selectGroup => 'Gruppe auswählen';
+
+  @override
+  String get selectGroupRequired => 'Bitte wähle eine Gruppe aus';
+
+  @override
+  String get fairModeToggle => 'Fair-Modus';
+
+  @override
+  String get fairModeDescription => 'Faire Rotation - jeder kommt einmal dran';
+
+  @override
+  String get additionalMembers => 'Zusätzliche Mitglieder';
+
+  @override
+  String get additionalMembersHint =>
+      'Personen hinzufügen, die nicht in der Gruppe sind';
+
+  @override
+  String get excludedMembers => 'Ausgeschlossene Mitglieder';
+
+  @override
+  String get excludedMembersHint => 'Personen von dieser Aufgabe ausschließen';
+
+  @override
+  String get taskOptions => 'Aufgaben-Optionen';
+
+  @override
+  String get switchToRandomMode => 'Zu Zufalls-Modus wechseln';
+
+  @override
+  String get switchToFairMode => 'Zu Fair-Modus wechseln';
+
+  @override
+  String get randomModeDescription =>
+      'Komplett zufällige Auswahl bei jedem Würfeln';
+
+  @override
+  String get showHistory => 'History anzeigen';
+
+  @override
+  String get deleteHistory => 'History löschen';
+
+  @override
+  String get deleteHistorySubtitle => 'Alle bisherigen Ausführungen löschen';
+
+  @override
+  String get resetFairQueue => 'Fair-Queue zurücksetzen';
+
+  @override
+  String get resetFairQueueSubtitle => 'Warteschlange neu mischen';
+
+  @override
+  String get fairModeActivated => 'Fair-Modus aktiviert';
+
+  @override
+  String get randomModeActivated => 'Zufalls-Modus aktiviert';
+
+  @override
+  String get historyDeleted => 'History gelöscht';
+
+  @override
+  String get fairQueueReset => 'Fair-Queue zurückgesetzt';
+
+  @override
+  String get rollDice => '🎲 Würfeln';
+
+  @override
+  String get rolling => 'Würfeln...';
+
+  @override
+  String get tapToRoll => 'Tippe zum Würfeln';
+
+  @override
+  String get noParticipantsAvailable => 'Keine Teilnehmer verfügbar';
+
+  @override
+  String get isNext => 'ist dran!';
+
+  @override
+  String get tryAgain => 'Nochmal';
+
+  @override
+  String get done => 'Fertig';
+
+  @override
+  String queueTitle(Object count) {
+    return 'Warteschlange ($count)';
+  }
+
+  @override
+  String get queueEmpty => 'Warteschlange ist leer';
+
+  @override
+  String get queueEmptySubtitle =>
+      'Alle waren schon dran - nächstes Würfeln startet neue Runde';
+
+  @override
+  String get notYetSelected => 'Noch nicht dran:';
+
+  @override
+  String executionDetails(Object count) {
+    return 'Ausführungs-Details ($count)';
+  }
+
+  @override
+  String get noExecutionsYet => 'Noch keine Ausführungen';
+
+  @override
+  String get today => 'Heute';
+
+  @override
+  String get yesterday => 'Gestern';
+
+  @override
+  String get participants => 'Teilnehmer';
+
+  @override
+  String get history => 'History';
+
+  @override
+  String historyTitle(Object taskName) {
+    return '$taskName - History';
+  }
+
+  @override
+  String get addHistoryManually => 'History manuell hinzufügen';
+
+  @override
+  String get noExecutions => 'Noch keine Ausführungen';
+
+  @override
+  String get historyWillBeShown => 'Die History wird hier angezeigt';
+
+  @override
+  String get summary => 'Zusammenfassung';
+
+  @override
+  String get totalExecutions => 'Gesamte Ausführungen:';
+
+  @override
+  String get firstExecution => 'Erste Ausführung:';
+
+  @override
+  String get lastExecution => 'Letzte Ausführung:';
+
+  @override
+  String get participantFrequency => 'Häufigkeit der Teilnehmer:';
+
+  @override
+  String fromParticipants(Object count) {
+    return 'Aus $count Teilnehmern';
+  }
+
+  @override
+  String executionsCount(Object count) {
+    return 'Ausführungen: $count';
+  }
+
+  @override
+  String lastSelectedPerson(Object person) {
+    return 'Zuletzt: $person';
+  }
+
+  @override
+  String queueCount(Object count) {
+    return 'Warteschlange: $count';
+  }
+
+  @override
+  String get editHistory => 'History bearbeiten';
+
+  @override
+  String get manualHistoryEntry => 'Manueller History-Eintrag';
+
+  @override
+  String get selectedPerson => 'Ausgewählte Person:';
+
+  @override
+  String get dateAndTime => 'Datum und Zeit:';
+
+  @override
+  String get deleteHistoryEntry => 'History löschen';
+
+  @override
+  String get deleteHistoryEntryContent =>
+      'Möchten Sie diesen History-Eintrag wirklich löschen?';
+
+  @override
+  String get historyUpdated => 'History aktualisiert';
+
+  @override
+  String get historyAdded => 'History hinzugefügt';
+
+  @override
+  String get historyEntryDeleted => 'History gelöscht';
+
+  @override
+  String get selectImage => 'Bild auswählen';
+
+  @override
+  String get chooseFile => 'Datei wählen';
+
+  @override
+  String get gallery => 'Galerie';
+
+  @override
+  String get remove => 'Entfernen';
+
+  @override
+  String get imageNotFound => 'Bild nicht\ngefunden';
+
+  @override
+  String get addImage => 'Bild hinzufügen';
+}

@@ -1,0 +1,387 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+import 'app_localizations.dart';
+
+// ignore_for_file: type=lint
+
+/// The translations for English (`en`).
+class AppLocalizationsEn extends AppLocalizations {
+  AppLocalizationsEn([String locale = 'en']) : super(locale);
+
+  @override
+  String get appTitle => 'OTurn';
+
+  @override
+  String get appDescription =>
+      'OTurn - Fair task distribution for teams. Roll fairly who\'s next!';
+
+  @override
+  String get about => 'About OTurn';
+
+  @override
+  String get aboutDescription =>
+      'OTurn helps with fair distribution of tasks in teams.';
+
+  @override
+  String get developedBy => 'Developed by Waldemar Stockmann';
+
+  @override
+  String get understood => 'Understood';
+
+  @override
+  String get help => 'Help';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get edit => 'Edit';
+
+  @override
+  String get add => 'Add';
+
+  @override
+  String get lightMode => 'Light Mode';
+
+  @override
+  String get darkMode => 'Dark Mode';
+
+  @override
+  String get potatoModeEnabled => 'Potato for President! 🥔';
+
+  @override
+  String get potatoModeDisabled => 'Potato mode disabled';
+
+  @override
+  String get tasks => 'Tasks';
+
+  @override
+  String get groups => 'Groups';
+
+  @override
+  String get noTasksAvailable => 'No tasks available';
+
+  @override
+  String get noTasksSubtitle =>
+      'Create your first task for a team\nand let the fair rolling begin!';
+
+  @override
+  String get createFirstTask => 'Create first task';
+
+  @override
+  String get noGroupsAvailable => 'No groups available';
+
+  @override
+  String get noGroupsSubtitle =>
+      'Create your first group with team members\nto distribute tasks fairly';
+
+  @override
+  String get createFirstGroup => 'Create first group';
+
+  @override
+  String deleteTaskTitle(Object taskName) {
+    return 'Delete task \"$taskName\"?';
+  }
+
+  @override
+  String get deleteTaskContent => 'This action cannot be undone.';
+
+  @override
+  String deleteGroupTitle(Object groupName) {
+    return 'Delete group \"$groupName\"?';
+  }
+
+  @override
+  String get deleteGroupContent => 'This action cannot be undone.';
+
+  @override
+  String get unknownGroup => 'Unknown group';
+
+  @override
+  String get fairMode => 'Fair mode';
+
+  @override
+  String get randomMode => 'Random mode';
+
+  @override
+  String get createGroup => 'Create group';
+
+  @override
+  String get editGroup => 'Edit group';
+
+  @override
+  String get groupName => 'Group name';
+
+  @override
+  String get groupNameHint => 'e.g. Marketing Team';
+
+  @override
+  String get groupNameRequired => 'Please enter a group name';
+
+  @override
+  String get groupImage => 'Group image';
+
+  @override
+  String get addMember => 'Add member';
+
+  @override
+  String get memberNameHint => 'Enter name';
+
+  @override
+  String membersCount(Object count) {
+    return 'Members ($count)';
+  }
+
+  @override
+  String get noMembersYet => 'No members added yet';
+
+  @override
+  String memberAlreadyExists(Object name) {
+    return '$name is already in the group';
+  }
+
+  @override
+  String get addAtLeastOneMember => 'Add at least one member';
+
+  @override
+  String get createTask => 'Create task';
+
+  @override
+  String get editTask => 'Edit task';
+
+  @override
+  String get taskName => 'Task name';
+
+  @override
+  String get taskNameHint => 'e.g. Write email to management';
+
+  @override
+  String get taskNameRequired => 'Please enter a task name';
+
+  @override
+  String get taskImage => 'Task image';
+
+  @override
+  String get selectGroup => 'Select group';
+
+  @override
+  String get selectGroupRequired => 'Please select a group';
+
+  @override
+  String get fairModeToggle => 'Fair mode';
+
+  @override
+  String get fairModeDescription => 'Fair rotation - everyone gets a turn once';
+
+  @override
+  String get additionalMembers => 'Additional members';
+
+  @override
+  String get additionalMembersHint => 'Add people not in the group';
+
+  @override
+  String get excludedMembers => 'Excluded members';
+
+  @override
+  String get excludedMembersHint => 'Exclude people from this task';
+
+  @override
+  String get taskOptions => 'Task options';
+
+  @override
+  String get switchToRandomMode => 'Switch to random mode';
+
+  @override
+  String get switchToFairMode => 'Switch to fair mode';
+
+  @override
+  String get randomModeDescription =>
+      'Completely random selection on each roll';
+
+  @override
+  String get showHistory => 'Show history';
+
+  @override
+  String get deleteHistory => 'Delete history';
+
+  @override
+  String get deleteHistorySubtitle => 'Delete all previous executions';
+
+  @override
+  String get resetFairQueue => 'Reset fair queue';
+
+  @override
+  String get resetFairQueueSubtitle => 'Reshuffle queue';
+
+  @override
+  String get fairModeActivated => 'Fair mode activated';
+
+  @override
+  String get randomModeActivated => 'Random mode activated';
+
+  @override
+  String get historyDeleted => 'History deleted';
+
+  @override
+  String get fairQueueReset => 'Fair queue reset';
+
+  @override
+  String get rollDice => '🎲 Roll';
+
+  @override
+  String get rolling => 'Rolling...';
+
+  @override
+  String get tapToRoll => 'Tap to roll';
+
+  @override
+  String get noParticipantsAvailable => 'No participants available';
+
+  @override
+  String get isNext => 'is next!';
+
+  @override
+  String get tryAgain => 'Try again';
+
+  @override
+  String get done => 'Done';
+
+  @override
+  String queueTitle(Object count) {
+    return 'Queue ($count)';
+  }
+
+  @override
+  String get queueEmpty => 'Queue is empty';
+
+  @override
+  String get queueEmptySubtitle =>
+      'Everyone has had a turn - next roll starts new round';
+
+  @override
+  String get notYetSelected => 'Not yet selected:';
+
+  @override
+  String executionDetails(Object count) {
+    return 'Execution details ($count)';
+  }
+
+  @override
+  String get noExecutionsYet => 'No executions yet';
+
+  @override
+  String get today => 'Today';
+
+  @override
+  String get yesterday => 'Yesterday';
+
+  @override
+  String get participants => 'participants';
+
+  @override
+  String get history => 'History';
+
+  @override
+  String historyTitle(Object taskName) {
+    return '$taskName - History';
+  }
+
+  @override
+  String get addHistoryManually => 'Add history manually';
+
+  @override
+  String get noExecutions => 'No executions yet';
+
+  @override
+  String get historyWillBeShown => 'History will be shown here';
+
+  @override
+  String get summary => 'Summary';
+
+  @override
+  String get totalExecutions => 'Total executions:';
+
+  @override
+  String get firstExecution => 'First execution:';
+
+  @override
+  String get lastExecution => 'Last execution:';
+
+  @override
+  String get participantFrequency => 'Participant frequency:';
+
+  @override
+  String fromParticipants(Object count) {
+    return 'From $count participants';
+  }
+
+  @override
+  String executionsCount(Object count) {
+    return 'Executions: $count';
+  }
+
+  @override
+  String lastSelectedPerson(Object person) {
+    return 'Last: $person';
+  }
+
+  @override
+  String queueCount(Object count) {
+    return 'Queue: $count';
+  }
+
+  @override
+  String get editHistory => 'Edit history';
+
+  @override
+  String get manualHistoryEntry => 'Manual history entry';
+
+  @override
+  String get selectedPerson => 'Selected person:';
+
+  @override
+  String get dateAndTime => 'Date and time:';
+
+  @override
+  String get deleteHistoryEntry => 'Delete history';
+
+  @override
+  String get deleteHistoryEntryContent =>
+      'Do you really want to delete this history entry?';
+
+  @override
+  String get historyUpdated => 'History updated';
+
+  @override
+  String get historyAdded => 'History added';
+
+  @override
+  String get historyEntryDeleted => 'History deleted';
+
+  @override
+  String get selectImage => 'Select image';
+
+  @override
+  String get chooseFile => 'Choose file';
+
+  @override
+  String get gallery => 'Gallery';
+
+  @override
+  String get remove => 'Remove';
+
+  @override
+  String get imageNotFound => 'Image not\nfound';
+
+  @override
+  String get addImage => 'Add image';
+}

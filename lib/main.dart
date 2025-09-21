@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 import 'models/group.dart';
 import 'models/task.dart';
 import 'screens/create_group_screen.dart';
@@ -11,6 +13,7 @@ import 'services/storage_service.dart';
 import 'services/theme_service.dart';
 import 'services/image_service.dart';
 import 'widgets/universal_image.dart';
+import 'l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,6 +41,16 @@ class OTurnApp extends StatelessWidget {
             theme: ThemeService.lightTheme,
             darkTheme: ThemeService.darkTheme,
             themeMode: themeService.themeMode,
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('en'),
+              Locale('de'),
+            ],
             home: const HomeScreen(),
           );
         },
@@ -115,8 +128,8 @@ class _HomeScreenState extends State<HomeScreen> {
               const Icon(Icons.favorite, color: Colors.red),
               const SizedBox(width: 8),
               Text(_potatoModeEnabled
-                ? 'Kartoffel for President! 🥔'
-                : 'Kartoffel Modus deaktiviert'),
+                ? AppLocalizations.of(context)!.potatoModeEnabled
+                : AppLocalizations.of(context)!.potatoModeDisabled),
             ],
           ),
           backgroundColor: Colors.deepPurple,
@@ -140,14 +153,14 @@ class _HomeScreenState extends State<HomeScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Über OTurn'),
+        title: Text(AppLocalizations.of(context)!.about),
         content: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'OTurn hilft bei der fairen Verteilung von Aufgaben in Teams.',
+                AppLocalizations.of(context)!.aboutDescription,
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 16),
@@ -171,7 +184,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Divider(),
               SizedBox(height: 16),
               Text('📱 Über diese App', style: TextStyle(fontWeight: FontWeight.bold)),
-              Text('Entwickelt von Waldemar Stockmann'),
+              Text(AppLocalizations.of(context)!.developedBy),
               Text('© 2025 Alle Rechte vorbehalten', style: TextStyle(fontSize: 12, color: Theme.of(context).textTheme.bodySmall?.color)),
             ],
           ),
@@ -179,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Verstanden'),
+            child: Text(AppLocalizations.of(context)!.understood),
           ),
         ],
       ),
@@ -243,14 +256,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   themeService.isDarkMode ? Icons.light_mode : Icons.dark_mode,
                 ),
                 onPressed: () => themeService.toggleTheme(),
-                tooltip: themeService.isDarkMode ? 'Light Mode' : 'Dark Mode',
+                tooltip: themeService.isDarkMode ? AppLocalizations.of(context)!.lightMode : AppLocalizations.of(context)!.darkMode,
               );
             },
           ),
           IconButton(
             icon: const Icon(Icons.help_outline),
             onPressed: _showHelpDialog,
-            tooltip: 'Hilfe',
+            tooltip: AppLocalizations.of(context)!.help,
           ),
         ],
       ),
@@ -258,14 +271,14 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
         onDestinationSelected: (index) => setState(() => _selectedIndex = index),
-        destinations: const [
+        destinations: [
           NavigationDestination(
-            icon: Icon(Icons.task),
-            label: 'Aufgaben',
+            icon: const Icon(Icons.task),
+            label: AppLocalizations.of(context)!.tasks,
           ),
           NavigationDestination(
-            icon: Icon(Icons.group),
-            label: 'Gruppen',
+            icon: const Icon(Icons.group),
+            label: AppLocalizations.of(context)!.groups,
           ),
         ],
       ),
@@ -322,8 +335,8 @@ class TasksScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Aufgabe "${task.name}" löschen?'),
-        content: const Text('Diese Aktion kann nicht rückgängig gemacht werden.'),
+        title: Text(AppLocalizations.of(context)!.deleteTaskTitle(task.name)),
+        content: Text(AppLocalizations.of(context)!.deleteTaskContent),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
