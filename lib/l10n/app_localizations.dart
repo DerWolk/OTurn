@@ -793,6 +793,162 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add image'**
   String get addImage;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @appearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get appearance;
+
+  /// No description provided for @dataManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Management'**
+  String get dataManagement;
+
+  /// No description provided for @appInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'App Information'**
+  String get appInfo;
+
+  /// No description provided for @englishLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'English language'**
+  String get englishLanguage;
+
+  /// No description provided for @germanLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'German language'**
+  String get germanLanguage;
+
+  /// No description provided for @useSystemLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Use system language'**
+  String get useSystemLanguage;
+
+  /// No description provided for @darkModeEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark mode is enabled'**
+  String get darkModeEnabled;
+
+  /// No description provided for @lightModeEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Light mode is enabled'**
+  String get lightModeEnabled;
+
+  /// No description provided for @clearAllData.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear all data'**
+  String get clearAllData;
+
+  /// No description provided for @clearAllDataSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete all groups, tasks, and settings'**
+  String get clearAllDataSubtitle;
+
+  /// No description provided for @clearAllDataConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'This will permanently delete all your groups, tasks, history, and app settings. This action cannot be undone. Are you sure?'**
+  String get clearAllDataConfirmation;
+
+  /// No description provided for @clearData.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear data'**
+  String get clearData;
+
+  /// No description provided for @allDataCleared.
+  ///
+  /// In en, this message translates to:
+  /// **'All data has been cleared'**
+  String get allDataCleared;
+
+  /// No description provided for @errorClearingData.
+  ///
+  /// In en, this message translates to:
+  /// **'Error clearing data'**
+  String get errorClearingData;
+
+  /// No description provided for @clearImages.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear images'**
+  String get clearImages;
+
+  /// No description provided for @clearImagesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete all uploaded images'**
+  String get clearImagesSubtitle;
+
+  /// No description provided for @clearImagesConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'This will permanently delete all uploaded images. Groups and tasks will remain but lose their images. This action cannot be undone.'**
+  String get clearImagesConfirmation;
+
+  /// No description provided for @imagesCleared.
+  ///
+  /// In en, this message translates to:
+  /// **'All images have been cleared'**
+  String get imagesCleared;
+
+  /// No description provided for @errorClearingImages.
+  ///
+  /// In en, this message translates to:
+  /// **'Error clearing images'**
+  String get errorClearingImages;
+
+  /// No description provided for @aboutTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Create persistent tasks with specific groups and track execution history.'**
+  String get aboutTasks;
+
+  /// No description provided for @aboutGroups.
+  ///
+  /// In en, this message translates to:
+  /// **'Organize team members into reusable groups for different projects.'**
+  String get aboutGroups;
+
+  /// No description provided for @aboutFairMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Ensure everyone gets selected equally through intelligent rotation.'**
+  String get aboutFairMode;
+
+  /// No description provided for @allRightsReserved.
+  ///
+  /// In en, this message translates to:
+  /// **'All rights reserved'**
+  String get allRightsReserved;
+
+  /// No description provided for @helpContent.
+  ///
+  /// In en, this message translates to:
+  /// **'OTurn helps distribute tasks fairly among team members.\n\n• Create groups with team members\n• Create tasks and assign them to groups\n• Use fair mode for equal distribution or random mode for chance-based selection\n• Track history to see who was selected when\n• Add or exclude members for specific tasks\n\nFor support, please contact the developer.'**
+  String get helpContent;
 }
 
 class _AppLocalizationsDelegate

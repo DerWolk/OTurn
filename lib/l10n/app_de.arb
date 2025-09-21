@@ -129,5 +129,37 @@
   "gallery": "Galerie",
   "remove": "Entfernen",
   "imageNotFound": "Bild nicht\ngefunden",
-  "addImage": "Bild hinzufügen"
+  "addImage": "Bild hinzufügen",
+
+  "settings": "Einstellungen",
+  "language": "Sprache",
+  "appearance": "Erscheinungsbild",
+  "dataManagement": "Datenverwaltung",
+  "appInfo": "App-Informationen",
+
+  "englishLanguage": "Englische Sprache",
+  "germanLanguage": "Deutsche Sprache",
+  "useSystemLanguage": "Systemsprache verwenden",
+
+  "darkModeEnabled": "Dunkler Modus ist aktiviert",
+  "lightModeEnabled": "Heller Modus ist aktiviert",
+
+  "clearAllData": "Alle Daten löschen",
+  "clearAllDataSubtitle": "Alle Gruppen, Aufgaben und Einstellungen löschen",
+  "clearAllDataConfirmation": "Dies wird dauerhaft alle Ihre Gruppen, Aufgaben, Historie und App-Einstellungen löschen. Diese Aktion kann nicht rückgängig gemacht werden. Sind Sie sicher?",
+  "clearData": "Daten löschen",
+  "allDataCleared": "Alle Daten wurden gelöscht",
+  "errorClearingData": "Fehler beim Löschen der Daten",
+
+  "clearImages": "Bilder löschen",
+  "clearImagesSubtitle": "Alle hochgeladenen Bilder löschen",
+  "clearImagesConfirmation": "Dies wird dauerhaft alle hochgeladenen Bilder löschen. Gruppen und Aufgaben bleiben erhalten, verlieren aber ihre Bilder. Diese Aktion kann nicht rückgängig gemacht werden.",
+  "imagesCleared": "Alle Bilder wurden gelöscht",
+  "errorClearingImages": "Fehler beim Löschen der Bilder",
+
+  "aboutTasks": "Erstelle persistente Aufgaben mit spezifischen Gruppen und verfolge die Ausführungshistorie.",
+  "aboutGroups": "Organisiere Teammitglieder in wiederverwendbare Gruppen für verschiedene Projekte.",
+  "aboutFairMode": "Stelle sicher, dass jeder gleichmäßig ausgewählt wird durch intelligente Rotation.",
+  "allRightsReserved": "Alle Rechte vorbehalten",
+  "helpContent": "OTurn hilft dabei, Aufgaben fair unter Teammitgliedern zu verteilen.\n\n• Erstelle Gruppen mit Teammitgliedern\n• Erstelle Aufgaben und weise sie Gruppen zu\n• Verwende den Fair-Modus für gleichmäßige Verteilung oder den Zufalls-Modus für zufallsbasierte Auswahl\n• Verfolge die Historie um zu sehen, wer wann ausgewählt wurde\n• Füge Mitglieder hinzu oder schließe sie für bestimmte Aufgaben aus\n\nFür Support kontaktiere bitte den Entwickler."
 }

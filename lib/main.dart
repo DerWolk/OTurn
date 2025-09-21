@@ -11,7 +11,9 @@ import 'screens/create_task_screen.dart';
 import 'screens/task_execution_screen.dart';
 import 'services/storage_service.dart';
 import 'services/theme_service.dart';
+import 'services/language_service.dart';
 import 'services/image_service.dart';
+import 'screens/settings_screen.dart';
 import 'widgets/universal_image.dart';
 import 'l10n/app_localizations.dart';
 
@@ -22,25 +24,32 @@ void main() async {
   await StorageService.cleanupInvalidImages();
   final themeService = ThemeService();
   await themeService.init();
-  runApp(OTurnApp(themeService: themeService));
+  final languageService = LanguageService();
+  await languageService.init();
+  runApp(OTurnApp(themeService: themeService, languageService: languageService));
 }
 
 class OTurnApp extends StatelessWidget {
   final ThemeService themeService;
+  final LanguageService languageService;
 
-  const OTurnApp({super.key, required this.themeService});
+  const OTurnApp({super.key, required this.themeService, required this.languageService});
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-      value: themeService,
-      child: Consumer<ThemeService>(
-        builder: (context, themeService, child) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: themeService),
+        ChangeNotifierProvider.value(value: languageService),
+      ],
+      child: Consumer2<ThemeService, LanguageService>(
+        builder: (context, themeService, languageService, child) {
           return MaterialApp(
             title: 'OTurn',
             theme: ThemeService.lightTheme,
             darkTheme: ThemeService.darkTheme,
             themeMode: themeService.themeMode,
+            locale: languageService.locale,
             localizationsDelegates: const [
               AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
@@ -216,6 +225,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onGroupDeleted: _deleteGroup,
         onDataChanged: _loadData,
       ),
+      const SettingsScreen(),
     ];
 
     return Scaffold(
@@ -279,6 +289,10 @@ class _HomeScreenState extends State<HomeScreen> {
           NavigationDestination(
             icon: const Icon(Icons.group),
             label: AppLocalizations.of(context)!.groups,
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.settings),
+            label: AppLocalizations.of(context)!.settings,
           ),
         ],
       ),

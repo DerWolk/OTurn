@@ -129,5 +129,37 @@
   "gallery": "Gallery",
   "remove": "Remove",
   "imageNotFound": "Image not\nfound",
-  "addImage": "Add image"
+  "addImage": "Add image",
+
+  "settings": "Settings",
+  "language": "Language",
+  "appearance": "Appearance",
+  "dataManagement": "Data Management",
+  "appInfo": "App Information",
+
+  "englishLanguage": "English language",
+  "germanLanguage": "German language",
+  "useSystemLanguage": "Use system language",
+
+  "darkModeEnabled": "Dark mode is enabled",
+  "lightModeEnabled": "Light mode is enabled",
+
+  "clearAllData": "Clear all data",
+  "clearAllDataSubtitle": "Delete all groups, tasks, and settings",
+  "clearAllDataConfirmation": "This will permanently delete all your groups, tasks, history, and app settings. This action cannot be undone. Are you sure?",
+  "clearData": "Clear data",
+  "allDataCleared": "All data has been cleared",
+  "errorClearingData": "Error clearing data",
+
+  "clearImages": "Clear images",
+  "clearImagesSubtitle": "Delete all uploaded images",
+  "clearImagesConfirmation": "This will permanently delete all uploaded images. Groups and tasks will remain but lose their images. This action cannot be undone.",
+  "imagesCleared": "All images have been cleared",
+  "errorClearingImages": "Error clearing images",
+
+  "aboutTasks": "Create persistent tasks with specific groups and track execution history.",
+  "aboutGroups": "Organize team members into reusable groups for different projects.",
+  "aboutFairMode": "Ensure everyone gets selected equally through intelligent rotation.",
+  "allRightsReserved": "All rights reserved",
+  "helpContent": "OTurn helps distribute tasks fairly among team members.\n\n• Create groups with team members\n• Create tasks and assign them to groups\n• Use fair mode for equal distribution or random mode for chance-based selection\n• Track history to see who was selected when\n• Add or exclude members for specific tasks\n\nFor support, please contact the developer."
 }

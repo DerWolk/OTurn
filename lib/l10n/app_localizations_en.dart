@@ -384,4 +384,88 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get addImage => 'Add image';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get appearance => 'Appearance';
+
+  @override
+  String get dataManagement => 'Data Management';
+
+  @override
+  String get appInfo => 'App Information';
+
+  @override
+  String get englishLanguage => 'English language';
+
+  @override
+  String get germanLanguage => 'German language';
+
+  @override
+  String get useSystemLanguage => 'Use system language';
+
+  @override
+  String get darkModeEnabled => 'Dark mode is enabled';
+
+  @override
+  String get lightModeEnabled => 'Light mode is enabled';
+
+  @override
+  String get clearAllData => 'Clear all data';
+
+  @override
+  String get clearAllDataSubtitle => 'Delete all groups, tasks, and settings';
+
+  @override
+  String get clearAllDataConfirmation =>
+      'This will permanently delete all your groups, tasks, history, and app settings. This action cannot be undone. Are you sure?';
+
+  @override
+  String get clearData => 'Clear data';
+
+  @override
+  String get allDataCleared => 'All data has been cleared';
+
+  @override
+  String get errorClearingData => 'Error clearing data';
+
+  @override
+  String get clearImages => 'Clear images';
+
+  @override
+  String get clearImagesSubtitle => 'Delete all uploaded images';
+
+  @override
+  String get clearImagesConfirmation =>
+      'This will permanently delete all uploaded images. Groups and tasks will remain but lose their images. This action cannot be undone.';
+
+  @override
+  String get imagesCleared => 'All images have been cleared';
+
+  @override
+  String get errorClearingImages => 'Error clearing images';
+
+  @override
+  String get aboutTasks =>
+      'Create persistent tasks with specific groups and track execution history.';
+
+  @override
+  String get aboutGroups =>
+      'Organize team members into reusable groups for different projects.';
+
+  @override
+  String get aboutFairMode =>
+      'Ensure everyone gets selected equally through intelligent rotation.';
+
+  @override
+  String get allRightsReserved => 'All rights reserved';
+
+  @override
+  String get helpContent =>
+      'OTurn helps distribute tasks fairly among team members.\n\n• Create groups with team members\n• Create tasks and assign them to groups\n• Use fair mode for equal distribution or random mode for chance-based selection\n• Track history to see who was selected when\n• Add or exclude members for specific tasks\n\nFor support, please contact the developer.';
 }
