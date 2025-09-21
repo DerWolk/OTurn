@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/task.dart';
+import '../l10n/app_localizations.dart';
 
 class ManualHistoryDialog extends StatefulWidget {
   final List<String> availableMembers;
@@ -47,14 +48,14 @@ class _ManualHistoryDialogState extends State<ManualHistoryDialog> {
     final isEditing = widget.editingHistory != null;
 
     return AlertDialog(
-      title: Text(isEditing ? 'History bearbeiten' : 'Manueller History-Eintrag'),
+      title: Text(isEditing ? AppLocalizations.of(context)!.editHistory : AppLocalizations.of(context)!.manualHistoryEntry),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Ausgewählte Person:',
+              AppLocalizations.of(context)!.selectedPerson,
               style: Theme.of(context).textTheme.titleSmall,
             ),
             const SizedBox(height: 8),
@@ -80,7 +81,7 @@ class _ManualHistoryDialogState extends State<ManualHistoryDialog> {
             const SizedBox(height: 16),
 
             Text(
-              'Datum und Zeit:',
+              AppLocalizations.of(context)!.dateAndTime,
               style: Theme.of(context).textTheme.titleSmall,
             ),
             const SizedBox(height: 8),
@@ -133,11 +134,11 @@ class _ManualHistoryDialogState extends State<ManualHistoryDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Abbrechen'),
+          child: Text(AppLocalizations.of(context)!.cancel),
         ),
         ElevatedButton(
           onPressed: _canSave() ? _save : null,
-          child: Text(isEditing ? 'Speichern' : 'Hinzufügen'),
+          child: Text(isEditing ? AppLocalizations.of(context)!.save : AppLocalizations.of(context)!.add),
         ),
       ],
     );

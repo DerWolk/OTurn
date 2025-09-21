@@ -4,6 +4,7 @@ import '../models/task.dart';
 import '../models/group.dart';
 import '../services/storage_service.dart';
 import 'task_history_screen.dart';
+import '../l10n/app_localizations.dart';
 
 class TaskExecutionScreen extends StatefulWidget {
   final Task task;
@@ -193,19 +194,19 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Padding(
-              padding: EdgeInsets.all(16.0),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
               child: Text(
-                'Aufgaben-Optionen',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                AppLocalizations.of(context)!.taskOptions,
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
             ListTile(
               leading: Icon(_currentTask.fairMode ? Icons.shuffle : Icons.balance),
-              title: Text(_currentTask.fairMode ? 'Zu Zufalls-Modus wechseln' : 'Zu Fair-Modus wechseln'),
+              title: Text(_currentTask.fairMode ? AppLocalizations.of(context)!.switchToRandomModeAction : AppLocalizations.of(context)!.switchToFairModeAction),
               subtitle: Text(_currentTask.fairMode
-                ? 'Komplett zufällige Auswahl bei jedem Würfeln'
-                : 'Faire Rotation - jeder kommt einmal dran'),
+                ? AppLocalizations.of(context)!.randomSelectionEachRoll
+                : AppLocalizations.of(context)!.fairModeHelp),
               onTap: () {
                 Navigator.pop(context);
                 _toggleFairMode();
@@ -213,8 +214,8 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
             ),
             ListTile(
               leading: const Icon(Icons.history, color: Colors.blue),
-              title: const Text('History anzeigen'),
-              subtitle: Text('${_currentTask.history.length} Ausführungen anzeigen'),
+              title: Text(AppLocalizations.of(context)!.showHistoryAction),
+              subtitle: Text('${_currentTask.history.length} ${AppLocalizations.of(context)!.totalExecutions}'),
               onTap: () {
                 Navigator.pop(context);
                 _showHistory();
@@ -222,8 +223,8 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
             ),
             ListTile(
               leading: const Icon(Icons.delete, color: Colors.orange),
-              title: const Text('History löschen'),
-              subtitle: const Text('Alle bisherigen Ausführungen löschen'),
+              title: Text(AppLocalizations.of(context)!.deleteHistoryAction),
+              subtitle: Text(AppLocalizations.of(context)!.deleteHistoryActionSubtitle),
               onTap: () {
                 Navigator.pop(context);
                 _clearHistory();
@@ -231,8 +232,8 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
             ),
             ListTile(
               leading: const Icon(Icons.refresh, color: Colors.blue),
-              title: const Text('Fair-Queue zurücksetzen'),
-              subtitle: const Text('Warteschlange neu mischen'),
+              title: Text(AppLocalizations.of(context)!.resetFairQueueAction),
+              subtitle: Text(AppLocalizations.of(context)!.resetFairQueueActionSubtitle),
               enabled: _currentTask.fairMode,
               onTap: _currentTask.fairMode ? () {
                 Navigator.pop(context);
@@ -262,8 +263,8 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(_currentTask.fairMode
-          ? 'Fair-Modus aktiviert'
-          : 'Zufalls-Modus aktiviert'),
+          ? AppLocalizations.of(context)!.fairModeActivated
+          : AppLocalizations.of(context)!.randomModeActivated),
       ),
     );
   }
@@ -281,7 +282,7 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
     await StorageService.saveTask(updatedTask);
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('History gelöscht')),
+      SnackBar(content: Text(AppLocalizations.of(context)!.historyDeleted)),
     );
   }
 
@@ -298,7 +299,7 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
     await StorageService.saveTask(updatedTask);
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Fair-Queue zurückgesetzt')),
+      SnackBar(content: Text(AppLocalizations.of(context)!.fairQueueReset)),
     );
   }
 
@@ -319,12 +320,12 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Ausführungs-Details (${_currentTask.history.length})'),
+        title: Text(AppLocalizations.of(context)!.executionDetailsTitle(_currentTask.history.length)),
         content: SizedBox(
           width: double.maxFinite,
           height: 400,
           child: _currentTask.history.isEmpty
-              ? const Center(child: Text('Noch keine Ausführungen'))
+              ? Center(child: Text(AppLocalizations.of(context)!.noExecutionsYet))
               : ListView.builder(
                   itemCount: _currentTask.history.length,
                   itemBuilder: (context, index) {
@@ -335,9 +336,9 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
 
                     String dateStr;
                     if (isToday) {
-                      dateStr = 'Heute ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+                      dateStr = '${AppLocalizations.of(context)!.today} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
                     } else if (isYesterday) {
-                      dateStr = 'Gestern ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+                      dateStr = '${AppLocalizations.of(context)!.yesterday} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
                     } else {
                       dateStr = '${date.day}.${date.month}.${date.year} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
                     }
@@ -349,7 +350,7 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
                       ),
                       title: Text(entry.selectedPerson),
                       subtitle: Text(dateStr),
-                      trailing: Text('${entry.participants.length} Teilnehmer'),
+                      trailing: Text('${entry.participants.length} ${AppLocalizations.of(context)!.participants}'),
                     );
                   },
                 ),
@@ -357,7 +358,7 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Schließen'),
+            child: Text(AppLocalizations.of(context)!.close),
           ),
         ],
       ),
@@ -368,7 +369,7 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Warteschlange (${_currentTask.fairQueue.length})'),
+        title: Text(AppLocalizations.of(context)!.queueTitle(_currentTask.fairQueue.length)),
         content: SizedBox(
           width: double.maxFinite,
           height: 300,
@@ -379,10 +380,10 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
                     children: [
                       Icon(Icons.check_circle, size: 48, color: Colors.green),
                       const SizedBox(height: 16),
-                      const Text('Warteschlange ist leer'),
+                      Text(AppLocalizations.of(context)!.queueIsEmpty),
                       const SizedBox(height: 8),
                       Text(
-                        'Alle waren schon dran - nächstes Würfeln startet neue Runde',
+                        AppLocalizations.of(context)!.allEveryoneHadTurn,
                         style: TextStyle(fontSize: 12, color: Theme.of(context).textTheme.bodySmall?.color),
                         textAlign: TextAlign.center,
                       ),
@@ -392,9 +393,9 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Noch nicht dran:',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    Text(
+                      AppLocalizations.of(context)!.stillToCome,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 8),
                     Expanded(
@@ -419,7 +420,7 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Schließen'),
+            child: Text(AppLocalizations.of(context)!.close),
           ),
         ],
       ),
@@ -481,7 +482,7 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
                       ),
                       const SizedBox(width: 12),
                       Text(
-                        _currentTask.fairMode ? 'Fair-Modus' : 'Zufalls-Modus',
+                        _currentTask.fairMode ? AppLocalizations.of(context)!.fairMode : AppLocalizations.of(context)!.randomMode,
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: _currentTask.fairMode ? Colors.green : Colors.blue,
@@ -500,7 +501,7 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                'Warteschlange: ${_currentTask.fairQueue.length}',
+                                AppLocalizations.of(context)!.queueCount(_currentTask.fairQueue.length),
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,
@@ -540,7 +541,7 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
-                          '${_currentParticipants.length} Teilnehmer',
+                          '${_currentParticipants.length} ${AppLocalizations.of(context)!.participants}',
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
@@ -559,7 +560,7 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
                         Icon(Icons.history, size: 18, color: Theme.of(context).iconTheme.color),
                         const SizedBox(width: 8),
                         Text(
-                          'Ausführungen: ${_currentTask.history.length}',
+                          AppLocalizations.of(context)!.executionsCount(_currentTask.history.length),
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             fontWeight: FontWeight.w500,
                           ),
@@ -589,7 +590,7 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Text(
-                              'Zuletzt: ${_currentTask.history.last.selectedPerson}',
+                              AppLocalizations.of(context)!.lastSelectedPerson(_currentTask.history.last.selectedPerson),
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
@@ -667,7 +668,7 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
                       ),
                       const SizedBox(height: 24),
                       Text(
-                        _isRolling ? 'Würfeln...' : 'Tippe zum Würfeln',
+                        _isRolling ? AppLocalizations.of(context)!.rolling : AppLocalizations.of(context)!.tapToRoll,
                         style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                           color: _isRolling
                             ? Theme.of(context).primaryColor
@@ -749,7 +750,7 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     child: Text(
-                                      '🎯 ist dran!',
+                                      '🎯 ${AppLocalizations.of(context)!.isNext}',
                                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w600,
@@ -803,8 +804,8 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
                   ),
                   label: Text(
                     _isRolling
-                        ? 'Würfeln...'
-                        : (widget.potatoModeEnabled ? '🥔 Würfeln' : '🎲 Würfeln'),
+                        ? AppLocalizations.of(context)!.rolling
+                        : (widget.potatoModeEnabled ? AppLocalizations.of(context)!.rollPotatoDice : AppLocalizations.of(context)!.rollDiceAction),
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
@@ -840,7 +841,7 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
                           color: Theme.of(context).colorScheme.primary,
                         ),
                         label: Text(
-                          'Nochmal',
+                          AppLocalizations.of(context)!.tryAgain,
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.primary,
                             fontWeight: FontWeight.w600,
@@ -879,9 +880,9 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
                       child: ElevatedButton.icon(
                         onPressed: () => Navigator.of(context).pop(),
                         icon: const Icon(Icons.check, color: Colors.white),
-                        label: const Text(
-                          'Fertig',
-                          style: TextStyle(
+                        label: Text(
+                          AppLocalizations.of(context)!.done,
+                          style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
                           ),
@@ -903,7 +904,7 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
             if (_currentParticipants.isEmpty) ...[
               const SizedBox(height: 16),
               Text(
-                'Keine Teilnehmer verfügbar',
+                AppLocalizations.of(context)!.noParticipantsAvailable,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   color: Colors.red,
                 ),

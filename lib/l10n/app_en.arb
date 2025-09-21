@@ -203,5 +203,21 @@
   "chooseGroup": "Choose group",
   "randomSelectionEachRoll": "Random selection on each roll",
   "excludeMembers": "Exclude members",
-  "excludeMembersTitle": "Exclude members"
+  "excludeMembersTitle": "Exclude members",
+
+  "aboutTasksTitle": "🎯 Tasks",
+  "aboutTasksDescription": "• Create recurring tasks for your groups\n• Choose between random and fair mode\n• Track the history of all executions",
+  "aboutGroupsTitle": "👥 Groups",
+  "aboutGroupsDescription": "• Organize team members into reusable groups\n• Perfect for different projects and teams",
+  "aboutFairModeTitle": "⚖️ Fair Mode",
+  "aboutFairModeDescription": "• Everyone gets a turn once before the next round starts\n• Perfect for recurring tasks like taking out trash",
+  "aboutRandomModeTitle": "🎲 Random Mode",
+  "aboutRandomModeDescription": "• Completely random selection on each roll\n• Ideal for spontaneous decisions",
+
+  "aboutGroupsManagementDescription": "• Manage teams and their members\n• Autocomplete based on existing names\n• Easy editing and management",
+  "aboutDataStorageTitle": "💾 Data Storage",
+  "aboutDataStorageDescriptionWeb": "• All data is stored locally in the browser\n• No external servers or cloud services",
+  "aboutDataStorageDescriptionMobile": "• All data is stored only on this device\n• No servers, no internet connection required",
+  "aboutThisAppTitle": "📱 About this App",
+  "allRightsReservedShort": "© 2025 All rights reserved"
 }

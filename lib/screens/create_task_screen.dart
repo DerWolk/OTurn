@@ -3,6 +3,7 @@ import '../models/group.dart';
 import '../models/task.dart';
 import '../services/storage_service.dart';
 import '../widgets/image_picker_widget.dart';
+import '../l10n/app_localizations.dart';
 
 class CreateTaskScreen extends StatefulWidget {
   final Task? task; // null for creating, Task for editing
@@ -83,14 +84,14 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
     if (_formKey.currentState!.validate()) {
       if (_selectedGroup == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Bitte wähle eine Gruppe aus')),
+          SnackBar(content: Text(AppLocalizations.of(context)!.selectGroupRequired)),
         );
         return;
       }
 
       if (_currentParticipants.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Die Aufgabe muss mindestens einen Teilnehmer haben')),
+          SnackBar(content: Text(AppLocalizations.of(context)!.addAtLeastOneMemberError)),
         );
         return;
       }
@@ -156,11 +157,11 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_isEditing ? 'Aufgabe bearbeiten' : 'Aufgabe erstellen'),
+        title: Text(_isEditing ? AppLocalizations.of(context)!.editTaskTitle : AppLocalizations.of(context)!.createTaskTitle),
         actions: [
           TextButton(
             onPressed: _saveTask,
-            child: const Text('Speichern'),
+            child: Text(AppLocalizations.of(context)!.save),
           ),
         ],
       ),
@@ -172,11 +173,11 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                   Icon(Icons.group_off, size: 80, color: Theme.of(context).iconTheme.color),
                   const SizedBox(height: 16),
                   Text(
-                    'Keine Gruppen vorhanden',
+                    AppLocalizations.of(context)!.noGroupsAvailable,
                     style: TextStyle(fontSize: 18, color: Theme.of(context).textTheme.bodyMedium?.color),
                   ),
                   const SizedBox(height: 8),
-                  const Text('Erstelle zuerst eine Gruppe im Gruppen-Tab'),
+                  Text(AppLocalizations.of(context)!.noGroupsSubtitle),
                 ],
               ),
             )
@@ -188,14 +189,14 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                   // Task Name
                   TextFormField(
                     controller: _nameController,
-                    decoration: const InputDecoration(
-                      labelText: 'Aufgabenname',
-                      hintText: 'z.B. Mail an GL verfassen',
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.taskNameLabel,
+                      hintText: AppLocalizations.of(context)!.taskNameHint,
+                      border: const OutlineInputBorder(),
                     ),
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
-                        return 'Bitte gib einen Aufgabennamen ein';
+                        return AppLocalizations.of(context)!.taskNameRequired;
                       }
                       return null;
                     },
@@ -223,7 +224,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                         }
                       },
                       size: 120,
-                      placeholder: 'Aufgabenbild',
+                      placeholder: AppLocalizations.of(context)!.taskImageLabel,
                       placeholderIcon: Icons.task_alt,
                     ),
                   ),
@@ -232,20 +233,20 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
 
                   // Group Selection
                   Text(
-                    'Gruppe auswählen',
+                    AppLocalizations.of(context)!.selectGroupLabel,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   const SizedBox(height: 8),
                   DropdownButtonFormField<Group>(
                     value: _selectedGroup,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Gruppe wählen',
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      hintText: AppLocalizations.of(context)!.chooseGroup,
                     ),
                     items: _availableGroups.map((group) {
                       return DropdownMenuItem(
                         value: group,
-                        child: Text('${group.name} (${group.members.length} Mitglieder)'),
+                        child: Text('${group.name} (${group.members.length} ${AppLocalizations.of(context)!.participants})'),
                       );
                     }).toList(),
                     onChanged: (group) {
@@ -262,10 +263,10 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                   // Fair Mode Toggle
                   Card(
                     child: SwitchListTile(
-                      title: const Text('Fair-Switch'),
+                      title: Text(AppLocalizations.of(context)!.fairModeLabel),
                       subtitle: Text(_fairMode
-                          ? 'Faire Rotation - jeder kommt einmal dran'
-                          : 'Zufällige Auswahl bei jedem Würfeln'),
+                          ? AppLocalizations.of(context)!.fairModeHelp
+                          : AppLocalizations.of(context)!.randomSelectionEachRoll),
                       value: _fairMode,
                       onChanged: (value) {
                         setState(() {
@@ -280,7 +281,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                   // Current Participants Preview
                   if (_selectedGroup != null) ...[
                     Text(
-                      'Teilnehmer (${_currentParticipants.length})',
+                      '${AppLocalizations.of(context)!.participants} (${_currentParticipants.length})',
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     const SizedBox(height: 8),
@@ -289,7 +290,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                         padding: const EdgeInsets.all(16.0),
                         child: _currentParticipants.isEmpty
                             ? Text(
-                                'Keine Teilnehmer - alle sind ausgeschlossen',
+                                AppLocalizations.of(context)!.noParticipantsAvailable,
                                 style: TextStyle(color: Theme.of(context).colorScheme.error),
                               )
                             : Wrap(
@@ -316,13 +317,13 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                     // Exclude Members
                     if (_selectedGroup!.members.isNotEmpty)
                       ExpansionTile(
-                        title: const Text('Mitglieder ausschließen'),
-                        subtitle: Text('${_excludedMembers.length} ausgeschlossen'),
+                        title: Text(AppLocalizations.of(context)!.excludeMembersTitle),
+                        subtitle: Text('${_excludedMembers.length} ${AppLocalizations.of(context)!.excludedMembers}'),
                         children: _selectedGroup!.members.map((member) {
                           final isExcluded = _excludedMembers.contains(member);
                           return CheckboxListTile(
                             title: Text(member),
-                            subtitle: Text(isExcluded ? 'Ausgeschlossen' : 'Teilnehmer'),
+                            subtitle: Text(isExcluded ? AppLocalizations.of(context)!.excludedMembers : AppLocalizations.of(context)!.participants),
                             value: isExcluded,
                             onChanged: (value) {
                               setState(() {
