@@ -448,12 +448,17 @@ class TasksScreen extends StatelessWidget {
                   child: Row(
                     children: [
                       Container(
-                        width: 48,
-                        height: 48,
+                        width: 64,
+                        height: 64,
                         decoration: BoxDecoration(
-                          color: task.fairMode
-                              ? Colors.green.withOpacity(0.1)
-                              : Colors.blue.withOpacity(0.1),
+                          gradient: LinearGradient(
+                            colors: [
+                              (task.fairMode ? Colors.green : Colors.blue).withOpacity(0.1),
+                              (task.fairMode ? Colors.green : Colors.blue).withOpacity(0.2),
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: task.imagePath != null
@@ -461,20 +466,32 @@ class TasksScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(12),
                                 child: UniversalImage(
                                   imagePath: task.imagePath,
-                                  width: 48,
-                                  height: 48,
+                                  width: 64,
+                                  height: 64,
                                   fit: BoxFit.cover,
-                                  errorWidget: Icon(
-                                    task.fairMode ? Icons.balance : Icons.shuffle,
-                                    color: task.fairMode ? Colors.green : Colors.blue,
-                                    size: 24,
+                                  errorWidget: Container(
+                                    padding: const EdgeInsets.all(16),
+                                    child: Text(
+                                      task.name[0].toUpperCase(),
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: task.fairMode ? Colors.green : Colors.blue,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               )
-                            : Icon(
-                                task.fairMode ? Icons.balance : Icons.shuffle,
-                                color: task.fairMode ? Colors.green : Colors.blue,
-                                size: 24,
+                            : Container(
+                                padding: const EdgeInsets.all(16),
+                                child: Text(
+                                  task.name[0].toUpperCase(),
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: task.fairMode ? Colors.green : Colors.blue,
+                                  ),
+                                ),
                               ),
                       ),
                       const SizedBox(width: 16),

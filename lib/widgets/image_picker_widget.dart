@@ -145,6 +145,8 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                 child: UniversalImage(
                   key: ValueKey(_currentImagePath),
                   imagePath: _currentImagePath,
+                  width: widget.size,
+                  height: widget.size,
                   fit: BoxFit.cover,
                   errorWidget: _PlaceholderContent(
                     icon: Icons.broken_image,

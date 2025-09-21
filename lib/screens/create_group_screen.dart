@@ -122,35 +122,37 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                 },
               ),
               const SizedBox(height: 24),
-              ImagePickerWidget(
-                imagePath: _selectedImagePath,
-                onImageSelected: (imagePath) async {
-                  if (kDebugMode) {
-                    print('CreateGroupScreen: onImageSelected called with: $imagePath');
-                  }
-                  setState(() {
-                    _selectedImagePath = imagePath;
-                  });
+              Center(
+                child: ImagePickerWidget(
+                  imagePath: _selectedImagePath,
+                  onImageSelected: (imagePath) async {
+                    if (kDebugMode) {
+                      print('CreateGroupScreen: onImageSelected called with: $imagePath');
+                    }
+                    setState(() {
+                      _selectedImagePath = imagePath;
+                    });
 
-                  // Auto-save if editing existing group
-                  if (widget.group != null) {
-                    if (kDebugMode) {
-                      print('CreateGroupScreen: Auto-saving group with imagePath: $imagePath');
+                    // Auto-save if editing existing group
+                    if (widget.group != null) {
+                      if (kDebugMode) {
+                        print('CreateGroupScreen: Auto-saving group with imagePath: $imagePath');
+                      }
+                      final updatedGroup = imagePath == null
+                          ? widget.group!.copyWith(clearImagePath: true)
+                          : widget.group!.copyWith(imagePath: imagePath);
+                      await StorageService.saveGroup(updatedGroup);
+                      if (kDebugMode) {
+                        print('CreateGroupScreen: Group saved, calling onDataChanged');
+                      }
+                      // Notify parent to refresh data
+                      widget.onDataChanged?.call();
                     }
-                    final updatedGroup = imagePath == null
-                        ? widget.group!.copyWith(clearImagePath: true)
-                        : widget.group!.copyWith(imagePath: imagePath);
-                    await StorageService.saveGroup(updatedGroup);
-                    if (kDebugMode) {
-                      print('CreateGroupScreen: Group saved, calling onDataChanged');
-                    }
-                    // Notify parent to refresh data
-                    widget.onDataChanged?.call();
-                  }
-                },
-                size: 120,
-                placeholder: 'Gruppenbild',
-                placeholderIcon: Icons.group,
+                  },
+                  size: 120,
+                  placeholder: 'Gruppenbild',
+                  placeholderIcon: Icons.group,
+                ),
               ),
               const SizedBox(height: 24),
               Row(

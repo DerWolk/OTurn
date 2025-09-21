@@ -204,26 +204,28 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                   const SizedBox(height: 24),
 
                   // Task Image
-                  ImagePickerWidget(
-                    imagePath: _selectedImagePath,
-                    onImageSelected: (imagePath) async {
-                      setState(() {
-                        _selectedImagePath = imagePath;
-                      });
+                  Center(
+                    child: ImagePickerWidget(
+                      imagePath: _selectedImagePath,
+                      onImageSelected: (imagePath) async {
+                        setState(() {
+                          _selectedImagePath = imagePath;
+                        });
 
-                      // Auto-save if editing existing task
-                      if (widget.task != null) {
-                        final updatedTask = imagePath == null
-                            ? widget.task!.copyWith(clearImagePath: true)
-                            : widget.task!.copyWith(imagePath: imagePath);
-                        await StorageService.saveTask(updatedTask);
-                        // Notify parent to refresh data
-                        widget.onDataChanged?.call();
-                      }
-                    },
-                    size: 120,
-                    placeholder: 'Aufgabenbild',
-                    placeholderIcon: Icons.task_alt,
+                        // Auto-save if editing existing task
+                        if (widget.task != null) {
+                          final updatedTask = imagePath == null
+                              ? widget.task!.copyWith(clearImagePath: true)
+                              : widget.task!.copyWith(imagePath: imagePath);
+                          await StorageService.saveTask(updatedTask);
+                          // Notify parent to refresh data
+                          widget.onDataChanged?.call();
+                        }
+                      },
+                      size: 120,
+                      placeholder: 'Aufgabenbild',
+                      placeholderIcon: Icons.task_alt,
+                    ),
                   ),
 
                   const SizedBox(height: 24),
