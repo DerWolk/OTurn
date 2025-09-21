@@ -44,12 +44,24 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
 
   void _addMember() {
     final name = _memberController.text.trim();
-    if (name.isNotEmpty && !_members.contains(name)) {
-      setState(() {
-        _members.add(name);
-        _memberController.clear();
-      });
+    if (name.isEmpty) {
+      return;
     }
+
+    if (_members.contains(name)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('$name ist bereits in der Gruppe'),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+
+    setState(() {
+      _members.add(name);
+      _memberController.clear();
+    });
   }
 
   void _removeMember(int index) {
