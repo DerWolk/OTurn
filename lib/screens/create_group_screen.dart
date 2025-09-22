@@ -143,51 +143,107 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
 
   Future<void> _extractNamesFromPhoto(ImageSource source) async {
     try {
+      if (kDebugMode) {
+        print('CreateGroupScreen: Starting image selection with source: $source');
+      }
+
       final picker = ImagePicker();
-      final pickedFile = await picker.pickImage(source: source);
 
-      if (pickedFile == null) return;
+      // Check if camera is available on web
+      if (kIsWeb && source == ImageSource.camera) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.cameraNotSupportedWeb),
+            backgroundColor: Colors.orange,
+          ),
+        );
+        return;
+      }
 
-      // Crop the image to select specific region
-      final croppedFile = await ImageCropper().cropImage(
-        sourcePath: pickedFile.path,
-        compressFormat: ImageCompressFormat.jpg,
-        compressQuality: 100,
-        uiSettings: [
-          AndroidUiSettings(
-            toolbarTitle: AppLocalizations.of(context)!.selectTextRegion,
-            toolbarColor: Theme.of(context).colorScheme.primary,
-            toolbarWidgetColor: Theme.of(context).colorScheme.onPrimary,
-            initAspectRatio: CropAspectRatioPreset.original,
-            lockAspectRatio: false,
-            aspectRatioPresets: [
-              CropAspectRatioPreset.original,
-              CropAspectRatioPreset.square,
-              CropAspectRatioPreset.ratio3x2,
-              CropAspectRatioPreset.ratio4x3,
-              CropAspectRatioPreset.ratio16x9
-            ],
-          ),
-          IOSUiSettings(
-            title: AppLocalizations.of(context)!.selectTextRegion,
-            aspectRatioLockEnabled: false,
-            resetAspectRatioEnabled: true,
-            aspectRatioPresets: [
-              CropAspectRatioPreset.original,
-              CropAspectRatioPreset.square,
-              CropAspectRatioPreset.ratio3x2,
-              CropAspectRatioPreset.ratio4x3,
-              CropAspectRatioPreset.ratio16x9
-            ],
-          ),
-          WebUiSettings(
-            context: context,
-          ),
-        ],
+      final pickedFile = await picker.pickImage(
+        source: source,
+        maxWidth: 1800,
+        maxHeight: 1800,
+        imageQuality: 85,
       );
 
+      if (kDebugMode) {
+        print('CreateGroupScreen: Image picked: ${pickedFile?.path}');
+      }
+
+      if (pickedFile == null) {
+        if (kDebugMode) {
+          print('CreateGroupScreen: No image selected');
+        }
+        return;
+      }
+
+      // Crop the image to select specific region
+      if (kDebugMode) {
+        print('CreateGroupScreen: Starting image cropping');
+      }
+
+      CroppedFile? croppedFile;
+      try {
+        croppedFile = await ImageCropper().cropImage(
+          sourcePath: pickedFile.path,
+          compressFormat: ImageCompressFormat.jpg,
+          compressQuality: 100,
+          uiSettings: [
+            AndroidUiSettings(
+              toolbarTitle: AppLocalizations.of(context)!.selectTextRegion,
+              toolbarColor: Theme.of(context).colorScheme.primary,
+              toolbarWidgetColor: Theme.of(context).colorScheme.onPrimary,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: false,
+              aspectRatioPresets: [
+                CropAspectRatioPreset.original,
+                CropAspectRatioPreset.square,
+                CropAspectRatioPreset.ratio3x2,
+                CropAspectRatioPreset.ratio4x3,
+                CropAspectRatioPreset.ratio16x9
+              ],
+            ),
+            IOSUiSettings(
+              title: AppLocalizations.of(context)!.selectTextRegion,
+              aspectRatioLockEnabled: false,
+              resetAspectRatioEnabled: true,
+              aspectRatioPresets: [
+                CropAspectRatioPreset.original,
+                CropAspectRatioPreset.square,
+                CropAspectRatioPreset.ratio3x2,
+                CropAspectRatioPreset.ratio4x3,
+                CropAspectRatioPreset.ratio16x9
+              ],
+            ),
+            WebUiSettings(
+              context: context,
+            ),
+          ],
+        );
+      } catch (cropError) {
+        if (kDebugMode) {
+          print('CreateGroupScreen: Error during cropping: $cropError');
+        }
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error cropping image: $cropError'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+        return;
+      }
+
+      if (kDebugMode) {
+        print('CreateGroupScreen: Cropping result: ${croppedFile?.path}');
+      }
+
       if (croppedFile == null) {
-        // User cancelled cropping
+        if (kDebugMode) {
+          print('CreateGroupScreen: User cancelled cropping');
+        }
         return;
       }
 
@@ -209,8 +265,33 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
       }
 
       // Extract names from cropped image
+      if (kDebugMode) {
+        print('CreateGroupScreen: Starting OCR on cropped image');
+      }
+
       final file = File(croppedFile.path);
-      final extractedNames = await TextRecognitionService.extractNamesFromImage(file);
+      List<String> extractedNames;
+
+      try {
+        extractedNames = await TextRecognitionService.extractNamesFromImage(file);
+        if (kDebugMode) {
+          print('CreateGroupScreen: OCR extracted ${extractedNames.length} names: $extractedNames');
+        }
+      } catch (ocrError) {
+        if (kDebugMode) {
+          print('CreateGroupScreen: OCR error: $ocrError');
+        }
+        if (mounted) {
+          Navigator.of(context).pop(); // Close loading dialog
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.extractionError),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+        return;
+      }
 
       // Close loading dialog
       if (mounted) {
@@ -234,12 +315,22 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
         _showExtractedNamesDialog(extractedNames);
       }
     } catch (e) {
+      if (kDebugMode) {
+        print('CreateGroupScreen: General error in _extractNamesFromPhoto: $e');
+      }
       // Close loading dialog if open
       if (mounted) {
-        Navigator.of(context).pop();
+        // Try to close loading dialog, but don't fail if it's not open
+        try {
+          Navigator.of(context).pop();
+        } catch (popError) {
+          if (kDebugMode) {
+            print('CreateGroupScreen: Could not close dialog: $popError');
+          }
+        }
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context)!.extractionError),
+            content: Text('${AppLocalizations.of(context)!.extractionError}: $e'),
             backgroundColor: Colors.red,
           ),
         );
