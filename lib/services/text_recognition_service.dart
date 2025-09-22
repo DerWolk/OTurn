@@ -32,15 +32,8 @@ class TextRecognitionService {
 
   static Future<List<String>> _extractWithTesseract(File imageFile) async {
     try {
-      // Use Tesseract with optimized settings for text lists
-      String recognizedText = await TesseractOcr.extractText(
-        imageFile.path,
-        language: 'eng+deu', // Support English and German
-        args: {
-          "psm": "6", // Assume uniform block of text
-          "preserve_interword_spaces": "1",
-        },
-      );
+      // Use Tesseract with simple text extraction
+      String recognizedText = await TesseractOcr.extractText(imageFile.path);
 
       List<String> extractedNames = [];
 
