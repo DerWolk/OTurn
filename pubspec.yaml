@@ -52,6 +52,9 @@ dependencies:
   provider: ^6.1.1
   path: ^1.8.3
 
+  # OCR text recognition
+  google_mlkit_text_recognition: ^0.13.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
