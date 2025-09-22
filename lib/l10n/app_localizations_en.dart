@@ -654,4 +654,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get camera => 'Camera';
+
+  @override
+  String get selectTextRegion => 'Select text region';
+
+  @override
+  String get cropInstruction => 'Drag to select the area with names';
 }

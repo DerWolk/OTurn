@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_cropper/image_cropper.dart';
 import '../models/group.dart';
 import '../services/storage_service.dart';
 import '../services/text_recognition_service.dart';
@@ -147,6 +148,49 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
 
       if (pickedFile == null) return;
 
+      // Crop the image to select specific region
+      final croppedFile = await ImageCropper().cropImage(
+        sourcePath: pickedFile.path,
+        compressFormat: ImageCompressFormat.jpg,
+        compressQuality: 100,
+        uiSettings: [
+          AndroidUiSettings(
+            toolbarTitle: AppLocalizations.of(context)!.selectTextRegion,
+            toolbarColor: Theme.of(context).colorScheme.primary,
+            toolbarWidgetColor: Theme.of(context).colorScheme.onPrimary,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false,
+            aspectRatioPresets: [
+              CropAspectRatioPreset.original,
+              CropAspectRatioPreset.square,
+              CropAspectRatioPreset.ratio3x2,
+              CropAspectRatioPreset.ratio4x3,
+              CropAspectRatioPreset.ratio16x9
+            ],
+          ),
+          IOSUiSettings(
+            title: AppLocalizations.of(context)!.selectTextRegion,
+            aspectRatioLockEnabled: false,
+            resetAspectRatioEnabled: true,
+            aspectRatioPresets: [
+              CropAspectRatioPreset.original,
+              CropAspectRatioPreset.square,
+              CropAspectRatioPreset.ratio3x2,
+              CropAspectRatioPreset.ratio4x3,
+              CropAspectRatioPreset.ratio16x9
+            ],
+          ),
+          WebUiSettings(
+            context: context,
+          ),
+        ],
+      );
+
+      if (croppedFile == null) {
+        // User cancelled cropping
+        return;
+      }
+
       // Show loading dialog
       if (mounted) {
         showDialog(
@@ -164,8 +208,8 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
         );
       }
 
-      // Extract names from image
-      final file = File(pickedFile.path);
+      // Extract names from cropped image
+      final file = File(croppedFile.path);
       final extractedNames = await TextRecognitionService.extractNamesFromImage(file);
 
       // Close loading dialog

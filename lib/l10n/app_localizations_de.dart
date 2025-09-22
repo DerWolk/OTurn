@@ -661,4 +661,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get camera => 'Kamera';
+
+  @override
+  String get selectTextRegion => 'Textbereich auswählen';
+
+  @override
+  String get cropInstruction =>
+      'Ziehen Sie um den Bereich mit Namen auszuwählen';
 }
