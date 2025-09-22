@@ -230,5 +230,6 @@
   "addExtractedNames": "Add extracted names",
   "extractionError": "Error extracting names from image",
   "extractionSuccess": "Successfully extracted {count} names",
-  "photoExtraction": "Photo extraction"
+  "photoExtraction": "Photo extraction",
+  "camera": "Camera"
 }

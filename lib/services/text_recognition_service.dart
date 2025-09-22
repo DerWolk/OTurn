@@ -1,10 +1,66 @@
 import 'dart:io';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+import 'package:tesseract_ocr/tesseract_ocr.dart';
 
 class TextRecognitionService {
   static final TextRecognizer _textRecognizer = TextRecognizer();
 
   static Future<List<String>> extractNamesFromImage(File imageFile) async {
+    try {
+      // Try Tesseract first (more accurate for text lists)
+      List<String> tesseractNames = await _extractWithTesseract(imageFile);
+
+      // If Tesseract doesn't find enough names, try ML Kit as fallback
+      if (tesseractNames.length < 2) {
+        List<String> mlKitNames = await _extractWithMLKit(imageFile);
+
+        // Combine and deduplicate results
+        Set<String> allNames = {...tesseractNames, ...mlKitNames};
+        return _cleanAndFilterNames(allNames.toList());
+      }
+
+      return tesseractNames;
+    } catch (e) {
+      // Fallback to ML Kit if Tesseract fails
+      try {
+        return await _extractWithMLKit(imageFile);
+      } catch (fallbackError) {
+        throw Exception('Error extracting text from image: $e');
+      }
+    }
+  }
+
+  static Future<List<String>> _extractWithTesseract(File imageFile) async {
+    try {
+      // Use Tesseract with optimized settings for text lists
+      String recognizedText = await TesseractOcr.extractText(
+        imageFile.path,
+        language: 'eng+deu', // Support English and German
+        args: {
+          "psm": "6", // Assume uniform block of text
+          "preserve_interword_spaces": "1",
+        },
+      );
+
+      List<String> extractedNames = [];
+
+      // Split by newlines first (most common in lists)
+      List<String> lines = recognizedText.split('\n');
+
+      for (String line in lines) {
+        if (line.trim().isNotEmpty) {
+          List<String> potentialNames = _parseNamesFromLine(line);
+          extractedNames.addAll(potentialNames);
+        }
+      }
+
+      return _cleanAndFilterNames(extractedNames);
+    } catch (e) {
+      throw Exception('Tesseract OCR failed: $e');
+    }
+  }
+
+  static Future<List<String>> _extractWithMLKit(File imageFile) async {
     try {
       final inputImage = InputImage.fromFile(imageFile);
       final recognizedText = await _textRecognizer.processImage(inputImage);
@@ -26,7 +82,7 @@ class TextRecognitionService {
       // Clean and filter names
       return _cleanAndFilterNames(extractedNames);
     } catch (e) {
-      throw Exception('Error extracting text from image: $e');
+      throw Exception('ML Kit OCR failed: $e');
     }
   }
 

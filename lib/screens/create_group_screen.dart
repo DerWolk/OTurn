@@ -104,10 +104,46 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
     }
   }
 
-  Future<void> _extractNamesFromPhoto() async {
+  Future<void> _showImageSourceDialog() async {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(AppLocalizations.of(context)!.selectPhotoForExtraction),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.camera_alt),
+              title: Text(AppLocalizations.of(context)!.camera),
+              onTap: () {
+                Navigator.pop(context);
+                _extractNamesFromPhoto(ImageSource.camera);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_library),
+              title: Text(AppLocalizations.of(context)!.gallery),
+              onTap: () {
+                Navigator.pop(context);
+                _extractNamesFromPhoto(ImageSource.gallery);
+              },
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(AppLocalizations.of(context)!.cancel),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _extractNamesFromPhoto(ImageSource source) async {
     try {
       final picker = ImagePicker();
-      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+      final pickedFile = await picker.pickImage(source: source);
 
       if (pickedFile == null) return;
 
@@ -364,7 +400,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
               const SizedBox(height: 8),
               Center(
                 child: OutlinedButton.icon(
-                  onPressed: _extractNamesFromPhoto,
+                  onPressed: _showImageSourceDialog,
                   icon: const Icon(Icons.photo_camera),
                   label: Text(AppLocalizations.of(context)!.extractFromPhoto),
                 ),

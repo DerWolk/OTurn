@@ -658,4 +658,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get photoExtraction => 'Foto-Extraktion';
+
+  @override
+  String get camera => 'Kamera';
 }
