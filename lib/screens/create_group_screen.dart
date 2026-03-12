@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import '../models/group.dart';
+import '../services/storage_service.dart';
 
 class CreateGroupScreen extends StatefulWidget {
-  const CreateGroupScreen({super.key});
+  final Group? group; // null for creating, Group for editing
+
+  const CreateGroupScreen({super.key, this.group});
 
   @override
   State<CreateGroupScreen> createState() => _CreateGroupScreenState();
@@ -15,11 +19,23 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
   final List<String> _members = [];
 
   @override
+  void initState() {
+    super.initState();
+    if (widget.group != null) {
+      // Pre-fill form for editing
+      _nameController.text = widget.group!.name;
+      _members.addAll(widget.group!.members);
+    }
+  }
+
+  @override
   void dispose() {
     _nameController.dispose();
     _memberController.dispose();
     super.dispose();
   }
+
+  bool get _isEditing => widget.group != null;
 
   void _addMember() {
     final name = _memberController.text.trim();
@@ -39,12 +55,17 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
 
   void _saveGroup() {
     if (_formKey.currentState!.validate() && _members.isNotEmpty) {
-      final group = Group(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        name: _nameController.text.trim(),
-        members: List.from(_members),
-        createdAt: DateTime.now(),
-      );
+      final group = _isEditing
+          ? widget.group!.copyWith(
+              name: _nameController.text.trim(),
+              members: List.from(_members),
+            )
+          : Group(
+              id: DateTime.now().millisecondsSinceEpoch.toString(),
+              name: _nameController.text.trim(),
+              members: List.from(_members),
+              createdAt: DateTime.now(),
+            );
 
       Navigator.of(context).pop(group);
     } else if (_members.isEmpty) {
@@ -58,7 +79,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Gruppe erstellen'),
+        title: Text(_isEditing ? 'Gruppe bearbeiten' : 'Gruppe erstellen'),
         actions: [
           TextButton(
             onPressed: _saveGroup,
@@ -91,14 +112,39 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
               Row(
                 children: [
                   Expanded(
-                    child: TextFormField(
+                    child: TypeAheadField<String>(
                       controller: _memberController,
-                      decoration: const InputDecoration(
-                        labelText: 'Mitglied hinzufügen',
-                        hintText: 'Name eingeben',
-                        border: OutlineInputBorder(),
-                      ),
-                      onFieldSubmitted: (_) => _addMember(),
+                      builder: (context, controller, focusNode) {
+                        return TextFormField(
+                          controller: controller,
+                          focusNode: focusNode,
+                          decoration: const InputDecoration(
+                            labelText: 'Mitglied hinzufügen',
+                            hintText: 'Name eingeben',
+                            border: OutlineInputBorder(),
+                          ),
+                          onFieldSubmitted: (_) => _addMember(),
+                        );
+                      },
+                      suggestionsCallback: (pattern) {
+                        final allMembers = StorageService.getAllUniqueMembers();
+                        return allMembers
+                            .where((name) => name.toLowerCase().contains(pattern.toLowerCase()))
+                            .toList();
+                      },
+                      itemBuilder: (context, suggestion) {
+                        return ListTile(
+                          leading: CircleAvatar(
+                            radius: 16,
+                            child: Text(suggestion[0].toUpperCase()),
+                          ),
+                          title: Text(suggestion),
+                        );
+                      },
+                      onSelected: (suggestion) {
+                        _memberController.text = suggestion;
+                        _addMember();
+                      },
                     ),
                   ),
                   const SizedBox(width: 8),
