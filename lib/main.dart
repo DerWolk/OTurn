@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'models/group.dart';
+import 'models/task.dart';
 import 'screens/create_group_screen.dart';
+import 'screens/create_task_screen.dart';
+import 'screens/task_execution_screen.dart';
 import 'services/storage_service.dart';
 
 void main() async {
@@ -35,33 +38,50 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   List<Group> _groups = [];
+  List<Task> _tasks = [];
 
   @override
   void initState() {
     super.initState();
-    _loadGroups();
+    _loadData();
   }
 
-  void _loadGroups() {
+  void _loadData() {
     setState(() {
       _groups = StorageService.getAllGroups();
+      _tasks = StorageService.getAllTasks();
     });
   }
 
   void _addGroup(Group group) async {
     await StorageService.saveGroup(group);
-    _loadGroups();
+    _loadData();
   }
 
   void _deleteGroup(String groupId) async {
     await StorageService.deleteGroup(groupId);
-    _loadGroups();
+    _loadData();
+  }
+
+  void _addTask(Task task) async {
+    await StorageService.saveTask(task);
+    _loadData();
+  }
+
+  void _deleteTask(String taskId) async {
+    await StorageService.deleteTask(taskId);
+    _loadData();
   }
 
   @override
   Widget build(BuildContext context) {
     final screens = [
-      const TasksScreen(),
+      TasksScreen(
+        tasks: _tasks,
+        groups: _groups,
+        onTaskCreated: _addTask,
+        onTaskDeleted: _deleteTask,
+      ),
       GroupsScreen(
         groups: _groups,
         onGroupCreated: _addGroup,
@@ -94,31 +114,188 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class TasksScreen extends StatelessWidget {
-  const TasksScreen({super.key});
+  final List<Task> tasks;
+  final List<Group> groups;
+  final Function(Task) onTaskCreated;
+  final Function(String) onTaskDeleted;
+
+  const TasksScreen({
+    super.key,
+    required this.tasks,
+    required this.groups,
+    required this.onTaskCreated,
+    required this.onTaskDeleted,
+  });
+
+  Future<void> _navigateToCreateTask(BuildContext context) async {
+    final result = await Navigator.of(context).push<Task>(
+      MaterialPageRoute(
+        builder: (context) => const CreateTaskScreen(),
+      ),
+    );
+
+    if (result != null) {
+      onTaskCreated(result);
+    }
+  }
+
+  Future<void> _navigateToEditTask(BuildContext context, Task task) async {
+    final result = await Navigator.of(context).push<Task>(
+      MaterialPageRoute(
+        builder: (context) => CreateTaskScreen(task: task),
+      ),
+    );
+
+    if (result != null) {
+      onTaskCreated(result);
+    }
+  }
+
+  void _showDeleteDialog(BuildContext context, Task task) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Aufgabe "${task.name}" löschen?'),
+        content: const Text('Diese Aktion kann nicht rückgängig gemacht werden.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Abbrechen'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              onTaskDeleted(task.id);
+            },
+            child: const Text('Löschen'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _getGroupName(String? groupId) {
+    if (groupId == null) return 'Unbekannte Gruppe';
+    final group = groups.firstWhere(
+      (g) => g.id == groupId,
+      orElse: () => Group(
+        id: '',
+        name: 'Unbekannte Gruppe',
+        members: [],
+        createdAt: DateTime.now(),
+      ),
+    );
+    return group.name;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(Icons.task, size: 80, color: Colors.grey),
-          const SizedBox(height: 16),
-          Text(
-            'Keine Aufgaben vorhanden',
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-          const SizedBox(height: 8),
-          const Text('Erstelle deine erste Aufgabe'),
-          const SizedBox(height: 24),
-          FloatingActionButton.extended(
-            onPressed: () {
-              // TODO: Navigate to create task screen
-            },
-            icon: const Icon(Icons.add),
-            label: const Text('Aufgabe erstellen'),
-          ),
-        ],
+    if (tasks.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.task, size: 80, color: Colors.grey),
+            const SizedBox(height: 16),
+            Text(
+              'Keine Aufgaben vorhanden',
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            const SizedBox(height: 8),
+            const Text('Erstelle deine erste Aufgabe'),
+            const SizedBox(height: 24),
+            FloatingActionButton.extended(
+              onPressed: () => _navigateToCreateTask(context),
+              icon: const Icon(Icons.add),
+              label: const Text('Aufgabe erstellen'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Scaffold(
+      body: ListView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: tasks.length,
+        itemBuilder: (context, index) {
+          final task = tasks[index];
+          final groupName = _getGroupName(task.groupId);
+
+          return Card(
+            child: ListTile(
+              leading: CircleAvatar(
+                backgroundColor: task.fairMode ? Colors.green : Colors.blue,
+                child: Icon(
+                  task.fairMode ? Icons.balance : Icons.shuffle,
+                  color: Colors.white,
+                ),
+              ),
+              title: Text(task.name),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(groupName),
+                  Text(
+                    task.fairMode ? 'Fair-Modus' : 'Zufalls-Modus',
+                    style: TextStyle(
+                      color: task.fairMode ? Colors.green : Colors.blue,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
+              trailing: PopupMenuButton<String>(
+                onSelected: (value) {
+                  if (value == 'edit') {
+                    _navigateToEditTask(context, task);
+                  } else if (value == 'delete') {
+                    _showDeleteDialog(context, task);
+                  }
+                },
+                itemBuilder: (context) => [
+                  const PopupMenuItem(
+                    value: 'edit',
+                    child: ListTile(
+                      leading: Icon(Icons.edit),
+                      title: Text('Bearbeiten'),
+                    ),
+                  ),
+                  const PopupMenuItem(
+                    value: 'delete',
+                    child: ListTile(
+                      leading: Icon(Icons.delete),
+                      title: Text('Löschen'),
+                    ),
+                  ),
+                ],
+              ),
+              onTap: () {
+                final group = groups.firstWhere(
+                  (g) => g.id == task.groupId,
+                  orElse: () => Group(
+                    id: '',
+                    name: 'Unbekannte Gruppe',
+                    members: [],
+                    createdAt: DateTime.now(),
+                  ),
+                );
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => TaskExecutionScreen(
+                      task: task,
+                      group: group,
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _navigateToCreateTask(context),
+        child: const Icon(Icons.add),
       ),
     );
   }
