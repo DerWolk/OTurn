@@ -3,6 +3,7 @@ import 'dart:math';
 import '../models/task.dart';
 import '../models/group.dart';
 import '../services/storage_service.dart';
+import 'task_history_screen.dart';
 
 class TaskExecutionScreen extends StatefulWidget {
   final Task task;
@@ -28,10 +29,12 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
   String? _selectedPerson;
   bool _isRolling = false;
   List<String> _currentParticipants = [];
+  late Task _currentTask;
 
   @override
   void initState() {
     super.initState();
+    _currentTask = widget.task;
     _calculateParticipants();
 
     _diceController = AnimationController(
@@ -67,10 +70,10 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
     participants.addAll(widget.group.members);
 
     // Add additional members
-    participants.addAll(widget.task.additionalMembers);
+    participants.addAll(_currentTask.additionalMembers);
 
     // Remove excluded members
-    participants.removeWhere((member) => widget.task.excludedMembers.contains(member));
+    participants.removeWhere((member) => _currentTask.excludedMembers.contains(member));
 
     _currentParticipants = participants;
   }
@@ -80,18 +83,16 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
       throw Exception('No participants available');
     }
 
-    if (widget.task.fairMode) {
+    if (_currentTask.fairMode) {
       // Fair mode: use fair queue
-      if (widget.task.fairQueue.isEmpty) {
+      if (_currentTask.fairQueue.isEmpty) {
         // Refill queue with all participants
         final newQueue = List<String>.from(_currentParticipants);
         newQueue.shuffle();
-        final updatedTask = widget.task.copyWith(fairQueue: newQueue);
-        StorageService.saveTask(updatedTask);
         return newQueue.first;
       } else {
         // Take next person from queue
-        return widget.task.fairQueue.first;
+        return _currentTask.fairQueue.first;
       }
     } else {
       // Random mode: completely random selection
@@ -140,17 +141,30 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
     );
 
     // Update fair queue if in fair mode
-    List<String> newFairQueue = List.from(widget.task.fairQueue);
-    if (widget.task.fairMode && newFairQueue.isNotEmpty) {
-      newFairQueue.removeAt(0); // Remove selected person from front of queue
+    List<String> newFairQueue = List.from(_currentTask.fairQueue);
+    if (_currentTask.fairMode) {
+      if (newFairQueue.isEmpty) {
+        // Refill queue and remove selected person
+        newFairQueue = List<String>.from(_currentParticipants);
+        newFairQueue.shuffle();
+        newFairQueue.remove(selectedPerson);
+      } else {
+        // Remove selected person from front of queue
+        newFairQueue.removeAt(0);
+      }
     }
 
     // Update task
-    final updatedTask = widget.task.copyWith(
-      history: [...widget.task.history, historyEntry],
+    final updatedTask = _currentTask.copyWith(
+      history: [..._currentTask.history, historyEntry],
       fairQueue: newFairQueue,
       lastUpdated: now,
     );
+
+    // Update local state
+    setState(() {
+      _currentTask = updatedTask;
+    });
 
     await StorageService.saveTask(updatedTask);
   }
@@ -162,12 +176,142 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
     _resultController.reset();
   }
 
+  void _showTaskOptions() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                'Aufgaben-Optionen',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ),
+            ListTile(
+              leading: Icon(_currentTask.fairMode ? Icons.shuffle : Icons.balance),
+              title: Text(_currentTask.fairMode ? 'Zu Zufalls-Modus wechseln' : 'Zu Fair-Modus wechseln'),
+              subtitle: Text(_currentTask.fairMode
+                ? 'Komplett zufällige Auswahl bei jedem Würfeln'
+                : 'Faire Rotation - jeder kommt einmal dran'),
+              onTap: () {
+                Navigator.pop(context);
+                _toggleFairMode();
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.history, color: Colors.blue),
+              title: const Text('History anzeigen'),
+              subtitle: Text('${_currentTask.history.length} Ausführungen anzeigen'),
+              onTap: () {
+                Navigator.pop(context);
+                _showHistory();
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.delete, color: Colors.orange),
+              title: const Text('History löschen'),
+              subtitle: const Text('Alle bisherigen Ausführungen löschen'),
+              onTap: () {
+                Navigator.pop(context);
+                _clearHistory();
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.refresh, color: Colors.blue),
+              title: const Text('Fair-Queue zurücksetzen'),
+              subtitle: const Text('Warteschlange neu mischen'),
+              enabled: _currentTask.fairMode,
+              onTap: _currentTask.fairMode ? () {
+                Navigator.pop(context);
+                _resetFairQueue();
+              } : null,
+            ),
+            const SizedBox(height: 16),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _toggleFairMode() async {
+    final updatedTask = _currentTask.copyWith(
+      fairMode: !_currentTask.fairMode,
+      fairQueue: [], // Reset queue when switching modes
+      lastUpdated: DateTime.now(),
+    );
+
+    setState(() {
+      _currentTask = updatedTask;
+    });
+
+    await StorageService.saveTask(updatedTask);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(_currentTask.fairMode
+          ? 'Fair-Modus aktiviert'
+          : 'Zufalls-Modus aktiviert'),
+      ),
+    );
+  }
+
+  void _clearHistory() async {
+    final updatedTask = _currentTask.copyWith(
+      history: [],
+      lastUpdated: DateTime.now(),
+    );
+
+    setState(() {
+      _currentTask = updatedTask;
+    });
+
+    await StorageService.saveTask(updatedTask);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('History gelöscht')),
+    );
+  }
+
+  void _resetFairQueue() async {
+    final updatedTask = _currentTask.copyWith(
+      fairQueue: [],
+      lastUpdated: DateTime.now(),
+    );
+
+    setState(() {
+      _currentTask = updatedTask;
+    });
+
+    await StorageService.saveTask(updatedTask);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Fair-Queue zurückgesetzt')),
+    );
+  }
+
+  void _showHistory() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => TaskHistoryScreen(task: _currentTask),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.task.name),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.more_vert),
+            onPressed: _showTaskOptions,
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
@@ -183,17 +327,25 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
                     Row(
                       children: [
                         Icon(
-                          widget.task.fairMode ? Icons.balance : Icons.shuffle,
-                          color: widget.task.fairMode ? Colors.green : Colors.blue,
+                          _currentTask.fairMode ? Icons.balance : Icons.shuffle,
+                          color: _currentTask.fairMode ? Colors.green : Colors.blue,
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          widget.task.fairMode ? 'Fair-Modus' : 'Zufalls-Modus',
+                          _currentTask.fairMode ? 'Fair-Modus' : 'Zufalls-Modus',
                           style: TextStyle(
-                            color: widget.task.fairMode ? Colors.green : Colors.blue,
+                            color: _currentTask.fairMode ? Colors.green : Colors.blue,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
+                        const SizedBox(width: 16),
+                        if (_currentTask.fairMode && _currentTask.fairQueue.isNotEmpty)
+                          Text(
+                            'Warteschlange: ${_currentTask.fairQueue.length}',
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: Colors.grey[600],
+                            ),
+                          ),
                       ],
                     ),
                     const SizedBox(height: 8),
@@ -205,6 +357,22 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
                       '${_currentParticipants.length} Teilnehmer',
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
+                    if (_currentTask.history.isNotEmpty) ...[
+                      const SizedBox(height: 8),
+                      Text(
+                        'Letzte Ausführungen: ${_currentTask.history.length}',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                      if (_currentTask.history.isNotEmpty)
+                        Text(
+                          'Zuletzt: ${_currentTask.history.last.selectedPerson}',
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                    ],
                   ],
                 ),
               ),

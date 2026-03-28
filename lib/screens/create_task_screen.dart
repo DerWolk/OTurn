@@ -183,27 +183,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                     items: _availableGroups.map((group) {
                       return DropdownMenuItem(
                         value: group,
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 16,
-                              child: Text(group.name[0].toUpperCase()),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(group.name),
-                                  Text(
-                                    '${group.members.length} Mitglieder',
-                                    style: Theme.of(context).textTheme.bodySmall,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                        child: Text('${group.name} (${group.members.length} Mitglieder)'),
                       );
                     }).toList(),
                     onChanged: (group) {

@@ -215,15 +215,18 @@ class TasksScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      body: ListView.builder(
-        padding: const EdgeInsets.all(16),
-        itemCount: tasks.length,
-        itemBuilder: (context, index) {
-          final task = tasks[index];
-          final groupName = _getGroupName(task.groupId);
+      body: SafeArea(
+        child: ListView.builder(
+          padding: const EdgeInsets.all(16),
+          itemCount: tasks.length,
+          itemBuilder: (context, index) {
+            if (index >= tasks.length) return const SizedBox.shrink();
+            final task = tasks[index];
+            if (task == null) return const SizedBox.shrink();
+            final groupName = _getGroupName(task.groupId);
 
-          return Card(
-            child: ListTile(
+            return Card(
+              child: ListTile(
               leading: CircleAvatar(
                 backgroundColor: task.fairMode ? Colors.green : Colors.blue,
                 child: Icon(
@@ -292,6 +295,7 @@ class TasksScreen extends StatelessWidget {
             ),
           );
         },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _navigateToCreateTask(context),
