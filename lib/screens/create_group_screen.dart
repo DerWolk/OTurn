@@ -129,7 +129,9 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                       suggestionsCallback: (pattern) {
                         final allMembers = StorageService.getAllUniqueMembers();
                         return allMembers
-                            .where((name) => name.toLowerCase().contains(pattern.toLowerCase()))
+                            .where((name) =>
+                                name.toLowerCase().contains(pattern.toLowerCase()) &&
+                                !_members.contains(name)) // Exclude already added members
                             .toList();
                       },
                       itemBuilder: (context, suggestion) {
