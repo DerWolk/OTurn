@@ -52,6 +52,9 @@ app.*.map.json
 **/macos/Flutter/ephemeral/
 
 # iOS related
+**/ios/Runner.xcodeproj/project.pbxproj
+**/ios/Runner.xcworkspace/contents.xcworkspacedata
+**/ios/Runner/Info.plist
 **/ios/Flutter/Generated.xcconfig
 **/ios/Flutter/flutter_export_environment.sh
 **/ios/Podfile.lock
