@@ -73,6 +73,48 @@ class _HomeScreenState extends State<HomeScreen> {
     _loadData();
   }
 
+  void _showHelpDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Über OTurn'),
+        content: const SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'OTurn hilft bei der fairen Verteilung von Aufgaben in Teams.',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 16),
+              Text('🎯 Aufgaben', style: TextStyle(fontWeight: FontWeight.bold)),
+              Text('• Erstelle wiederkehrende Aufgaben für deine Gruppen\n• Wähle zwischen Zufalls- und Fair-Modus\n• Verfolge die Historie aller Ausführungen'),
+              SizedBox(height: 12),
+              Text('👥 Gruppen', style: TextStyle(fontWeight: FontWeight.bold)),
+              Text('• Verwalte Teams und deren Mitglieder\n• Autocomplete basierend auf bestehenden Namen\n• Einfache Bearbeitung und Verwaltung'),
+              SizedBox(height: 12),
+              Text('⚖️ Fair-Modus', style: TextStyle(fontWeight: FontWeight.bold)),
+              Text('• Jeder kommt einmal dran, bevor die nächste Runde startet\n• Perfekt für regelmäßige Aufgaben wie Müll rausbringen'),
+              SizedBox(height: 12),
+              Text('🎲 Zufalls-Modus', style: TextStyle(fontWeight: FontWeight.bold)),
+              Text('• Komplett zufällige Auswahl bei jedem Würfeln\n• Ideal für spontane Entscheidungen'),
+              SizedBox(height: 12),
+              Text('💾 Lokale Speicherung', style: TextStyle(fontWeight: FontWeight.bold)),
+              Text('• Alle Daten werden nur auf diesem Gerät gespeichert\n• Keine Server, keine Internetverbindung nötig'),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Verstanden'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final screens = [
@@ -93,6 +135,13 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('OTurn'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.help_outline),
+            onPressed: _showHelpDialog,
+            tooltip: 'Hilfe',
+          ),
+        ],
       ),
       body: screens[_selectedIndex],
       bottomNavigationBar: NavigationBar(

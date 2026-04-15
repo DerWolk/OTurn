@@ -306,6 +306,118 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
     );
   }
 
+  void _showDetailedHistory() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Ausführungs-Details (${_currentTask.history.length})'),
+        content: SizedBox(
+          width: double.maxFinite,
+          height: 400,
+          child: _currentTask.history.isEmpty
+              ? const Center(child: Text('Noch keine Ausführungen'))
+              : ListView.builder(
+                  itemCount: _currentTask.history.length,
+                  itemBuilder: (context, index) {
+                    final entry = _currentTask.history.reversed.toList()[index];
+                    final date = entry.timestamp;
+                    final isToday = DateTime.now().difference(date).inDays == 0;
+                    final isYesterday = DateTime.now().difference(date).inDays == 1;
+
+                    String dateStr;
+                    if (isToday) {
+                      dateStr = 'Heute ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+                    } else if (isYesterday) {
+                      dateStr = 'Gestern ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+                    } else {
+                      dateStr = '${date.day}.${date.month}.${date.year} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+                    }
+
+                    return ListTile(
+                      leading: CircleAvatar(
+                        radius: 16,
+                        child: Text(entry.selectedPerson[0].toUpperCase()),
+                      ),
+                      title: Text(entry.selectedPerson),
+                      subtitle: Text(dateStr),
+                      trailing: Text('${entry.participants.length} Teilnehmer'),
+                    );
+                  },
+                ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Schließen'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showFairQueue() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Warteschlange (${_currentTask.fairQueue.length})'),
+        content: SizedBox(
+          width: double.maxFinite,
+          height: 300,
+          child: _currentTask.fairQueue.isEmpty
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.check_circle, size: 48, color: Colors.green),
+                      const SizedBox(height: 16),
+                      const Text('Warteschlange ist leer'),
+                      const SizedBox(height: 8),
+                      const Text(
+                        'Alle waren schon dran - nächstes Würfeln startet neue Runde',
+                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Noch nicht dran:',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 8),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: _currentTask.fairQueue.length,
+                        itemBuilder: (context, index) {
+                          final person = _currentTask.fairQueue[index];
+                          return ListTile(
+                            leading: CircleAvatar(
+                              radius: 16,
+                              backgroundColor: Colors.orange,
+                              child: Text(person[0].toUpperCase()),
+                            ),
+                            title: Text(person),
+                            trailing: Text('Position ${index + 1}'),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Schließen'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -345,12 +457,25 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
                           ),
                         ),
                         const SizedBox(width: 16),
-                        if (_currentTask.fairMode && _currentTask.fairQueue.isNotEmpty)
-                          Text(
-                            'Warteschlange: ${_currentTask.fairQueue.length}',
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Colors.grey[600],
-                            ),
+                        if (_currentTask.fairMode)
+                          Row(
+                            children: [
+                              Text(
+                                'Warteschlange: ${_currentTask.fairQueue.length}',
+                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                  color: Colors.grey[600],
+                                ),
+                              ),
+                              const SizedBox(width: 4),
+                              GestureDetector(
+                                onTap: _showFairQueue,
+                                child: Icon(
+                                  Icons.info_outline,
+                                  size: 16,
+                                  color: Colors.grey[600],
+                                ),
+                              ),
+                            ],
                           ),
                       ],
                     ),
@@ -365,11 +490,24 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
                     ),
                     if (_currentTask.history.isNotEmpty) ...[
                       const SizedBox(height: 8),
-                      Text(
-                        'Letzte Ausführungen: ${_currentTask.history.length}',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.grey[600],
-                        ),
+                      Row(
+                        children: [
+                          Text(
+                            'Letzte Ausführungen: ${_currentTask.history.length}',
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                          const SizedBox(width: 4),
+                          GestureDetector(
+                            onTap: _showDetailedHistory,
+                            child: Icon(
+                              Icons.info_outline,
+                              size: 16,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ],
                       ),
                       if (_currentTask.history.isNotEmpty)
                         Text(
