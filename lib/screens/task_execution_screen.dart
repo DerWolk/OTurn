@@ -436,34 +436,67 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
         child: Column(
           children: [
             // Task Info Card
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
+            Container(
+              margin: const EdgeInsets.only(bottom: 24),
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                    Theme.of(context).colorScheme.secondary.withOpacity(0.05),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+                  width: 1,
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: _currentTask.fairMode ? Colors.green : Colors.blue,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Icon(
                           _currentTask.fairMode ? Icons.balance : Icons.shuffle,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        _currentTask.fairMode ? 'Fair-Modus' : 'Zufalls-Modus',
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
                           color: _currentTask.fairMode ? Colors.green : Colors.blue,
                         ),
-                        const SizedBox(width: 8),
-                        Text(
-                          _currentTask.fairMode ? 'Fair-Modus' : 'Zufalls-Modus',
-                          style: TextStyle(
-                            color: _currentTask.fairMode ? Colors.green : Colors.blue,
-                            fontWeight: FontWeight.bold,
+                      ),
+                      const Spacer(),
+                      if (_currentTask.fairMode)
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: Colors.orange.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.orange.withOpacity(0.3)),
                           ),
-                        ),
-                        const SizedBox(width: 16),
-                        if (_currentTask.fairMode)
-                          Row(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
                                 'Warteschlange: ${_currentTask.fairQueue.length}',
-                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: Colors.grey[600],
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.orange[700],
                                 ),
                               ),
                               const SizedBox(width: 4),
@@ -471,54 +504,95 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
                                 onTap: _showFairQueue,
                                 child: Icon(
                                   Icons.info_outline,
-                                  size: 16,
-                                  color: Colors.grey[600],
+                                  size: 14,
+                                  color: Colors.orange[700],
                                 ),
                               ),
                             ],
                           ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Gruppe: ${widget.group.name}',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    Text(
-                      '${_currentParticipants.length} Teilnehmer',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                    if (_currentTask.history.isNotEmpty) ...[
-                      const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          Text(
-                            'Letzte Ausführungen: ${_currentTask.history.length}',
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Colors.grey[600],
-                            ),
-                          ),
-                          const SizedBox(width: 4),
-                          GestureDetector(
-                            onTap: _showDetailedHistory,
-                            child: Icon(
-                              Icons.info_outline,
-                              size: 16,
-                              color: Colors.grey[600],
-                            ),
-                          ),
-                        ],
-                      ),
-                      if (_currentTask.history.isNotEmpty)
-                        Text(
-                          'Zuletzt: ${_currentTask.history.last.selectedPerson}',
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.grey[600],
-                          ),
                         ),
                     ],
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Icon(Icons.group, size: 18, color: Colors.grey[600]),
+                      const SizedBox(width: 8),
+                      Text(
+                        widget.group.name,
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const Spacer(),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          '${_currentParticipants.length} Teilnehmer',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  if (_currentTask.history.isNotEmpty) ...[
+                    const SizedBox(height: 16),
+                    Divider(color: Colors.grey[300]),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Icon(Icons.history, size: 18, color: Colors.grey[600]),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Ausführungen: ${_currentTask.history.length}',
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        GestureDetector(
+                          onTap: _showDetailedHistory,
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              color: Colors.blue.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Icon(
+                              Icons.info_outline,
+                              size: 14,
+                              color: Colors.blue[700],
+                            ),
+                          ),
+                        ),
+                        const Spacer(),
+                        if (_currentTask.history.isNotEmpty)
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: Colors.green.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              'Zuletzt: ${_currentTask.history.last.selectedPerson}',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.green[700],
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
                   ],
-                ),
+                ],
               ),
             ),
 
@@ -537,12 +611,38 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
                         builder: (context, child) {
                           return Transform.rotate(
                             angle: _diceAnimation.value * 4 * 3.14159,
-                            child: Icon(
-                              Icons.casino,
-                              size: 120,
-                              color: _isRolling
-                                ? Theme.of(context).primaryColor
-                                : Colors.grey,
+                            child: Container(
+                              padding: const EdgeInsets.all(24),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: _isRolling
+                                      ? [
+                                          Theme.of(context).colorScheme.primary,
+                                          Theme.of(context).colorScheme.secondary,
+                                        ]
+                                      : [
+                                          Colors.grey[300]!,
+                                          Colors.grey[400]!,
+                                        ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: _isRolling
+                                    ? [
+                                        BoxShadow(
+                                          color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                                          blurRadius: 20,
+                                          spreadRadius: 2,
+                                        ),
+                                      ]
+                                    : null,
+                              ),
+                              child: Icon(
+                                Icons.casino,
+                                size: 80,
+                                color: Colors.white,
+                              ),
                             ),
                           );
                         },
@@ -563,35 +663,83 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
                         builder: (context, child) {
                           return Transform.scale(
                             scale: _resultAnimation.value,
-                            child: Column(
-                              children: [
-                                CircleAvatar(
-                                  radius: 60,
-                                  backgroundColor: Theme.of(context).primaryColor,
-                                  child: Text(
-                                    _selectedPerson![0].toUpperCase(),
-                                    style: const TextStyle(
-                                      fontSize: 48,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
+                            child: Container(
+                              padding: const EdgeInsets.all(32),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                                    Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                borderRadius: BorderRadius.circular(24),
+                                border: Border.all(
+                                  color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                                  width: 2,
+                                ),
+                              ),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(4),
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Theme.of(context).colorScheme.primary,
+                                          Theme.of(context).colorScheme.secondary,
+                                        ],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                      borderRadius: BorderRadius.circular(100),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Theme.of(context).colorScheme.primary.withOpacity(0.4),
+                                          blurRadius: 20,
+                                          spreadRadius: 2,
+                                        ),
+                                      ],
+                                    ),
+                                    child: CircleAvatar(
+                                      radius: 50,
+                                      backgroundColor: Colors.transparent,
+                                      child: Text(
+                                        _selectedPerson![0].toUpperCase(),
+                                        style: const TextStyle(
+                                          fontSize: 40,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
-                                const SizedBox(height: 16),
-                                Text(
-                                  _selectedPerson!,
-                                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                    fontWeight: FontWeight.bold,
+                                  const SizedBox(height: 20),
+                                  Text(
+                                    _selectedPerson!,
+                                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.center,
                                   ),
-                                ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  'ist dran!',
-                                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                    color: Theme.of(context).primaryColor,
+                                  const SizedBox(height: 8),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).colorScheme.primary,
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Text(
+                                      '🎯 ist dran!',
+                                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           );
                         },
@@ -604,15 +752,49 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
 
             // Action Buttons
             if (_selectedPerson == null) ...[
-              SizedBox(
+              Container(
                 width: double.infinity,
+                height: 56,
+                decoration: BoxDecoration(
+                  gradient: _currentParticipants.isEmpty || _isRolling
+                      ? null
+                      : LinearGradient(
+                          colors: [
+                            Theme.of(context).colorScheme.primary,
+                            Theme.of(context).colorScheme.secondary,
+                          ],
+                        ),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: _currentParticipants.isEmpty || _isRolling
+                      ? null
+                      : [
+                          BoxShadow(
+                            color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                            blurRadius: 8,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                ),
                 child: ElevatedButton.icon(
                   onPressed: _currentParticipants.isEmpty || _isRolling ? null : _rollDice,
-                  icon: Icon(_isRolling ? Icons.hourglass_empty : Icons.casino),
-                  label: Text(_isRolling ? 'Würfeln...' : 'Würfeln'),
+                  icon: Icon(
+                    _isRolling ? Icons.hourglass_empty : Icons.casino,
+                    color: Colors.white,
+                  ),
+                  label: Text(
+                    _isRolling ? 'Würfeln...' : '🎲 Würfeln',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  ),
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.all(16),
-                    textStyle: const TextStyle(fontSize: 18),
+                    backgroundColor: Colors.transparent,
+                    shadowColor: Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                   ),
                 ),
               ),
@@ -620,18 +802,76 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
               Row(
                 children: [
                   Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: _resetResult,
-                      icon: const Icon(Icons.refresh),
-                      label: const Text('Nochmal'),
+                    child: Container(
+                      height: 56,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Theme.of(context).colorScheme.primary,
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: OutlinedButton.icon(
+                        onPressed: _resetResult,
+                        icon: Icon(
+                          Icons.refresh,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        label: Text(
+                          'Nochmal',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          side: BorderSide.none,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
-                    child: ElevatedButton.icon(
-                      onPressed: () => Navigator.of(context).pop(),
-                      icon: const Icon(Icons.done),
-                      label: const Text('Fertig'),
+                    child: Container(
+                      height: 56,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.green,
+                            Colors.green[400]!,
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.green.withOpacity(0.3),
+                            blurRadius: 8,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: ElevatedButton.icon(
+                        onPressed: () => Navigator.of(context).pop(),
+                        icon: const Icon(Icons.check, color: Colors.white),
+                        label: const Text(
+                          'Fertig',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ],
