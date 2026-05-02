@@ -39,13 +39,14 @@ class Group {
     List<String>? members,
     DateTime? createdAt,
     String? imagePath,
+    bool clearImagePath = false,
   }) {
     return Group(
       id: id ?? this.id,
       name: name ?? this.name,
       members: members ?? this.members,
       createdAt: createdAt ?? this.createdAt,
-      imagePath: imagePath ?? this.imagePath,
+      imagePath: clearImagePath ? null : (imagePath ?? this.imagePath),
     );
   }
 }

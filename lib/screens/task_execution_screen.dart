@@ -90,15 +90,17 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
     }
 
     if (_currentTask.fairMode) {
-      // Fair mode: use fair queue
+      // Fair mode: random selection from fair queue
       if (_currentTask.fairQueue.isEmpty) {
         // Refill queue with all participants
         final newQueue = List<String>.from(_currentParticipants);
         newQueue.shuffle();
-        return newQueue.first;
+        final random = Random();
+        return newQueue[random.nextInt(newQueue.length)];
       } else {
-        // Take next person from queue
-        return _currentTask.fairQueue.first;
+        // Random selection from remaining queue
+        final random = Random();
+        return _currentTask.fairQueue[random.nextInt(_currentTask.fairQueue.length)];
       }
     } else {
       // Random mode: completely random selection
@@ -155,8 +157,8 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
         newFairQueue.shuffle();
         newFairQueue.remove(selectedPerson);
       } else {
-        // Remove selected person from front of queue
-        newFairQueue.removeAt(0);
+        // Remove selected person from queue
+        newFairQueue.remove(selectedPerson);
       }
     }
 
@@ -400,7 +402,6 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
                               child: Text(person[0].toUpperCase()),
                             ),
                             title: Text(person),
-                            trailing: Text('Position ${index + 1}'),
                           );
                         },
                       ),
@@ -606,46 +607,49 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
                   children: [
                     if (_selectedPerson == null) ...[
                       // Dice Icon
-                      AnimatedBuilder(
-                        animation: _diceAnimation,
-                        builder: (context, child) {
-                          return Transform.rotate(
-                            angle: _diceAnimation.value * 4 * 3.14159,
-                            child: Container(
-                              padding: const EdgeInsets.all(24),
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: _isRolling
+                      GestureDetector(
+                        onTap: _currentParticipants.isEmpty || _isRolling ? null : _rollDice,
+                        child: AnimatedBuilder(
+                          animation: _diceAnimation,
+                          builder: (context, child) {
+                            return Transform.rotate(
+                              angle: _diceAnimation.value * 4 * 3.14159,
+                              child: Container(
+                                padding: const EdgeInsets.all(24),
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: _isRolling
+                                        ? [
+                                            Theme.of(context).colorScheme.primary,
+                                            Theme.of(context).colorScheme.secondary,
+                                          ]
+                                        : [
+                                            Colors.grey[300]!,
+                                            Colors.grey[400]!,
+                                          ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                                  borderRadius: BorderRadius.circular(20),
+                                  boxShadow: _isRolling
                                       ? [
-                                          Theme.of(context).colorScheme.primary,
-                                          Theme.of(context).colorScheme.secondary,
+                                          BoxShadow(
+                                            color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                                            blurRadius: 20,
+                                            spreadRadius: 2,
+                                          ),
                                         ]
-                                      : [
-                                          Colors.grey[300]!,
-                                          Colors.grey[400]!,
-                                        ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
+                                      : null,
                                 ),
-                                borderRadius: BorderRadius.circular(20),
-                                boxShadow: _isRolling
-                                    ? [
-                                        BoxShadow(
-                                          color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
-                                          blurRadius: 20,
-                                          spreadRadius: 2,
-                                        ),
-                                      ]
-                                    : null,
+                                child: Icon(
+                                  Icons.casino,
+                                  size: 80,
+                                  color: Colors.white,
+                                ),
                               ),
-                              child: Icon(
-                                Icons.casino,
-                                size: 80,
-                                color: Colors.white,
-                              ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
                       const SizedBox(height: 24),
                       Text(

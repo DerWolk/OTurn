@@ -71,6 +71,7 @@ class Task {
     DateTime? createdAt,
     DateTime? lastUpdated,
     String? imagePath,
+    bool clearImagePath = false,
   }) {
     return Task(
       id: id ?? this.id,
@@ -83,7 +84,7 @@ class Task {
       fairQueue: fairQueue ?? this.fairQueue,
       createdAt: createdAt ?? this.createdAt,
       lastUpdated: lastUpdated ?? this.lastUpdated,
-      imagePath: imagePath ?? this.imagePath,
+      imagePath: clearImagePath ? null : (imagePath ?? this.imagePath),
     );
   }
 }

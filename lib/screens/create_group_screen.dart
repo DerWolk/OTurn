@@ -1,12 +1,15 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import '../models/group.dart';
 import '../services/storage_service.dart';
+import '../widgets/image_picker_widget.dart';
 
 class CreateGroupScreen extends StatefulWidget {
   final Group? group; // null for creating, Group for editing
+  final VoidCallback? onDataChanged;
 
-  const CreateGroupScreen({super.key, this.group});
+  const CreateGroupScreen({super.key, this.group, this.onDataChanged});
 
   @override
   State<CreateGroupScreen> createState() => _CreateGroupScreenState();
@@ -17,6 +20,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
   final _nameController = TextEditingController();
   final _memberController = TextEditingController();
   final List<String> _members = [];
+  String? _selectedImagePath;
 
   @override
   void initState() {
@@ -25,6 +29,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
       // Pre-fill form for editing
       _nameController.text = widget.group!.name;
       _members.addAll(widget.group!.members);
+      _selectedImagePath = widget.group!.imagePath;
     }
   }
 
@@ -56,15 +61,23 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
   void _saveGroup() {
     if (_formKey.currentState!.validate() && _members.isNotEmpty) {
       final group = _isEditing
-          ? widget.group!.copyWith(
-              name: _nameController.text.trim(),
-              members: List.from(_members),
-            )
+          ? (_selectedImagePath == null
+              ? widget.group!.copyWith(
+                  name: _nameController.text.trim(),
+                  members: List.from(_members),
+                  clearImagePath: true,
+                )
+              : widget.group!.copyWith(
+                  name: _nameController.text.trim(),
+                  members: List.from(_members),
+                  imagePath: _selectedImagePath,
+                ))
           : Group(
               id: DateTime.now().millisecondsSinceEpoch.toString(),
               name: _nameController.text.trim(),
               members: List.from(_members),
               createdAt: DateTime.now(),
+              imagePath: _selectedImagePath,
             );
 
       Navigator.of(context).pop(group);
@@ -107,6 +120,37 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                   }
                   return null;
                 },
+              ),
+              const SizedBox(height: 24),
+              ImagePickerWidget(
+                imagePath: _selectedImagePath,
+                onImageSelected: (imagePath) async {
+                  if (kDebugMode) {
+                    print('CreateGroupScreen: onImageSelected called with: $imagePath');
+                  }
+                  setState(() {
+                    _selectedImagePath = imagePath;
+                  });
+
+                  // Auto-save if editing existing group
+                  if (widget.group != null) {
+                    if (kDebugMode) {
+                      print('CreateGroupScreen: Auto-saving group with imagePath: $imagePath');
+                    }
+                    final updatedGroup = imagePath == null
+                        ? widget.group!.copyWith(clearImagePath: true)
+                        : widget.group!.copyWith(imagePath: imagePath);
+                    await StorageService.saveGroup(updatedGroup);
+                    if (kDebugMode) {
+                      print('CreateGroupScreen: Group saved, calling onDataChanged');
+                    }
+                    // Notify parent to refresh data
+                    widget.onDataChanged?.call();
+                  }
+                },
+                size: 120,
+                placeholder: 'Gruppenbild',
+                placeholderIcon: Icons.group,
               ),
               const SizedBox(height: 24),
               Row(

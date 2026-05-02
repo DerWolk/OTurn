@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import '../models/group.dart';
 import '../models/task.dart';
 import '../services/storage_service.dart';
+import '../widgets/image_picker_widget.dart';
 
 class CreateTaskScreen extends StatefulWidget {
   final Task? task; // null for creating, Task for editing
+  final VoidCallback? onDataChanged;
 
-  const CreateTaskScreen({super.key, this.task});
+  const CreateTaskScreen({super.key, this.task, this.onDataChanged});
 
   @override
   State<CreateTaskScreen> createState() => _CreateTaskScreenState();
@@ -21,6 +23,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
   bool _fairMode = true;
   List<String> _additionalMembers = [];
   List<String> _excludedMembers = [];
+  String? _selectedImagePath;
 
   @override
   void initState() {
@@ -33,6 +36,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
       _fairMode = widget.task!.fairMode;
       _additionalMembers = List.from(widget.task!.additionalMembers);
       _excludedMembers = List.from(widget.task!.excludedMembers);
+      _selectedImagePath = widget.task!.imagePath;
 
       // Find and set selected group
       if (widget.task!.groupId != null) {
@@ -92,14 +96,25 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
       }
 
       final task = _isEditing
-          ? widget.task!.copyWith(
-              name: _nameController.text.trim(),
-              groupId: _selectedGroup!.id,
-              fairMode: _fairMode,
-              additionalMembers: List.from(_additionalMembers),
-              excludedMembers: List.from(_excludedMembers),
-              lastUpdated: DateTime.now(),
-            )
+          ? (_selectedImagePath == null
+              ? widget.task!.copyWith(
+                  name: _nameController.text.trim(),
+                  groupId: _selectedGroup!.id,
+                  fairMode: _fairMode,
+                  additionalMembers: List.from(_additionalMembers),
+                  excludedMembers: List.from(_excludedMembers),
+                  clearImagePath: true,
+                  lastUpdated: DateTime.now(),
+                )
+              : widget.task!.copyWith(
+                  name: _nameController.text.trim(),
+                  groupId: _selectedGroup!.id,
+                  fairMode: _fairMode,
+                  additionalMembers: List.from(_additionalMembers),
+                  excludedMembers: List.from(_excludedMembers),
+                  imagePath: _selectedImagePath,
+                  lastUpdated: DateTime.now(),
+                ))
           : Task(
               id: DateTime.now().millisecondsSinceEpoch.toString(),
               name: _nameController.text.trim(),
@@ -111,6 +126,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
               fairQueue: List.from(_currentParticipants),
               createdAt: DateTime.now(),
               lastUpdated: DateTime.now(),
+              imagePath: _selectedImagePath,
             );
 
       Navigator.of(context).pop(task);
@@ -164,6 +180,31 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                       }
                       return null;
                     },
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // Task Image
+                  ImagePickerWidget(
+                    imagePath: _selectedImagePath,
+                    onImageSelected: (imagePath) async {
+                      setState(() {
+                        _selectedImagePath = imagePath;
+                      });
+
+                      // Auto-save if editing existing task
+                      if (widget.task != null) {
+                        final updatedTask = imagePath == null
+                            ? widget.task!.copyWith(clearImagePath: true)
+                            : widget.task!.copyWith(imagePath: imagePath);
+                        await StorageService.saveTask(updatedTask);
+                        // Notify parent to refresh data
+                        widget.onDataChanged?.call();
+                      }
+                    },
+                    size: 120,
+                    placeholder: 'Aufgabenbild',
+                    placeholderIcon: Icons.task_alt,
                   ),
 
                   const SizedBox(height: 24),
