@@ -23,20 +23,65 @@ class ImageService {
         await newImagesDirObj.create(recursive: true);
       }
 
+      if (kDebugMode) {
+        print('ImageService: Current app support dir: ${newSupportDir.path}');
+      }
+
       // Try to migrate from Documents directory
       await _migrateFromDirectory(await getApplicationDocumentsDirectory(), newImagesDir);
 
-      // Also try to migrate from other possible locations
-      if (Platform.isIOS || Platform.isMacOS) {
-        // Try Library/Application Support directory as well
-        final Directory libraryDir = Directory(path.join(newSupportDir.parent.path, 'Library'));
-        if (await libraryDir.exists()) {
-          await _migrateFromDirectory(libraryDir, newImagesDir);
-        }
+      // On iOS, search for images in all possible container directories
+      if (Platform.isIOS) {
+        await _migrateFromAllContainers(newImagesDir);
       }
     } catch (e) {
       if (kDebugMode) {
         print('Error migrating images: $e');
+      }
+    }
+  }
+
+  /// Search for images in all possible iOS container directories
+  static Future<void> _migrateFromAllContainers(String targetImagesDir) async {
+    try {
+      // Get the base containers directory
+      final Directory appSupportDir = await getApplicationSupportDirectory();
+      // Navigate up to find other container directories
+      // Path structure: /var/mobile/Containers/Data/Application/{UUID}/Library/Application Support
+      final containerBasePath = appSupportDir.path.split('/Library/Application Support')[0];
+      final parentPath = Directory(containerBasePath).parent.path;
+
+      if (kDebugMode) {
+        print('ImageService: Searching in container parent: $parentPath');
+      }
+
+      final Directory parentDir = Directory(parentPath);
+      if (await parentDir.exists()) {
+        await for (final FileSystemEntity entity in parentDir.list()) {
+          if (entity is Directory) {
+            // Check each container directory for images
+            final supportDir = Directory(path.join(entity.path, 'Library', 'Application Support', 'images'));
+            final documentsDir = Directory(path.join(entity.path, 'Documents', 'images'));
+
+            if (await supportDir.exists()) {
+              if (kDebugMode) {
+                print('ImageService: Found old images in: ${supportDir.path}');
+              }
+              await _migrateFromSpecificDirectory(supportDir, targetImagesDir);
+            }
+
+            if (await documentsDir.exists()) {
+              if (kDebugMode) {
+                print('ImageService: Found old images in: ${documentsDir.path}');
+              }
+              await _migrateFromSpecificDirectory(documentsDir, targetImagesDir);
+            }
+          }
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error searching containers: $e');
       }
     }
   }
@@ -48,8 +93,15 @@ class ImageService {
 
     if (!await sourceImagesDirObj.exists()) return;
 
+    await _migrateFromSpecificDirectory(sourceImagesDirObj, targetImagesDir);
+  }
+
+  /// Migrate images from a specific images directory
+  static Future<void> _migrateFromSpecificDirectory(Directory sourceImagesDir, String targetImagesDir) async {
+    if (!await sourceImagesDir.exists()) return;
+
     try {
-      await for (final file in sourceImagesDirObj.list()) {
+      await for (final file in sourceImagesDir.list()) {
         if (file is File && file.path.contains('img_')) {
           final String fileName = path.basename(file.path);
           final String newPath = path.join(targetImagesDir, fileName);
@@ -58,23 +110,32 @@ class ImageService {
           if (!await File(newPath).exists()) {
             await file.copy(newPath);
             if (kDebugMode) {
-              print('Migrated image: $fileName');
+              print('ImageService: Migrated image: $fileName from ${sourceImagesDir.path}');
+            }
+          } else {
+            if (kDebugMode) {
+              print('ImageService: Image already exists: $fileName');
             }
           }
+
+          // Delete original file after successful copy
           await file.delete();
         }
       }
 
       // Remove old directory if empty
-      if (await sourceImagesDirObj.exists()) {
-        final contents = await sourceImagesDirObj.list().toList();
+      if (await sourceImagesDir.exists()) {
+        final contents = await sourceImagesDir.list().toList();
         if (contents.isEmpty) {
-          await sourceImagesDirObj.delete();
+          await sourceImagesDir.delete();
+          if (kDebugMode) {
+            print('ImageService: Removed empty directory: ${sourceImagesDir.path}');
+          }
         }
       }
     } catch (e) {
       if (kDebugMode) {
-        print('Error migrating from ${sourceDir.path}: $e');
+        print('Error migrating from ${sourceImagesDir.path}: $e');
       }
     }
   }
@@ -215,6 +276,16 @@ class ImageService {
       }
     }
     return null;
+  }
+
+  /// Get the current images directory path
+  static Future<String> getCurrentImagesDirectory() async {
+    if (kIsWeb) {
+      return 'web_storage'; // For web, we use SharedPreferences
+    }
+
+    final Directory appSupportDir = await getApplicationSupportDirectory();
+    return path.join(appSupportDir.path, 'images');
   }
 
   /// Show image source selection dialog

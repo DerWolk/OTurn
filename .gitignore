@@ -59,3 +59,10 @@ app.*.map.json
 **/ios/Flutter/flutter_export_environment.sh
 **/ios/Podfile.lock
 **/ios/.symlinks/
+
+# App Icons
+**/android/app/src/main/res/mipmap-*/
+**/ios/Runner/Assets.xcassets/AppIcon.appiconset/
+**/web/icons/
+web/favicon.ico
+web/favicon.png

@@ -95,6 +95,23 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
         return;
       }
 
+      // Update fair queue to match current participants when editing
+      List<String> updatedFairQueue = List.from(widget.task?.fairQueue ?? []);
+      if (_isEditing) {
+        // Remove excluded members from fair queue
+        updatedFairQueue.removeWhere((member) => _excludedMembers.contains(member));
+
+        // Add new participants to fair queue if they're not already there
+        for (final participant in _currentParticipants) {
+          if (!updatedFairQueue.contains(participant)) {
+            updatedFairQueue.add(participant);
+          }
+        }
+
+        // Remove participants that are no longer in current participants
+        updatedFairQueue.removeWhere((member) => !_currentParticipants.contains(member));
+      }
+
       final task = _isEditing
           ? (_selectedImagePath == null
               ? widget.task!.copyWith(
@@ -103,6 +120,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                   fairMode: _fairMode,
                   additionalMembers: List.from(_additionalMembers),
                   excludedMembers: List.from(_excludedMembers),
+                  fairQueue: updatedFairQueue,
                   clearImagePath: true,
                   lastUpdated: DateTime.now(),
                 )
@@ -112,6 +130,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                   fairMode: _fairMode,
                   additionalMembers: List.from(_additionalMembers),
                   excludedMembers: List.from(_excludedMembers),
+                  fairQueue: updatedFairQueue,
                   imagePath: _selectedImagePath,
                   lastUpdated: DateTime.now(),
                 ))
