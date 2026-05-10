@@ -8,11 +8,13 @@ import 'task_history_screen.dart';
 class TaskExecutionScreen extends StatefulWidget {
   final Task task;
   final Group group;
+  final bool potatoModeEnabled;
 
   const TaskExecutionScreen({
     super.key,
     required this.task,
     required this.group,
+    this.potatoModeEnabled = false,
   });
 
   @override
@@ -641,12 +643,18 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
                                         ]
                                       : null,
                                 ),
-                                child: Text(
-                                  '🥔',
-                                  style: TextStyle(
-                                    fontSize: 80,
-                                  ),
-                                ),
+                                child: widget.potatoModeEnabled
+                                    ? Text(
+                                        '🥔',
+                                        style: TextStyle(
+                                          fontSize: 80,
+                                        ),
+                                      )
+                                    : Icon(
+                                        Icons.casino,
+                                        size: 80,
+                                        color: Colors.white,
+                                      ),
                               ),
                             );
                           },
@@ -783,11 +791,15 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
                 child: ElevatedButton.icon(
                   onPressed: _currentParticipants.isEmpty || _isRolling ? null : _rollDice,
                   icon: Icon(
-                    _isRolling ? Icons.hourglass_empty : null,
+                    _isRolling
+                        ? Icons.hourglass_empty
+                        : (widget.potatoModeEnabled ? null : Icons.casino),
                     color: Colors.white,
                   ),
                   label: Text(
-                    _isRolling ? 'Würfeln...' : '🥔 Würfeln',
+                    _isRolling
+                        ? 'Würfeln...'
+                        : (widget.potatoModeEnabled ? '🥔 Würfeln' : '🎲 Würfeln'),
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,

@@ -59,6 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Task> _tasks = [];
   int _logoTapCount = 0;
   DateTime? _lastLogoTap;
+  bool _potatoModeEnabled = false;
 
   @override
   void initState() {
@@ -103,14 +104,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if (_logoTapCount >= 5) {
       _logoTapCount = 0;
+      setState(() {
+        _potatoModeEnabled = !_potatoModeEnabled;
+      });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Row(
+          content: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.favorite, color: Colors.red),
-              SizedBox(width: 8),
-              Text('Kartoffel for President! 🥔'),
+              const Icon(Icons.favorite, color: Colors.red),
+              const SizedBox(width: 8),
+              Text(_potatoModeEnabled
+                ? 'Kartoffel for President! 🥔'
+                : 'Kartoffel Modus deaktiviert'),
             ],
           ),
           backgroundColor: Colors.deepPurple,
@@ -187,6 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onTaskCreated: _addTask,
         onTaskDeleted: _deleteTask,
         onDataChanged: _loadData,
+        potatoModeEnabled: _potatoModeEnabled,
       ),
       GroupsScreen(
         groups: _groups,
@@ -270,6 +277,7 @@ class TasksScreen extends StatelessWidget {
   final Function(Task) onTaskCreated;
   final Function(String) onTaskDeleted;
   final VoidCallback? onDataChanged;
+  final bool potatoModeEnabled;
 
   const TasksScreen({
     super.key,
@@ -278,6 +286,7 @@ class TasksScreen extends StatelessWidget {
     required this.onTaskCreated,
     required this.onTaskDeleted,
     this.onDataChanged,
+    this.potatoModeEnabled = false,
   });
 
   Future<void> _navigateToCreateTask(BuildContext context) async {
@@ -426,6 +435,7 @@ class TasksScreen extends StatelessWidget {
                       builder: (context) => TaskExecutionScreen(
                         task: task,
                         group: group,
+                        potatoModeEnabled: potatoModeEnabled,
                       ),
                     ),
                   ).then((_) {
