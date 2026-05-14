@@ -66,3 +66,6 @@ app.*.map.json
 **/web/icons/
 web/favicon.ico
 web/favicon.png
+
+# Local configuration
+CLAUDE.md

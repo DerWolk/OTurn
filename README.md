@@ -52,13 +52,13 @@ OTurn ermöglicht es, persistente Aufgaben mit festen Gruppen zu erstellen und d
 ### Frontend
 - **Flutter**: Cross-platform Development für Android und iOS
 - **Dart**: Programmiersprache
-- **State Management**: Bloc/Cubit oder Riverpod
-- **Local Storage**: SQLite/Hive für lokale Datenpersistierung
+- **State Management**: Provider (aktuell implementiert)
+- **Local Storage**: Hive für lokale Datenpersistierung
 
 ### Datenpersistierung
-- **Local Storage**: SQLite/Hive für lokale Datenspeicherung
-- **Data Format**: JSON-basierte Datenstrukturen
-- **Backup/Restore**: Export als JSON für Datensicherung
+- **Local Storage**: Hive für lokale Datenspeicherung
+- **Data Format**: Dart-basierte Datenstrukturen mit Hive TypeAdapters
+- **Backup/Restore**: Export als JSON für Datensicherung (geplant)
 
 ### Datenstruktur
 ```json
@@ -94,21 +94,22 @@ OTurn ermöglicht es, persistente Aufgaben mit festen Gruppen zu erstellen und d
 }
 ```
 
-## Entwicklungsplan
+## Entwicklungsstand
 
-### Phase 1: MVP - Lokale Basis-App
-1. **Flutter Projekt Setup**: Grundstruktur mit Navigation
-2. **Gruppen-Management**: Gruppen erstellen, bearbeiten, löschen
-3. **Aufgaben-System**: Persistente Aufgaben mit Gruppenverknüpfung
-4. **Fair-Switch Logic**: Faire Rotation vs. Random-Modus
-5. **Lokale Datenpersistierung**: SQLite/Hive für lokale Speicherung
+### ✅ Aktuell implementiert (Phase 1: MVP)
+1. **Flutter Projekt Setup**: Grundstruktur mit Navigation ✅
+2. **Gruppen-Management**: Gruppen erstellen, bearbeiten, löschen ✅
+3. **Aufgaben-System**: Persistente Aufgaben mit Gruppenverknüpfung ✅
+4. **Fair-Switch Logic**: Faire Rotation vs. Random-Modus ✅
+5. **Lokale Datenpersistierung**: Hive für lokale Speicherung ✅
+6. **Bilder-Support**: Gruppen und Aufgaben können Bilder haben ✅
+7. **Theme-System**: Dark/Light Mode Support ✅
 
-### Phase 2: Erweiterte Features
+### 🚧 Geplant (Phase 2: Erweiterte Features)
 1. **Statistiken & Analytics**: Übersicht über Aufgabenverteilung pro Person
 2. **Export/Import**: Backup-Funktionen für Datensicherung
 3. **Erweiterte UI/UX**: Animationen, bessere User Experience
 4. **Aufgaben-Templates**: Vorgefertigte häufige Aufgaben
-5. **Dark Mode**: Light/Dark Theme Support
 
 ### Phase 3: Polish & Store
 1. **Abwesenheits-Management**: Personen temporär ausschließen
