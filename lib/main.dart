@@ -163,8 +163,10 @@ class _HomeScreenState extends State<HomeScreen> {
               Text('🎲 Zufalls-Modus', style: TextStyle(fontWeight: FontWeight.bold)),
               Text('• Komplett zufällige Auswahl bei jedem Würfeln\n• Ideal für spontane Entscheidungen'),
               SizedBox(height: 12),
-              Text('💾 Lokale Speicherung', style: TextStyle(fontWeight: FontWeight.bold)),
-              Text('• Alle Daten werden nur auf diesem Gerät gespeichert\n• Keine Server, keine Internetverbindung nötig'),
+              Text('💾 Datenspeicherung', style: TextStyle(fontWeight: FontWeight.bold)),
+              Text(kIsWeb
+                ? '• Alle Daten werden lokal im Browser gespeichert\n• Keine externen Server oder Cloud-Dienste'
+                : '• Alle Daten werden nur auf diesem Gerät gespeichert\n• Keine Server, keine Internetverbindung nötig'),
               SizedBox(height: 24),
               Divider(),
               SizedBox(height: 16),
