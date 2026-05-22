@@ -5,7 +5,6 @@
 *.swp
 .DS_Store
 .atom/
-.build/
 .buildlog/
 .history
 .svn/
@@ -44,28 +43,28 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-# macOS related
-**/macos/Runner.xcodeproj/project.pbxproj
-**/macos/Runner.xcworkspace/contents.xcworkspacedata
+# Web compilation artifacts
+/web/index.html.bak
+
+# macOS build artifacts
 **/macos/Podfile.lock
 **/macos/.symlinks/
 **/macos/Flutter/ephemeral/
+**/macos/build/
 
-# iOS related
-**/ios/Runner.xcodeproj/project.pbxproj
-**/ios/Runner.xcworkspace/contents.xcworkspacedata
-**/ios/Runner/Info.plist
-**/ios/Flutter/Generated.xcconfig
-**/ios/Flutter/flutter_export_environment.sh
+# iOS build artifacts
 **/ios/Podfile.lock
 **/ios/.symlinks/
+**/ios/Flutter/ephemeral/
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/build/
 
-# App Icons
-**/android/app/src/main/res/mipmap-*/
-**/ios/Runner/Assets.xcassets/AppIcon.appiconset/
-**/web/icons/
-web/favicon.ico
-web/favicon.png
+# Windows build artifacts
+**/windows/flutter/ephemeral/
+
+# Linux build artifacts
+**/linux/flutter/ephemeral/
 
 # Local configuration
 CLAUDE.md

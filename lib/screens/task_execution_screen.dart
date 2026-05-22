@@ -302,12 +302,17 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
     );
   }
 
-  void _showHistory() {
-    Navigator.of(context).push(
+  void _showHistory() async {
+    await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => TaskHistoryScreen(task: _currentTask),
       ),
     );
+
+    // Refresh current task after returning from history screen
+    _loadCurrentTask();
+    _calculateParticipants();
+    setState(() {});
   }
 
   void _showDetailedHistory() {
