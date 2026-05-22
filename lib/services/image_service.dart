@@ -294,4 +294,21 @@ class ImageService {
     // For now, we'll default to gallery
     return await pickImage(source: ImageSource.gallery);
   }
+
+  static Future<void> clearAllImages() async {
+    try {
+      final directoryPath = await getCurrentImagesDirectory();
+      final directory = Directory(directoryPath);
+
+      if (await directory.exists()) {
+        await directory.delete(recursive: true);
+        // Recreate the directory
+        await directory.create(recursive: true);
+        print('ImageService: All images cleared successfully');
+      }
+    } catch (e) {
+      print('Error clearing all images: $e');
+      rethrow;
+    }
+  }
 }

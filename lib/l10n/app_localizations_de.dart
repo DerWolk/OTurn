@@ -387,4 +387,89 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get addImage => 'Bild hinzufügen';
+
+  @override
+  String get settings => 'Einstellungen';
+
+  @override
+  String get language => 'Sprache';
+
+  @override
+  String get appearance => 'Erscheinungsbild';
+
+  @override
+  String get dataManagement => 'Datenverwaltung';
+
+  @override
+  String get appInfo => 'App-Informationen';
+
+  @override
+  String get englishLanguage => 'Englische Sprache';
+
+  @override
+  String get germanLanguage => 'Deutsche Sprache';
+
+  @override
+  String get useSystemLanguage => 'Systemsprache verwenden';
+
+  @override
+  String get darkModeEnabled => 'Dunkler Modus ist aktiviert';
+
+  @override
+  String get lightModeEnabled => 'Heller Modus ist aktiviert';
+
+  @override
+  String get clearAllData => 'Alle Daten löschen';
+
+  @override
+  String get clearAllDataSubtitle =>
+      'Alle Gruppen, Aufgaben und Einstellungen löschen';
+
+  @override
+  String get clearAllDataConfirmation =>
+      'Dies wird dauerhaft alle Ihre Gruppen, Aufgaben, Historie und App-Einstellungen löschen. Diese Aktion kann nicht rückgängig gemacht werden. Sind Sie sicher?';
+
+  @override
+  String get clearData => 'Daten löschen';
+
+  @override
+  String get allDataCleared => 'Alle Daten wurden gelöscht';
+
+  @override
+  String get errorClearingData => 'Fehler beim Löschen der Daten';
+
+  @override
+  String get clearImages => 'Bilder löschen';
+
+  @override
+  String get clearImagesSubtitle => 'Alle hochgeladenen Bilder löschen';
+
+  @override
+  String get clearImagesConfirmation =>
+      'Dies wird dauerhaft alle hochgeladenen Bilder löschen. Gruppen und Aufgaben bleiben erhalten, verlieren aber ihre Bilder. Diese Aktion kann nicht rückgängig gemacht werden.';
+
+  @override
+  String get imagesCleared => 'Alle Bilder wurden gelöscht';
+
+  @override
+  String get errorClearingImages => 'Fehler beim Löschen der Bilder';
+
+  @override
+  String get aboutTasks =>
+      'Erstelle persistente Aufgaben mit spezifischen Gruppen und verfolge die Ausführungshistorie.';
+
+  @override
+  String get aboutGroups =>
+      'Organisiere Teammitglieder in wiederverwendbare Gruppen für verschiedene Projekte.';
+
+  @override
+  String get aboutFairMode =>
+      'Stelle sicher, dass jeder gleichmäßig ausgewählt wird durch intelligente Rotation.';
+
+  @override
+  String get allRightsReserved => 'Alle Rechte vorbehalten';
+
+  @override
+  String get helpContent =>
+      'OTurn hilft dabei, Aufgaben fair unter Teammitgliedern zu verteilen.\n\n• Erstelle Gruppen mit Teammitgliedern\n• Erstelle Aufgaben und weise sie Gruppen zu\n• Verwende den Fair-Modus für gleichmäßige Verteilung oder den Zufalls-Modus für zufallsbasierte Auswahl\n• Verfolge die Historie um zu sehen, wer wann ausgewählt wurde\n• Füge Mitglieder hinzu oder schließe sie für bestimmte Aufgaben aus\n\nFür Support kontaktiere bitte den Entwickler.';
 }

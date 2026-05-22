@@ -225,4 +225,19 @@ class StorageService {
       return null;
     }
   }
+
+  static Future<void> clearAll() async {
+    try {
+      // Clear all groups
+      await _groupsBoxInstance.clear();
+
+      // Clear all tasks
+      await _tasksBoxInstance.clear();
+
+      print('StorageService: All data cleared successfully');
+    } catch (e) {
+      print('Error clearing all data: $e');
+      rethrow;
+    }
+  }
 }
