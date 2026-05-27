@@ -196,5 +196,12 @@
   "deleteHistoryAction": "Delete history",
   "deleteHistoryActionSubtitle": "Delete all previous executions",
   "resetFairQueueAction": "Reset fair queue",
-  "resetFairQueueActionSubtitle": "Reshuffle queue"
+  "resetFairQueueActionSubtitle": "Reshuffle queue",
+
+  "pleaseSelectGroup": "Please select a group",
+  "selectGroupAction": "Select group",
+  "chooseGroup": "Choose group",
+  "randomSelectionEachRoll": "Random selection on each roll",
+  "excludeMembers": "Exclude members",
+  "excludeMembersTitle": "Exclude members"
 }

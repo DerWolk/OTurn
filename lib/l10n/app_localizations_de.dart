@@ -557,4 +557,22 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get resetFairQueueActionSubtitle => 'Warteschlange neu mischen';
+
+  @override
+  String get pleaseSelectGroup => 'Bitte wähle eine Gruppe aus';
+
+  @override
+  String get selectGroupAction => 'Gruppe auswählen';
+
+  @override
+  String get chooseGroup => 'Gruppe wählen';
+
+  @override
+  String get randomSelectionEachRoll => 'Zufällige Auswahl bei jedem Würfeln';
+
+  @override
+  String get excludeMembers => 'Mitglieder ausschließen';
+
+  @override
+  String get excludeMembersTitle => 'Mitglieder ausschließen';
 }

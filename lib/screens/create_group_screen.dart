@@ -4,6 +4,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import '../models/group.dart';
 import '../services/storage_service.dart';
 import '../widgets/image_picker_widget.dart';
+import '../l10n/app_localizations.dart';
 
 class CreateGroupScreen extends StatefulWidget {
   final Group? group; // null for creating, Group for editing
@@ -51,7 +52,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
     if (_members.contains(name)) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('$name ist bereits in der Gruppe'),
+          content: Text(AppLocalizations.of(context)!.memberAlreadyInGroup(name)),
           backgroundColor: Colors.orange,
         ),
       );
@@ -95,7 +96,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
       Navigator.of(context).pop(group);
     } else if (_members.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Füge mindestens ein Mitglied hinzu')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.addAtLeastOneMemberError)),
       );
     }
   }
@@ -104,11 +105,11 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_isEditing ? 'Gruppe bearbeiten' : 'Gruppe erstellen'),
+        title: Text(_isEditing ? AppLocalizations.of(context)!.editGroup : AppLocalizations.of(context)!.createGroup),
         actions: [
           TextButton(
             onPressed: _saveGroup,
-            child: const Text('Speichern'),
+            child: Text(AppLocalizations.of(context)!.save),
           ),
         ],
       ),
@@ -121,14 +122,14 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
             children: [
               TextFormField(
                 controller: _nameController,
-                decoration: const InputDecoration(
-                  labelText: 'Gruppenname',
-                  hintText: 'z.B. Marketing Team',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.groupName,
+                  hintText: AppLocalizations.of(context)!.groupNameHint,
+                  border: const OutlineInputBorder(),
                 ),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return 'Bitte gib einen Gruppennamen ein';
+                    return AppLocalizations.of(context)!.groupNameRequired;
                   }
                   return null;
                 },
@@ -162,7 +163,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                     }
                   },
                   size: 120,
-                  placeholder: 'Gruppenbild',
+                  placeholder: AppLocalizations.of(context)!.groupImage,
                   placeholderIcon: Icons.group,
                 ),
               ),
@@ -176,10 +177,10 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                         return TextFormField(
                           controller: controller,
                           focusNode: focusNode,
-                          decoration: const InputDecoration(
-                            labelText: 'Mitglied hinzufügen',
-                            hintText: 'Name eingeben',
-                            border: OutlineInputBorder(),
+                          decoration: InputDecoration(
+                            labelText: AppLocalizations.of(context)!.addMember,
+                            hintText: AppLocalizations.of(context)!.memberNameHint,
+                            border: const OutlineInputBorder(),
                           ),
                           onFieldSubmitted: (_) => _addMember(),
                         );
@@ -210,13 +211,13 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                   const SizedBox(width: 8),
                   FilledButton(
                     onPressed: _addMember,
-                    child: const Text('Hinzufügen'),
+                    child: Text(AppLocalizations.of(context)!.add),
                   ),
                 ],
               ),
               const SizedBox(height: 16),
               Text(
-                'Mitglieder (${_members.length})',
+                AppLocalizations.of(context)!.membersCount.replaceAll('{count}', _members.length.toString()),
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: 8),
@@ -224,7 +225,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                 child: _members.isEmpty
                     ? Center(
                         child: Text(
-                          'Noch keine Mitglieder hinzugefügt',
+                          AppLocalizations.of(context)!.noMembersAddedYet,
                           style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),
                         ),
                       )
