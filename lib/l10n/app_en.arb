@@ -161,5 +161,40 @@
   "aboutGroups": "Organize team members into reusable groups for different projects.",
   "aboutFairMode": "Ensure everyone gets selected equally through intelligent rotation.",
   "allRightsReserved": "All rights reserved",
-  "helpContent": "OTurn helps distribute tasks fairly among team members.\n\n• Create groups with team members\n• Create tasks and assign them to groups\n• Use fair mode for equal distribution or random mode for chance-based selection\n• Track history to see who was selected when\n• Add or exclude members for specific tasks\n\nFor support, please contact the developer."
+  "helpContent": "OTurn helps distribute tasks fairly among team members.\n\n• Create groups with team members\n• Create tasks and assign them to groups\n• Use fair mode for equal distribution or random mode for chance-based selection\n• Track history to see who was selected when\n• Add or exclude members for specific tasks\n\nFor support, please contact the developer.",
+
+  "createTaskTitle": "Create task",
+  "editTaskTitle": "Edit task",
+  "taskNameLabel": "Task name",
+  "taskNameHint": "e.g. Write email to management",
+  "taskNameRequired": "Please enter a task name",
+  "taskImageLabel": "Task image",
+  "selectGroupLabel": "Select group",
+  "selectGroupRequired": "Please select a group",
+  "fairModeLabel": "Fair mode",
+  "fairModeHelp": "Everyone gets selected once before anyone gets selected twice",
+  "additionalMembersLabel": "Additional members",
+  "additionalMembersHint": "Add people not in the group",
+  "excludedMembersLabel": "Excluded members",
+  "excludedMembersHint": "Exclude people from this task",
+  "taskSaved": "Task saved",
+
+  "addAtLeastOneMemberError": "Add at least one member",
+  "memberAlreadyInGroup": "{name} is already in the group",
+  "noMembersAddedYet": "No members added yet",
+
+  "allEveryoneHadTurn": "Everyone has had a turn - next roll starts new round",
+  "executionDetailsTitle": "Execution details ({count})",
+  "queueIsEmpty": "Queue is empty",
+  "stillToCome": "Still to come:",
+  "rollPotatoDice": "🥔 Roll",
+  "rollDiceAction": "🎲 Roll",
+
+  "switchToRandomModeAction": "Switch to random mode",
+  "switchToFairModeAction": "Switch to fair mode",
+  "showHistoryAction": "Show history",
+  "deleteHistoryAction": "Delete history",
+  "deleteHistoryActionSubtitle": "Delete all previous executions",
+  "resetFairQueueAction": "Reset fair queue",
+  "resetFairQueueActionSubtitle": "Reshuffle queue"
 }

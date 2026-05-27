@@ -161,5 +161,40 @@
   "aboutGroups": "Organisiere Teammitglieder in wiederverwendbare Gruppen für verschiedene Projekte.",
   "aboutFairMode": "Stelle sicher, dass jeder gleichmäßig ausgewählt wird durch intelligente Rotation.",
   "allRightsReserved": "Alle Rechte vorbehalten",
-  "helpContent": "OTurn hilft dabei, Aufgaben fair unter Teammitgliedern zu verteilen.\n\n• Erstelle Gruppen mit Teammitgliedern\n• Erstelle Aufgaben und weise sie Gruppen zu\n• Verwende den Fair-Modus für gleichmäßige Verteilung oder den Zufalls-Modus für zufallsbasierte Auswahl\n• Verfolge die Historie um zu sehen, wer wann ausgewählt wurde\n• Füge Mitglieder hinzu oder schließe sie für bestimmte Aufgaben aus\n\nFür Support kontaktiere bitte den Entwickler."
+  "helpContent": "OTurn hilft dabei, Aufgaben fair unter Teammitgliedern zu verteilen.\n\n• Erstelle Gruppen mit Teammitgliedern\n• Erstelle Aufgaben und weise sie Gruppen zu\n• Verwende den Fair-Modus für gleichmäßige Verteilung oder den Zufalls-Modus für zufallsbasierte Auswahl\n• Verfolge die Historie um zu sehen, wer wann ausgewählt wurde\n• Füge Mitglieder hinzu oder schließe sie für bestimmte Aufgaben aus\n\nFür Support kontaktiere bitte den Entwickler.",
+
+  "createTaskTitle": "Aufgabe erstellen",
+  "editTaskTitle": "Aufgabe bearbeiten",
+  "taskNameLabel": "Aufgabenname",
+  "taskNameHint": "z.B. E-Mail an Management schreiben",
+  "taskNameRequired": "Bitte gib einen Aufgabennamen ein",
+  "taskImageLabel": "Aufgabenbild",
+  "selectGroupLabel": "Gruppe auswählen",
+  "selectGroupRequired": "Bitte wähle eine Gruppe aus",
+  "fairModeLabel": "Fair-Modus",
+  "fairModeHelp": "Jeder wird einmal ausgewählt, bevor jemand zweimal dran kommt",
+  "additionalMembersLabel": "Zusätzliche Mitglieder",
+  "additionalMembersHint": "Personen hinzufügen, die nicht in der Gruppe sind",
+  "excludedMembersLabel": "Ausgeschlossene Mitglieder",
+  "excludedMembersHint": "Personen von dieser Aufgabe ausschließen",
+  "taskSaved": "Aufgabe gespeichert",
+
+  "addAtLeastOneMemberError": "Füge mindestens ein Mitglied hinzu",
+  "memberAlreadyInGroup": "{name} ist bereits in der Gruppe",
+  "noMembersAddedYet": "Noch keine Mitglieder hinzugefügt",
+
+  "allEveryoneHadTurn": "Alle waren schon dran - nächstes Würfeln startet neue Runde",
+  "executionDetailsTitle": "Ausführungs-Details ({count})",
+  "queueIsEmpty": "Warteschlange ist leer",
+  "stillToCome": "Noch nicht dran:",
+  "rollPotatoDice": "🥔 Würfeln",
+  "rollDiceAction": "🎲 Würfeln",
+
+  "switchToRandomModeAction": "Zu Zufalls-Modus wechseln",
+  "switchToFairModeAction": "Zu Fair-Modus wechseln",
+  "showHistoryAction": "History anzeigen",
+  "deleteHistoryAction": "History löschen",
+  "deleteHistoryActionSubtitle": "Alle bisherigen Ausführungen löschen",
+  "resetFairQueueAction": "Fair-Queue zurücksetzen",
+  "resetFairQueueActionSubtitle": "Warteschlange neu mischen"
 }

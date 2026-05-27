@@ -949,6 +949,162 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'OTurn helps distribute tasks fairly among team members.\n\n• Create groups with team members\n• Create tasks and assign them to groups\n• Use fair mode for equal distribution or random mode for chance-based selection\n• Track history to see who was selected when\n• Add or exclude members for specific tasks\n\nFor support, please contact the developer.'**
   String get helpContent;
+
+  /// No description provided for @createTaskTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create task'**
+  String get createTaskTitle;
+
+  /// No description provided for @editTaskTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit task'**
+  String get editTaskTitle;
+
+  /// No description provided for @taskNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Task name'**
+  String get taskNameLabel;
+
+  /// No description provided for @taskImageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Task image'**
+  String get taskImageLabel;
+
+  /// No description provided for @selectGroupLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Select group'**
+  String get selectGroupLabel;
+
+  /// No description provided for @fairModeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Fair mode'**
+  String get fairModeLabel;
+
+  /// No description provided for @fairModeHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone gets selected once before anyone gets selected twice'**
+  String get fairModeHelp;
+
+  /// No description provided for @additionalMembersLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional members'**
+  String get additionalMembersLabel;
+
+  /// No description provided for @excludedMembersLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Excluded members'**
+  String get excludedMembersLabel;
+
+  /// No description provided for @taskSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Task saved'**
+  String get taskSaved;
+
+  /// No description provided for @addAtLeastOneMemberError.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least one member'**
+  String get addAtLeastOneMemberError;
+
+  /// No description provided for @memberAlreadyInGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is already in the group'**
+  String memberAlreadyInGroup(Object name);
+
+  /// No description provided for @noMembersAddedYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No members added yet'**
+  String get noMembersAddedYet;
+
+  /// No description provided for @allEveryoneHadTurn.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone has had a turn - next roll starts new round'**
+  String get allEveryoneHadTurn;
+
+  /// No description provided for @executionDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Execution details ({count})'**
+  String executionDetailsTitle(Object count);
+
+  /// No description provided for @queueIsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Queue is empty'**
+  String get queueIsEmpty;
+
+  /// No description provided for @stillToCome.
+  ///
+  /// In en, this message translates to:
+  /// **'Still to come:'**
+  String get stillToCome;
+
+  /// No description provided for @rollPotatoDice.
+  ///
+  /// In en, this message translates to:
+  /// **'🥔 Roll'**
+  String get rollPotatoDice;
+
+  /// No description provided for @rollDiceAction.
+  ///
+  /// In en, this message translates to:
+  /// **'🎲 Roll'**
+  String get rollDiceAction;
+
+  /// No description provided for @switchToRandomModeAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to random mode'**
+  String get switchToRandomModeAction;
+
+  /// No description provided for @switchToFairModeAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to fair mode'**
+  String get switchToFairModeAction;
+
+  /// No description provided for @showHistoryAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Show history'**
+  String get showHistoryAction;
+
+  /// No description provided for @deleteHistoryAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete history'**
+  String get deleteHistoryAction;
+
+  /// No description provided for @deleteHistoryActionSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete all previous executions'**
+  String get deleteHistoryActionSubtitle;
+
+  /// No description provided for @resetFairQueueAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset fair queue'**
+  String get resetFairQueueAction;
+
+  /// No description provided for @resetFairQueueActionSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reshuffle queue'**
+  String get resetFairQueueActionSubtitle;
 }
 
 class _AppLocalizationsDelegate
