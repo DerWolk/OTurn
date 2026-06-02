@@ -229,6 +229,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -254,7 +255,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
-        backgroundColor: Colors.deepPurple,
         foregroundColor: Colors.white,
         elevation: 0,
         actions: [

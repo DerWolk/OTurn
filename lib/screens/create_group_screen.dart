@@ -105,6 +105,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(_isEditing ? AppLocalizations.of(context)!.editGroup : AppLocalizations.of(context)!.createGroup),
         actions: [
           TextButton(
