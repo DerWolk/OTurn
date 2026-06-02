@@ -217,7 +217,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
               ),
               const SizedBox(height: 16),
               Text(
-                AppLocalizations.of(context)!.membersCount.replaceAll('{count}', _members.length.toString()),
+                AppLocalizations.of(context)!.membersCount(_members.length),
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: 8),

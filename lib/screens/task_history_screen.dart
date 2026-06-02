@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import '../models/task.dart';
 import '../services/storage_service.dart';
 import '../widgets/manual_history_dialog.dart';
+import '../l10n/app_localizations.dart';
 
 class TaskHistoryScreen extends StatefulWidget {
   final Task task;
@@ -83,7 +84,7 @@ class _TaskHistoryScreenState extends State<TaskHistoryScreen> {
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(editingIndex != null ? 'History aktualisiert' : 'History hinzugefügt'),
+          content: Text(editingIndex != null ? AppLocalizations.of(context)!.historyUpdated : AppLocalizations.of(context)!.historyAdded),
           backgroundColor: Colors.green,
         ),
       );
@@ -94,17 +95,17 @@ class _TaskHistoryScreenState extends State<TaskHistoryScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('History löschen'),
-        content: const Text('Möchten Sie diesen History-Eintrag wirklich löschen?'),
+        title: Text(AppLocalizations.of(context)!.deleteHistoryEntry),
+        content: Text(AppLocalizations.of(context)!.deleteHistoryEntryContent),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Abbrechen'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: const Text('Löschen'),
+            child: Text(AppLocalizations.of(context)!.delete),
           ),
         ],
       ),
@@ -126,8 +127,8 @@ class _TaskHistoryScreenState extends State<TaskHistoryScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('History gelöscht'),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.historyEntryDeleted),
             backgroundColor: Colors.red,
           ),
         );
@@ -142,13 +143,13 @@ class _TaskHistoryScreenState extends State<TaskHistoryScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('${currentTask.name} - History'),
+        title: Text(AppLocalizations.of(context)!.historyTitle(currentTask.name)),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
           IconButton(
             onPressed: () => _showManualHistoryDialog(),
             icon: const Icon(Icons.add),
-            tooltip: 'History manuell hinzufügen',
+            tooltip: AppLocalizations.of(context)!.addHistoryManually,
           ),
         ],
       ),
@@ -160,11 +161,11 @@ class _TaskHistoryScreenState extends State<TaskHistoryScreen> {
                   Icon(Icons.history, size: 80, color: Theme.of(context).iconTheme.color),
                   const SizedBox(height: 16),
                   Text(
-                    'Noch keine Ausführungen',
+                    AppLocalizations.of(context)!.noExecutions,
                     style: TextStyle(fontSize: 18, color: Theme.of(context).textTheme.bodyMedium?.color),
                   ),
                   const SizedBox(height: 8),
-                  const Text('Die History wird hier angezeigt'),
+                  Text(AppLocalizations.of(context)!.historyWillBeShown),
                 ],
               ),
             )
@@ -179,14 +180,14 @@ class _TaskHistoryScreenState extends State<TaskHistoryScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Zusammenfassung',
+                          AppLocalizations.of(context)!.summary,
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                         const SizedBox(height: 8),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Gesamte Ausführungen:'),
+                            Text(AppLocalizations.of(context)!.totalExecutions),
                             Text(
                               '${currentTask.history.length}',
                               style: const TextStyle(fontWeight: FontWeight.bold),
@@ -197,7 +198,7 @@ class _TaskHistoryScreenState extends State<TaskHistoryScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Erste Ausführung:'),
+                            Text(AppLocalizations.of(context)!.firstExecution),
                             Text(
                               currentTask.history.isNotEmpty
                                   ? DateFormat('dd.MM.yyyy').format(
@@ -214,7 +215,7 @@ class _TaskHistoryScreenState extends State<TaskHistoryScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Letzte Ausführung:'),
+                            Text(AppLocalizations.of(context)!.lastExecution),
                             Text(
                               currentTask.history.isNotEmpty
                                   ? DateFormat('dd.MM.yyyy HH:mm').format(sortedHistory.first.timestamp)
@@ -263,14 +264,14 @@ class _TaskHistoryScreenState extends State<TaskHistoryScreen> {
                             children: [
                               Text(
                                 isToday
-                                    ? 'Heute, ${DateFormat('HH:mm').format(historyItem.timestamp)}'
+                                    ? '${AppLocalizations.of(context)!.today}, ${DateFormat('HH:mm').format(historyItem.timestamp)}'
                                     : isYesterday
-                                        ? 'Gestern, ${DateFormat('HH:mm').format(historyItem.timestamp)}'
+                                        ? '${AppLocalizations.of(context)!.yesterday}, ${DateFormat('HH:mm').format(historyItem.timestamp)}'
                                         : DateFormat('dd.MM.yyyy HH:mm').format(historyItem.timestamp),
                               ),
                               if (historyItem.participants.length > 1)
                                 Text(
-                                  'Aus ${historyItem.participants.length} Teilnehmern',
+                                  AppLocalizations.of(context)!.fromParticipants(historyItem.participants.length),
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                             ],
@@ -298,23 +299,23 @@ class _TaskHistoryScreenState extends State<TaskHistoryScreen> {
                                   }
                                 },
                                 itemBuilder: (context) => [
-                                  const PopupMenuItem(
+                                  PopupMenuItem(
                                     value: 'edit',
                                     child: Row(
                                       children: [
-                                        Icon(Icons.edit, size: 16),
-                                        SizedBox(width: 8),
-                                        Text('Bearbeiten'),
+                                        const Icon(Icons.edit, size: 16),
+                                        const SizedBox(width: 8),
+                                        Text(AppLocalizations.of(context)!.edit),
                                       ],
                                     ),
                                   ),
-                                  const PopupMenuItem(
+                                  PopupMenuItem(
                                     value: 'delete',
                                     child: Row(
                                       children: [
-                                        Icon(Icons.delete, size: 16),
-                                        SizedBox(width: 8),
-                                        Text('Löschen'),
+                                        const Icon(Icons.delete, size: 16),
+                                        const SizedBox(width: 8),
+                                        Text(AppLocalizations.of(context)!.delete),
                                       ],
                                     ),
                                   ),
@@ -349,7 +350,7 @@ class _TaskHistoryScreenState extends State<TaskHistoryScreen> {
     return [
       const Divider(),
       Text(
-        'Häufigkeit der Teilnehmer:',
+        AppLocalizations.of(context)!.participantFrequency,
         style: Theme.of(context).textTheme.titleSmall,
       ),
       const SizedBox(height: 8),

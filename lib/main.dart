@@ -173,28 +173,28 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 16),
-              Text('🎯 Aufgaben', style: TextStyle(fontWeight: FontWeight.bold)),
-              Text('• Erstelle wiederkehrende Aufgaben für deine Gruppen\n• Wähle zwischen Zufalls- und Fair-Modus\n• Verfolge die Historie aller Ausführungen'),
+              Text(AppLocalizations.of(context)!.aboutTasksTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
+              Text(AppLocalizations.of(context)!.aboutTasksDescription),
               SizedBox(height: 12),
-              Text('👥 Gruppen', style: TextStyle(fontWeight: FontWeight.bold)),
-              Text('• Verwalte Teams und deren Mitglieder\n• Autocomplete basierend auf bestehenden Namen\n• Einfache Bearbeitung und Verwaltung'),
+              Text(AppLocalizations.of(context)!.aboutGroupsTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
+              Text(AppLocalizations.of(context)!.aboutGroupsManagementDescription),
               SizedBox(height: 12),
-              Text('⚖️ Fair-Modus', style: TextStyle(fontWeight: FontWeight.bold)),
-              Text('• Jeder kommt einmal dran, bevor die nächste Runde startet\n• Perfekt für regelmäßige Aufgaben wie Müll rausbringen'),
+              Text(AppLocalizations.of(context)!.aboutFairModeTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
+              Text(AppLocalizations.of(context)!.aboutFairModeDescription),
               SizedBox(height: 12),
-              Text('🎲 Zufalls-Modus', style: TextStyle(fontWeight: FontWeight.bold)),
-              Text('• Komplett zufällige Auswahl bei jedem Würfeln\n• Ideal für spontane Entscheidungen'),
+              Text(AppLocalizations.of(context)!.aboutRandomModeTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
+              Text(AppLocalizations.of(context)!.aboutRandomModeDescription),
               SizedBox(height: 12),
-              Text('💾 Datenspeicherung', style: TextStyle(fontWeight: FontWeight.bold)),
+              Text(AppLocalizations.of(context)!.aboutDataStorageTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
               Text(kIsWeb
-                ? '• Alle Daten werden lokal im Browser gespeichert\n• Keine externen Server oder Cloud-Dienste'
-                : '• Alle Daten werden nur auf diesem Gerät gespeichert\n• Keine Server, keine Internetverbindung nötig'),
+                ? AppLocalizations.of(context)!.aboutDataStorageDescriptionWeb
+                : AppLocalizations.of(context)!.aboutDataStorageDescriptionMobile),
               SizedBox(height: 24),
               Divider(),
               SizedBox(height: 16),
-              Text('📱 Über diese App', style: TextStyle(fontWeight: FontWeight.bold)),
+              Text(AppLocalizations.of(context)!.aboutThisAppTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
               Text(AppLocalizations.of(context)!.developedBy),
-              Text('© 2025 Alle Rechte vorbehalten', style: TextStyle(fontSize: 12, color: Theme.of(context).textTheme.bodySmall?.color)),
+              Text(AppLocalizations.of(context)!.allRightsReservedShort, style: TextStyle(fontSize: 12, color: Theme.of(context).textTheme.bodySmall?.color)),
             ],
           ),
         ),
@@ -225,7 +225,6 @@ class _HomeScreenState extends State<HomeScreen> {
         onGroupDeleted: _deleteGroup,
         onDataChanged: _loadData,
       ),
-      const SettingsScreen(),
     ];
 
     return Scaffold(
@@ -275,12 +274,23 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: _showHelpDialog,
             tooltip: AppLocalizations.of(context)!.help,
           ),
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const SettingsScreen(),
+                ),
+              );
+            },
+            tooltip: AppLocalizations.of(context)!.settings,
+          ),
         ],
       ),
       body: screens[_selectedIndex],
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
-        onDestinationSelected: (index) => setState(() => _selectedIndex = index),
+        onDestinationSelected: (index) => setState(() => _selectedIndex = index.clamp(0, 1)),
         destinations: [
           NavigationDestination(
             icon: const Icon(Icons.task),
@@ -289,10 +299,6 @@ class _HomeScreenState extends State<HomeScreen> {
           NavigationDestination(
             icon: const Icon(Icons.group),
             label: AppLocalizations.of(context)!.groups,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.settings),
-            label: AppLocalizations.of(context)!.settings,
           ),
         ],
       ),
@@ -361,7 +367,7 @@ class TasksScreen extends StatelessWidget {
               Navigator.of(context).pop();
               onTaskDeleted(task.id);
             },
-            child: const Text('Löschen'),
+            child: Text(AppLocalizations.of(context)!.delete),
           ),
         ],
       ),
@@ -405,7 +411,7 @@ class TasksScreen extends StatelessWidget {
               ),
               const SizedBox(height: 24),
               Text(
-                'Keine Aufgaben vorhanden',
+                AppLocalizations.of(context)!.noTasksAvailable,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
@@ -413,7 +419,7 @@ class TasksScreen extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                'Erstelle deine erste Aufgabe für ein Team\nund lass das faire Würfeln beginnen!',
+                AppLocalizations.of(context)!.noTasksSubtitle,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   color: Theme.of(context).textTheme.bodyMedium?.color,
                 ),
@@ -423,7 +429,7 @@ class TasksScreen extends StatelessWidget {
               ElevatedButton.icon(
                 onPressed: () => _navigateToCreateTask(context),
                 icon: const Icon(Icons.add),
-                label: const Text('Erste Aufgabe erstellen'),
+                label: Text(AppLocalizations.of(context)!.createFirstTask),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                 ),
@@ -569,18 +575,18 @@ class TasksScreen extends StatelessWidget {
                           }
                         },
                         itemBuilder: (context) => [
-                          const PopupMenuItem(
+                          PopupMenuItem(
                             value: 'edit',
                             child: ListTile(
-                              leading: Icon(Icons.edit),
-                              title: Text('Bearbeiten'),
+                              leading: const Icon(Icons.edit),
+                              title: Text(AppLocalizations.of(context)!.edit),
                             ),
                           ),
-                          const PopupMenuItem(
+                          PopupMenuItem(
                             value: 'delete',
                             child: ListTile(
-                              leading: Icon(Icons.delete),
-                              title: Text('Löschen'),
+                              leading: const Icon(Icons.delete),
+                              title: Text(AppLocalizations.of(context)!.delete),
                             ),
                           ),
                         ],
@@ -646,7 +652,7 @@ class GroupsScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Gruppe "${group.name}" löschen?'),
+        title: Text(AppLocalizations.of(context)!.deleteGroupTitle(group.name)),
         content: const Text('Diese Aktion kann nicht rückgängig gemacht werden.'),
         actions: [
           TextButton(
@@ -658,7 +664,7 @@ class GroupsScreen extends StatelessWidget {
               Navigator.of(context).pop();
               onGroupDeleted(group.id);
             },
-            child: const Text('Löschen'),
+            child: Text(AppLocalizations.of(context)!.delete),
           ),
         ],
       ),
@@ -688,7 +694,7 @@ class GroupsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 24),
               Text(
-                'Keine Gruppen vorhanden',
+                AppLocalizations.of(context)!.noGroupsAvailable,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
@@ -696,7 +702,7 @@ class GroupsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                'Erstelle deine erste Gruppe mit Teammitgliedern\num Aufgaben fair zu verteilen',
+                AppLocalizations.of(context)!.noGroupsSubtitle,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   color: Theme.of(context).textTheme.bodyMedium?.color,
                 ),
@@ -706,7 +712,7 @@ class GroupsScreen extends StatelessWidget {
               ElevatedButton.icon(
                 onPressed: () => _navigateToCreateGroup(context),
                 icon: const Icon(Icons.add),
-                label: const Text('Erste Gruppe erstellen'),
+                label: Text(AppLocalizations.of(context)!.createFirstGroup),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                 ),
@@ -823,18 +829,18 @@ class GroupsScreen extends StatelessWidget {
                         }
                       },
                       itemBuilder: (context) => [
-                        const PopupMenuItem(
+                        PopupMenuItem(
                           value: 'edit',
                           child: ListTile(
-                            leading: Icon(Icons.edit),
-                            title: Text('Bearbeiten'),
+                            leading: const Icon(Icons.edit),
+                            title: Text(AppLocalizations.of(context)!.edit),
                           ),
                         ),
-                        const PopupMenuItem(
+                        PopupMenuItem(
                           value: 'delete',
                           child: ListTile(
-                            leading: Icon(Icons.delete),
-                            title: Text('Löschen'),
+                            leading: const Icon(Icons.delete),
+                            title: Text(AppLocalizations.of(context)!.delete),
                           ),
                         ),
                       ],

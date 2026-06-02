@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../services/image_service.dart';
 import 'universal_image.dart';
+import '../l10n/app_localizations.dart';
 
 class ImagePickerWidget extends StatefulWidget {
   final String? imagePath;
@@ -18,7 +19,7 @@ class ImagePickerWidget extends StatefulWidget {
     this.imagePath,
     required this.onImageSelected,
     this.size = 100,
-    this.placeholder = 'Bild hinzufügen',
+    this.placeholder = 'Add image',
     this.placeholderIcon = Icons.add_a_photo,
   });
 
@@ -65,7 +66,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
               ),
               const SizedBox(height: 20),
               Text(
-                'Bild auswählen',
+                AppLocalizations.of(context)!.selectImage,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
@@ -76,7 +77,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                 children: [
                   _ImageSourceOption(
                     icon: Icons.photo_library,
-                    label: kIsWeb ? 'Datei wählen' : 'Galerie',
+                    label: kIsWeb ? AppLocalizations.of(context)!.chooseFile : AppLocalizations.of(context)!.gallery,
                     onTap: () async {
                       Navigator.pop(context);
                       final imagePath = await ImageService.pickImage(
@@ -91,7 +92,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                   if (_currentImagePath != null)
                     _ImageSourceOption(
                       icon: Icons.delete,
-                      label: 'Entfernen',
+                      label: AppLocalizations.of(context)!.remove,
                       color: Colors.red,
                       onTap: () async {
                         Navigator.pop(context);
@@ -150,7 +151,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                   fit: BoxFit.cover,
                   errorWidget: _PlaceholderContent(
                     icon: Icons.broken_image,
-                    text: 'Bild nicht\ngefunden',
+                    text: AppLocalizations.of(context)!.imageNotFound,
                     size: widget.size,
                   ),
                 ),

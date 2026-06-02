@@ -1141,6 +1141,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Exclude members'**
   String get excludeMembersTitle;
+
+  /// No description provided for @aboutTasksTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'🎯 Tasks'**
+  String get aboutTasksTitle;
+
+  /// No description provided for @aboutTasksDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'• Create recurring tasks for your groups\n• Choose between random and fair mode\n• Track the history of all executions'**
+  String get aboutTasksDescription;
+
+  /// No description provided for @aboutGroupsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'👥 Groups'**
+  String get aboutGroupsTitle;
+
+  /// No description provided for @aboutGroupsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'• Organize team members into reusable groups\n• Perfect for different projects and teams'**
+  String get aboutGroupsDescription;
+
+  /// No description provided for @aboutFairModeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'⚖️ Fair Mode'**
+  String get aboutFairModeTitle;
+
+  /// No description provided for @aboutFairModeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'• Everyone gets a turn once before the next round starts\n• Perfect for recurring tasks like taking out trash'**
+  String get aboutFairModeDescription;
+
+  /// No description provided for @aboutRandomModeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'🎲 Random Mode'**
+  String get aboutRandomModeTitle;
+
+  /// No description provided for @aboutRandomModeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'• Completely random selection on each roll\n• Ideal for spontaneous decisions'**
+  String get aboutRandomModeDescription;
+
+  /// No description provided for @aboutGroupsManagementDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'• Manage teams and their members\n• Autocomplete based on existing names\n• Easy editing and management'**
+  String get aboutGroupsManagementDescription;
+
+  /// No description provided for @aboutDataStorageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'💾 Data Storage'**
+  String get aboutDataStorageTitle;
+
+  /// No description provided for @aboutDataStorageDescriptionWeb.
+  ///
+  /// In en, this message translates to:
+  /// **'• All data is stored locally in the browser\n• No external servers or cloud services'**
+  String get aboutDataStorageDescriptionWeb;
+
+  /// No description provided for @aboutDataStorageDescriptionMobile.
+  ///
+  /// In en, this message translates to:
+  /// **'• All data is stored only on this device\n• No servers, no internet connection required'**
+  String get aboutDataStorageDescriptionMobile;
+
+  /// No description provided for @aboutThisAppTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'📱 About this App'**
+  String get aboutThisAppTitle;
+
+  /// No description provided for @allRightsReservedShort.
+  ///
+  /// In en, this message translates to:
+  /// **'© 2025 All rights reserved'**
+  String get allRightsReservedShort;
 }
 
 class _AppLocalizationsDelegate

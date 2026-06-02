@@ -570,4 +570,53 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get excludeMembersTitle => 'Exclude members';
+
+  @override
+  String get aboutTasksTitle => '🎯 Tasks';
+
+  @override
+  String get aboutTasksDescription =>
+      '• Create recurring tasks for your groups\n• Choose between random and fair mode\n• Track the history of all executions';
+
+  @override
+  String get aboutGroupsTitle => '👥 Groups';
+
+  @override
+  String get aboutGroupsDescription =>
+      '• Organize team members into reusable groups\n• Perfect for different projects and teams';
+
+  @override
+  String get aboutFairModeTitle => '⚖️ Fair Mode';
+
+  @override
+  String get aboutFairModeDescription =>
+      '• Everyone gets a turn once before the next round starts\n• Perfect for recurring tasks like taking out trash';
+
+  @override
+  String get aboutRandomModeTitle => '🎲 Random Mode';
+
+  @override
+  String get aboutRandomModeDescription =>
+      '• Completely random selection on each roll\n• Ideal for spontaneous decisions';
+
+  @override
+  String get aboutGroupsManagementDescription =>
+      '• Manage teams and their members\n• Autocomplete based on existing names\n• Easy editing and management';
+
+  @override
+  String get aboutDataStorageTitle => '💾 Data Storage';
+
+  @override
+  String get aboutDataStorageDescriptionWeb =>
+      '• All data is stored locally in the browser\n• No external servers or cloud services';
+
+  @override
+  String get aboutDataStorageDescriptionMobile =>
+      '• All data is stored only on this device\n• No servers, no internet connection required';
+
+  @override
+  String get aboutThisAppTitle => '📱 About this App';
+
+  @override
+  String get allRightsReservedShort => '© 2025 All rights reserved';
 }

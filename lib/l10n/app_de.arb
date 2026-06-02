@@ -203,5 +203,21 @@
   "chooseGroup": "Gruppe wählen",
   "randomSelectionEachRoll": "Zufällige Auswahl bei jedem Würfeln",
   "excludeMembers": "Mitglieder ausschließen",
-  "excludeMembersTitle": "Mitglieder ausschließen"
+  "excludeMembersTitle": "Mitglieder ausschließen",
+
+  "aboutTasksTitle": "🎯 Aufgaben",
+  "aboutTasksDescription": "• Erstelle wiederkehrende Aufgaben für deine Gruppen\n• Wähle zwischen Zufalls- und Fair-Modus\n• Verfolge die Historie aller Ausführungen",
+  "aboutGroupsTitle": "👥 Gruppen",
+  "aboutGroupsDescription": "• Organisiere Teammitglieder in wiederverwendbare Gruppen\n• Perfekt für verschiedene Projekte und Teams",
+  "aboutFairModeTitle": "⚖️ Fair-Modus",
+  "aboutFairModeDescription": "• Jeder kommt einmal dran, bevor die nächste Runde startet\n• Perfekt für regelmäßige Aufgaben wie Müll rausbringen",
+  "aboutRandomModeTitle": "🎲 Zufalls-Modus",
+  "aboutRandomModeDescription": "• Komplett zufällige Auswahl bei jedem Würfeln\n• Ideal für spontane Entscheidungen",
+
+  "aboutGroupsManagementDescription": "• Verwalte Teams und deren Mitglieder\n• Autocomplete basierend auf bestehenden Namen\n• Einfache Bearbeitung und Verwaltung",
+  "aboutDataStorageTitle": "💾 Datenspeicherung",
+  "aboutDataStorageDescriptionWeb": "• Alle Daten werden lokal im Browser gespeichert\n• Keine externen Server oder Cloud-Dienste",
+  "aboutDataStorageDescriptionMobile": "• Alle Daten werden nur auf diesem Gerät gespeichert\n• Keine Server, keine Internetverbindung nötig",
+  "aboutThisAppTitle": "📱 Über diese App",
+  "allRightsReservedShort": "© 2025 Alle Rechte vorbehalten"
 }

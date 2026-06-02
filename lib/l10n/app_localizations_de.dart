@@ -575,4 +575,53 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get excludeMembersTitle => 'Mitglieder ausschließen';
+
+  @override
+  String get aboutTasksTitle => '🎯 Aufgaben';
+
+  @override
+  String get aboutTasksDescription =>
+      '• Erstelle wiederkehrende Aufgaben für deine Gruppen\n• Wähle zwischen Zufalls- und Fair-Modus\n• Verfolge die Historie aller Ausführungen';
+
+  @override
+  String get aboutGroupsTitle => '👥 Gruppen';
+
+  @override
+  String get aboutGroupsDescription =>
+      '• Organisiere Teammitglieder in wiederverwendbare Gruppen\n• Perfekt für verschiedene Projekte und Teams';
+
+  @override
+  String get aboutFairModeTitle => '⚖️ Fair-Modus';
+
+  @override
+  String get aboutFairModeDescription =>
+      '• Jeder kommt einmal dran, bevor die nächste Runde startet\n• Perfekt für regelmäßige Aufgaben wie Müll rausbringen';
+
+  @override
+  String get aboutRandomModeTitle => '🎲 Zufalls-Modus';
+
+  @override
+  String get aboutRandomModeDescription =>
+      '• Komplett zufällige Auswahl bei jedem Würfeln\n• Ideal für spontane Entscheidungen';
+
+  @override
+  String get aboutGroupsManagementDescription =>
+      '• Verwalte Teams und deren Mitglieder\n• Autocomplete basierend auf bestehenden Namen\n• Einfache Bearbeitung und Verwaltung';
+
+  @override
+  String get aboutDataStorageTitle => '💾 Datenspeicherung';
+
+  @override
+  String get aboutDataStorageDescriptionWeb =>
+      '• Alle Daten werden lokal im Browser gespeichert\n• Keine externen Server oder Cloud-Dienste';
+
+  @override
+  String get aboutDataStorageDescriptionMobile =>
+      '• Alle Daten werden nur auf diesem Gerät gespeichert\n• Keine Server, keine Internetverbindung nötig';
+
+  @override
+  String get aboutThisAppTitle => '📱 Über diese App';
+
+  @override
+  String get allRightsReservedShort => '© 2025 Alle Rechte vorbehalten';
 }
