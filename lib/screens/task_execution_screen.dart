@@ -794,22 +794,18 @@ class _TaskExecutionScreenState extends State<TaskExecutionScreen>
                           ),
                         ],
                 ),
-                child: ElevatedButton.icon(
+                child: ElevatedButton(
                   onPressed: _currentParticipants.isEmpty || _isRolling ? null : _rollDice,
-                  icon: Icon(
-                    _isRolling
-                        ? Icons.hourglass_empty
-                        : (widget.potatoModeEnabled ? null : Icons.casino),
-                    color: Colors.white,
-                  ),
-                  label: Text(
+                  child: Text(
                     _isRolling
                         ? AppLocalizations.of(context)!.rolling
                         : (widget.potatoModeEnabled ? AppLocalizations.of(context)!.rollPotatoDice : AppLocalizations.of(context)!.rollDiceAction),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                      color: _currentParticipants.isEmpty || _isRolling
+                        ? null
+                        : Theme.of(context).colorScheme.onPrimary,
                     ),
                   ),
                   style: ElevatedButton.styleFrom(
