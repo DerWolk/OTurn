@@ -219,5 +219,16 @@
   "aboutDataStorageDescriptionWeb": "• All data is stored locally in the browser\n• No external servers or cloud services",
   "aboutDataStorageDescriptionMobile": "• All data is stored only on this device\n• No servers, no internet connection required",
   "aboutThisAppTitle": "📱 About this App",
-  "allRightsReservedShort": "© 2025 All rights reserved"
+  "allRightsReservedShort": "© 2025 All rights reserved",
+
+  "extractFromPhoto": "Extract from photo",
+  "extractNamesFromPhoto": "Extract names from photo",
+  "selectPhotoForExtraction": "Select photo to extract names",
+  "processingImage": "Processing image...",
+  "extractedNames": "Extracted names",
+  "noNamesFound": "No names found in image",
+  "addExtractedNames": "Add extracted names",
+  "extractionError": "Error extracting names from image",
+  "extractionSuccess": "Successfully extracted {count} names",
+  "photoExtraction": "Photo extraction"
 }

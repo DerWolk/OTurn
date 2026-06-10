@@ -1225,6 +1225,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'© 2025 All rights reserved'**
   String get allRightsReservedShort;
+
+  /// No description provided for @extractFromPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Extract from photo'**
+  String get extractFromPhoto;
+
+  /// No description provided for @extractNamesFromPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Extract names from photo'**
+  String get extractNamesFromPhoto;
+
+  /// No description provided for @selectPhotoForExtraction.
+  ///
+  /// In en, this message translates to:
+  /// **'Select photo to extract names'**
+  String get selectPhotoForExtraction;
+
+  /// No description provided for @processingImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing image...'**
+  String get processingImage;
+
+  /// No description provided for @extractedNames.
+  ///
+  /// In en, this message translates to:
+  /// **'Extracted names'**
+  String get extractedNames;
+
+  /// No description provided for @noNamesFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No names found in image'**
+  String get noNamesFound;
+
+  /// No description provided for @addExtractedNames.
+  ///
+  /// In en, this message translates to:
+  /// **'Add extracted names'**
+  String get addExtractedNames;
+
+  /// No description provided for @extractionError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error extracting names from image'**
+  String get extractionError;
+
+  /// No description provided for @extractionSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Successfully extracted {count} names'**
+  String extractionSuccess(Object count);
+
+  /// No description provided for @photoExtraction.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo extraction'**
+  String get photoExtraction;
 }
 
 class _AppLocalizationsDelegate

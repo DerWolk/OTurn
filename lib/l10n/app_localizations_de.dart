@@ -624,4 +624,38 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get allRightsReservedShort => '© 2025 Alle Rechte vorbehalten';
+
+  @override
+  String get extractFromPhoto => 'Aus Foto extrahieren';
+
+  @override
+  String get extractNamesFromPhoto => 'Namen aus Foto extrahieren';
+
+  @override
+  String get selectPhotoForExtraction =>
+      'Foto auswählen um Namen zu extrahieren';
+
+  @override
+  String get processingImage => 'Bild wird verarbeitet...';
+
+  @override
+  String get extractedNames => 'Extrahierte Namen';
+
+  @override
+  String get noNamesFound => 'Keine Namen im Bild gefunden';
+
+  @override
+  String get addExtractedNames => 'Extrahierte Namen hinzufügen';
+
+  @override
+  String get extractionError =>
+      'Fehler beim Extrahieren der Namen aus dem Bild';
+
+  @override
+  String extractionSuccess(Object count) {
+    return '$count Namen erfolgreich extrahiert';
+  }
+
+  @override
+  String get photoExtraction => 'Foto-Extraktion';
 }

@@ -619,4 +619,36 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get allRightsReservedShort => '© 2025 All rights reserved';
+
+  @override
+  String get extractFromPhoto => 'Extract from photo';
+
+  @override
+  String get extractNamesFromPhoto => 'Extract names from photo';
+
+  @override
+  String get selectPhotoForExtraction => 'Select photo to extract names';
+
+  @override
+  String get processingImage => 'Processing image...';
+
+  @override
+  String get extractedNames => 'Extracted names';
+
+  @override
+  String get noNamesFound => 'No names found in image';
+
+  @override
+  String get addExtractedNames => 'Add extracted names';
+
+  @override
+  String get extractionError => 'Error extracting names from image';
+
+  @override
+  String extractionSuccess(Object count) {
+    return 'Successfully extracted $count names';
+  }
+
+  @override
+  String get photoExtraction => 'Photo extraction';
 }

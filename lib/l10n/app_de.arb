@@ -219,5 +219,16 @@
   "aboutDataStorageDescriptionWeb": "• Alle Daten werden lokal im Browser gespeichert\n• Keine externen Server oder Cloud-Dienste",
   "aboutDataStorageDescriptionMobile": "• Alle Daten werden nur auf diesem Gerät gespeichert\n• Keine Server, keine Internetverbindung nötig",
   "aboutThisAppTitle": "📱 Über diese App",
-  "allRightsReservedShort": "© 2025 Alle Rechte vorbehalten"
+  "allRightsReservedShort": "© 2025 Alle Rechte vorbehalten",
+
+  "extractFromPhoto": "Aus Foto extrahieren",
+  "extractNamesFromPhoto": "Namen aus Foto extrahieren",
+  "selectPhotoForExtraction": "Foto auswählen um Namen zu extrahieren",
+  "processingImage": "Bild wird verarbeitet...",
+  "extractedNames": "Extrahierte Namen",
+  "noNamesFound": "Keine Namen im Bild gefunden",
+  "addExtractedNames": "Extrahierte Namen hinzufügen",
+  "extractionError": "Fehler beim Extrahieren der Namen aus dem Bild",
+  "extractionSuccess": "{count} Namen erfolgreich extrahiert",
+  "photoExtraction": "Foto-Extraktion"
 }

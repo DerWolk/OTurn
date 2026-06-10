@@ -1,8 +1,11 @@
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:image_picker/image_picker.dart';
 import '../models/group.dart';
 import '../services/storage_service.dart';
+import '../services/text_recognition_service.dart';
 import '../widgets/image_picker_widget.dart';
 import '../l10n/app_localizations.dart';
 
@@ -99,6 +102,148 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
         SnackBar(content: Text(AppLocalizations.of(context)!.addAtLeastOneMemberError)),
       );
     }
+  }
+
+  Future<void> _extractNamesFromPhoto() async {
+    try {
+      final picker = ImagePicker();
+      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+      if (pickedFile == null) return;
+
+      // Show loading dialog
+      if (mounted) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => AlertDialog(
+            content: Row(
+              children: [
+                const CircularProgressIndicator(),
+                const SizedBox(width: 16),
+                Text(AppLocalizations.of(context)!.processingImage),
+              ],
+            ),
+          ),
+        );
+      }
+
+      // Extract names from image
+      final file = File(pickedFile.path);
+      final extractedNames = await TextRecognitionService.extractNamesFromImage(file);
+
+      // Close loading dialog
+      if (mounted) {
+        Navigator.of(context).pop();
+      }
+
+      if (extractedNames.isEmpty) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.noNamesFound),
+              backgroundColor: Colors.orange,
+            ),
+          );
+        }
+        return;
+      }
+
+      // Show extracted names dialog
+      if (mounted) {
+        _showExtractedNamesDialog(extractedNames);
+      }
+    } catch (e) {
+      // Close loading dialog if open
+      if (mounted) {
+        Navigator.of(context).pop();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.extractionError),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  void _showExtractedNamesDialog(List<String> extractedNames) {
+    List<String> selectedNames = [];
+
+    showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          title: Text(AppLocalizations.of(context)!.extractedNames),
+          content: SizedBox(
+            width: double.maxFinite,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.extractionSuccess(extractedNames.length),
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                const SizedBox(height: 16),
+                Flexible(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: extractedNames.length,
+                    itemBuilder: (context, index) {
+                      final name = extractedNames[index];
+                      final isAlreadyMember = _members.contains(name);
+                      final isSelected = selectedNames.contains(name);
+
+                      return CheckboxListTile(
+                        title: Text(name),
+                        subtitle: isAlreadyMember
+                            ? Text(
+                                AppLocalizations.of(context)!.memberAlreadyInGroup(name),
+                                style: TextStyle(color: Colors.orange, fontSize: 12),
+                              )
+                            : null,
+                        value: isSelected,
+                        enabled: !isAlreadyMember,
+                        onChanged: isAlreadyMember ? null : (bool? value) {
+                          setDialogState(() {
+                            if (value == true) {
+                              selectedNames.add(name);
+                            } else {
+                              selectedNames.remove(name);
+                            }
+                          });
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(AppLocalizations.of(context)!.cancel),
+            ),
+            TextButton(
+              onPressed: selectedNames.isEmpty ? null : () {
+                setState(() {
+                  _members.addAll(selectedNames);
+                });
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(AppLocalizations.of(context)!.extractionSuccess(selectedNames.length)),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+              },
+              child: Text(AppLocalizations.of(context)!.addExtractedNames),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -215,6 +360,14 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                     child: Text(AppLocalizations.of(context)!.add),
                   ),
                 ],
+              ),
+              const SizedBox(height: 8),
+              Center(
+                child: OutlinedButton.icon(
+                  onPressed: _extractNamesFromPhoto,
+                  icon: const Icon(Icons.photo_camera),
+                  label: Text(AppLocalizations.of(context)!.extractFromPhoto),
+                ),
               ),
               const SizedBox(height: 16),
               Text(
