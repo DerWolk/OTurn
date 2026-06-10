@@ -93,7 +93,7 @@ class TextRecognitionService {
     if (RegExp(r'^\d+$').hasMatch(name)) return false;
 
     // Shouldn't contain too many special characters
-    if (RegExp(r'[^\w\säöüßÄÖÜ\-\']').allMatches(name).length > 2) return false;
+    if (RegExp(r"[^\w\säöüßÄÖÜ\-\']").allMatches(name).length > 2) return false;
 
     return true;
   }
