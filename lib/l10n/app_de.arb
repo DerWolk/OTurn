@@ -231,5 +231,7 @@
   "extractionError": "Fehler beim Extrahieren der Namen aus dem Bild",
   "extractionSuccess": "{count} Namen erfolgreich extrahiert",
   "photoExtraction": "Foto-Extraktion",
-  "camera": "Kamera"
+  "camera": "Kamera",
+  "selectTextRegion": "Textbereich auswählen",
+  "cropInstruction": "Ziehen Sie um den Bereich mit Namen auszuwählen"
 }

@@ -1291,6 +1291,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Camera'**
   String get camera;
+
+  /// No description provided for @selectTextRegion.
+  ///
+  /// In en, this message translates to:
+  /// **'Select text region'**
+  String get selectTextRegion;
+
+  /// No description provided for @cropInstruction.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag to select the area with names'**
+  String get cropInstruction;
 }
 
 class _AppLocalizationsDelegate
