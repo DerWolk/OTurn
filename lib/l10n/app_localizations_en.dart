@@ -651,4 +651,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get photoExtraction => 'Photo extraction';
+
+  @override
+  String get camera => 'Camera';
 }
