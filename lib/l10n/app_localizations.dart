@@ -1303,6 +1303,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Drag to select the area with names'**
   String get cropInstruction;
+
+  /// No description provided for @cameraNotSupportedWeb.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera not supported in web browser - please use gallery'**
+  String get cameraNotSupportedWeb;
 }
 
 class _AppLocalizationsDelegate

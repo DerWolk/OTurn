@@ -233,5 +233,6 @@
   "photoExtraction": "Photo extraction",
   "camera": "Camera",
   "selectTextRegion": "Select text region",
-  "cropInstruction": "Drag to select the area with names"
+  "cropInstruction": "Drag to select the area with names",
+  "cameraNotSupportedWeb": "Camera not supported in web browser - please use gallery"
 }

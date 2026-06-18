@@ -660,4 +660,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cropInstruction => 'Drag to select the area with names';
+
+  @override
+  String get cameraNotSupportedWeb =>
+      'Camera not supported in web browser - please use gallery';
 }

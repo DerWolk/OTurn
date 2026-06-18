@@ -668,4 +668,8 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get cropInstruction =>
       'Ziehen Sie um den Bereich mit Namen auszuwählen';
+
+  @override
+  String get cameraNotSupportedWeb =>
+      'Kamera wird im Webbrowser nicht unterstützt - bitte Galerie verwenden';
 }
