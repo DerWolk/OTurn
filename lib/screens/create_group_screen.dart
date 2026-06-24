@@ -149,16 +149,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
 
       final picker = ImagePicker();
 
-      // Check if camera is available on web
-      if (kIsWeb && source == ImageSource.camera) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.cameraNotSupportedWeb),
-            backgroundColor: Colors.orange,
-          ),
-        );
-        return;
-      }
+      // Note: Camera should work on mobile web browsers, but has limitations
 
       final pickedFile = await picker.pickImage(
         source: source,
