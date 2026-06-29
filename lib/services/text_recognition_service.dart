@@ -115,7 +115,8 @@ class TextRecognitionService {
 
     // Special handling for handwritten lists
     // Remove common OCR artifacts
-    processedLine = processedLine.replaceAll(RegExp(r'[_~`!@#$%^&*()+=\[\]{}|\\:";\'<>?,./]'), ' ');
+    processedLine = processedLine.replaceAll(RegExp(r'[_~`!@#$%^&*()+=\[\]{}|\\:";.<>?,/]'), ' ');
+    processedLine = processedLine.replaceAll("'", ' ');
 
     // Handle numbered lists (1. Name, 2. Name, etc.)
     processedLine = processedLine.replaceAll(RegExp(r'^\d+\.?\s*'), '');
@@ -185,7 +186,8 @@ class TextRecognitionService {
     String cleaned = name.trim();
 
     // Remove common OCR artifacts and symbols
-    cleaned = cleaned.replaceAll(RegExp(r'[_~`!@#$%^&*()+=\[\]{}|\\:";\'<>?,./]'), '');
+    cleaned = cleaned.replaceAll(RegExp(r'[_~`!@#$%^&*()+=\[\]{}|\\:";.<>?,/]'), '');
+    cleaned = cleaned.replaceAll("'", '');
 
     // Remove numbers and bullet points from the beginning
     cleaned = cleaned.replaceAll(RegExp(r'^\d+\.?\s*'), '');
